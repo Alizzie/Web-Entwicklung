@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Webapp Example</title>
+    <link rel="stylesheet" href="styles/style.css" />
+    <script defer src="js/password.js"></script>
+    <script defer src="bundle.js"></script>
+</head>
+
+<body>
+    <header class="navbar">
+        <div>
+            <p>Veranstaltungen verwalten</p>
+            <p>Gästeliste verwalten</p>
+            <p>Sitzplan verwalten</p>
+        </div>
+
+        <div>
+            <p>Abmelden</p>
+        </div>
+    </header>
+
+
+    <main class="login">
+        <form action="" clasS="login-data" method="post">
+            <label for="uname">Username</label>
+            <input type="text" placeholder="Enter username" name="uname" required>
+            <label for="pwordField">Password</label>
+            <input type="password" placeholder="Enter password" name="pword" id="pwordField" required>
+            <button type="submit">Login</button>
+
+            <div>
+                <a href="">Registrieren</a>
+                <a href="">Passwort vergessen</a>
+            </div>
+        </form>
+    </main>
+
+    <main class="content">
+        <div class="veranstaltung">
+
+        </div>
+        <div class="">
+            <button>Veranstaltung anlegen</button>
+            <button>Veranstatlung löschen</button>
+        </div>
+    </main>
+    <footer></footer>
+</body>
+</html>

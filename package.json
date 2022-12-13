@@ -1,0 +1,29 @@
+{
+  "name": "web-entwicklung",
+  "version": "1.0.0",
+  "description": "Web-Entwicklung Projekt",
+  "main": "",
+  "scripts": {
+    "clean": "rm -rf node_modules && rm -rf client/build",
+    "debug": "npm run html && npm run css && npm run js",
+    "html": "mkdirp client/build && cp client/src/html/index.html client/build",
+    "css": "mkdirp client/build && lessc client/src/styles/style.less client/build/style.css",
+    "js": "mkdirp client/build && esbuild client/src/js/main.mjs --log-level=warning --bundle --outfile=client/build/bundle.js",
+    "start": "npm run build && http-server client/build",
+    "lint": "semistandard client/src/js/**/*.mjs",
+    "format": "semistandard --fix",
+    "build": "npm run debug && npm run minify:css && npm run minify:js",
+    "minify:css": "lessc --clean-css client/src/styles/style.less client/build/style.css",
+    "minify:js": "terser client/build/bundle.js --compress --mangle --comments=false -o client/build/bundle.js"
+  },
+  "author": "Elisa Du, Henrik Flöter",
+  "license": "UNLINCENSED",
+  "devDependencies": {
+    "esbuild": "^0.16.4",
+    "less": "^4.1.3",
+    "less-plugin-clean-css": "^1.5.1",
+    "mkdirp": "^1.0.4",
+    "semistandard": "^16.0.1",
+    "terser": "^5.16.1"
+  }
+}
