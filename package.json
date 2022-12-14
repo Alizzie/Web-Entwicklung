@@ -5,7 +5,7 @@
   "main": "",
   "scripts": {
     "clean": "rm -rf node_modules && rm -rf client/build",
-    "debug": "npm run html && npm run css && npm run js",
+    "debug": "npm run lint && npm run html && npm run css && npm run js",
     "html": "mkdirp client/build && cp client/src/index.html client/build",
     "css": "mkdirp client/build && lessc client/src/styles/style.less client/build/style.css",
     "js": "mkdirp client/build && esbuild client/src/js/main.mjs --log-level=warning --bundle --outfile=client/build/bundle.js",
