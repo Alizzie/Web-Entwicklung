@@ -1,0 +1,22 @@
+@import "style.less";
+
+.display-Wrapper {
+    .roundedBorder;
+    width: @mainWidth;
+    height: 400px;
+    padding: @paddingAroundBox;
+    background-color: #F9F3F3;
+    .addFlexBoxColumn;
+
+    .no-Event-Wrapper{
+        .addFlexBoxColumn;
+        align-items: center;
+        padding: @paddingAroundBox;
+
+        button {
+            padding: @paddingAroundBox;
+            margin-top: @gap;
+            cursor: @mousePointer;
+        }
+    }
+}

@@ -1,0 +1,42 @@
+@import "style.less";
+
+/* ----------------------- Navbar ---------------------------------*/
+.navbar-Wrapper{
+    position: relative;
+    background-color: @grayColor;
+    padding: @gap @gap + 2rem;
+    .addFlexBoxRow;
+    justify-content: space-between;
+    box-shadow: @boxShadow;
+}
+
+.navbar-functionalities {
+    .addFlexBoxRow;
+
+    p + p{
+        margin-left: @gap;
+    }
+}
+
+.navbar-userRole {
+    position: relative;
+    .roundedBorder;
+    padding: @paddingWidth;
+
+    .navbar-logOut {
+        display: none;
+        position: absolute;
+        right: 0;
+        top: 2rem;
+        width: 100%;
+        min-width: 5rem;
+        background-color: @grayColor;
+        box-shadow: @boxShadow;
+        padding: @paddingAroundBox;
+        z-index: 1;
+    }
+}
+
+.navbar-userRole:hover .navbar-logOut {
+    display: block;
+}

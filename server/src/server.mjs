@@ -3,10 +3,10 @@ import express from 'express';
 
 const server = express();
 server.use(express.json());
-server.use(express.urlencoded({extended: true}));
-const dirname = path.dirname(process.argv[1]);
+server.use(express.urlencoded({ extended: true }));
 
 // clientseitige statische Daten
+const dirname = path.dirname(process.argv[1]);
 server.use(express.static(path.join(dirname, '../../client/build')));
 
 // Kommandozeile übergebene Port
@@ -21,10 +21,13 @@ server.get('/', (request, response) => {
   response.sendFile(path.join(dirname, '../../client/build/index.html'));
 });
 
-server.post('/', function (request, response) {
+/* server.post('/', function (request, response) {
   console.log("POST", request.body);
-  response.send(request.body);
-});
+  const {username, password} = request.body;
+  module.exports.user = [username, password];
+
+  response.sendFile(path.join(dirname, '../../client/build/index.html'));
+}); */
 
 server.listen(port, (err) => {
   if (err) {

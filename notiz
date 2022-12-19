@@ -1,0 +1,42 @@
+<!--
+        <div class="eventWrapper">
+            <div class="eventBracket">
+                <p> Veranstaltung </p>
+            </div>
+        </div>
+
+        <hr>
+
+        <section>
+            <form action="post">
+                <label for="">Name der Veranstaltung</label>
+                <input type="text" name="" id="" placeholder="Name">
+
+                <label for="">Datum</label>
+                <input type="date" name="" id="">
+                <label for="">Uhrzeit</label>
+                <input type="time" name="" id=""> -->
+
+                <!-- Anzahl Tische für Gäste = Max Gäste-->
+                <!--<label for="">Anzahl rechteckiger Tische</label>
+                <input type="number" name="" id="">
+                <label for="">Anzahl Sitzplätze pro Tisch</label>
+                <input type="number" name="" id="">
+
+                <button type="submit">Weiter zur Gästeverwaltung</button>
+            </form>
+        </section>
+
+        <hr>
+        <section>
+            <form action="post">
+                <label for="">Name eines Gast</label>
+                <input type="text" name="" id="">
+
+                <label for=""></label>
+            </form>
+        </section>
+    
+    </main>-->
+
+    <a href="https://www.flaticon.com/de/kostenlose-icons/plus" title="plus Icons">Plus Icons erstellt von srip - Flaticon</a>
