@@ -3,6 +3,7 @@ import express from 'express';
 
 const server = express();
 server.use(express.json());
+server.use(express.urlencoded({extended: true}));
 const dirname = path.dirname(process.argv[1]);
 
 // clientseitige statische Daten
@@ -20,6 +21,15 @@ server.get('/', (request, response) => {
   response.sendFile(path.join(dirname, '../../client/build/index.html'));
 });
 
-server.listen(port, () => {
-  console.log(`Listen on port ${port} ...`);
+server.post('/', function (request, response) {
+  console.log("POST", request.body);
+  response.send(request.body);
+});
+
+server.listen(port, (err) => {
+  if (err) {
+    console.log(err);
+  } else {
+    console.log(`Listen on port ${port} ...`);
+  }
 });

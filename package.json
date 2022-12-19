@@ -8,7 +8,7 @@
     "debug": "npm run lint && npm run html && npm run css && npm run js",
     "html": "mkdirp client/build && cp client/src/index.html client/build",
     "css": "mkdirp client/build && lessc client/src/styles/style.less client/build/style.css",
-    "js": "mkdirp client/build && esbuild client/src/js/main.mjs --log-level=warning --bundle --outfile=client/build/bundle.js",
+    "js": "mkdirp client/build && esbuild --bundle client/src/js/main.mjs --log-level=warning --outfile=client/build/bundle.js",
     "start": "npm run build && node server/src/server.mjs",
     "lint": "semistandard client/src/js/**/*.mjs",
     "format": "semistandard --fix",
