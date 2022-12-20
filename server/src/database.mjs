@@ -1,4 +1,4 @@
-const sqlite3 = require('sqlite3').verbose();
+import sqlite3 from 'sqlite3';
 
 // open and connect to the database
 const db = new sqlite3.Database('database.db', (err) => {
@@ -101,8 +101,8 @@ db.run(stmt3,[23,100,10,2]);
 
 // VERANSTALTUNGEN: id, name, date, time, guestList_id,seatingPlan_id , guest_id
 const stmt4 = `INSERT INTO veranstaltungen(id, name, date,time,guestList_id,seatingPlan_id,guest_id) VALUES(?, ?, ?, ?, ?, ?, ?)`;
-db.run(stmt4,[31,"Hochzeit 31",31122022,2000,11,23,01])
-*/
+db.run(stmt4,[31,"Hochzeit 31",31122022,2000,11,23,01]) */
+
 // print the table
 
 // Example of an print statement

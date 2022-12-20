@@ -3,14 +3,34 @@ import * as DisplayBuilder from './UIDisplayBuilder.mjs';
 
 const logging = document.getElementById('sign-in');
 console.log(logging);
+const port = window.location.port;
 
 logging.addEventListener('submit', (event) => {
   event.preventDefault();
-  const username = logging.elements.uname.value;
-  const password = logging.elements.pword.value;
-  const user = [username, password];
-  console.log(user);
+  const uname = logging.elements.uname.value;
+  const pword = logging.elements.pword.value;
+  const fields = JSON.stringify([uname, pword]);
 
-  NavbarBuilder.createNavbar(user);
-  DisplayBuilder.createMainDisplay();
+  // Fetch Data and send them to the server
+  fetch(`http://localhost:${port}/`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: fields
+  }).then(res => {
+    return res.text();
+  }).then(data => {
+    console.log('Data: ' + data);
+    const result = JSON.parse(data);
+    console.log('Object: ' + result + ' value: ' + result.accepted + ' name: ' + result.name);
+
+    if (result.accepted) {
+      NavbarBuilder.createNavbar(result.name);
+      DisplayBuilder.createMainDisplay();
+    } else {
+      window.alert('Logging fehlgeschlagen!');
+    }
+  })
+    .catch(error => console.error(error));
 });

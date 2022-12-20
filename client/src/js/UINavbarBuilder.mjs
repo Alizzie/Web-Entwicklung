@@ -2,7 +2,6 @@ const body = document.body;
 
 // Creating Navbar
 export function createNavbar (user) {
-  console.log('creating navbar' + user);
   const navbar = document.createElement('header');
   navbar.classList.add('navbar-Wrapper');
   body.insertBefore(navbar, document.getElementsByTagName('main')[0]);
@@ -24,7 +23,7 @@ export function createNavbar (user) {
   const userRole = document.createElement('div');
   userRole.classList.add('navbar-userRole');
   const username = document.createElement('p');
-  username.textContent = user[0];
+  username.textContent = user;
   userRole.appendChild(username);
 
   const logOut = document.createElement('div');

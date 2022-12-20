@@ -21,13 +21,22 @@ server.get('/', (request, response) => {
   response.sendFile(path.join(dirname, '../../client/build/index.html'));
 });
 
-/* server.post('/', function (request, response) {
-  console.log("POST", request.body);
-  const {username, password} = request.body;
-  module.exports.user = [username, password];
+server.post('/', function (request, response) {
+  console.log('get login data', request.body);
+  const [username, password] = request.body;
 
-  response.sendFile(path.join(dirname, '../../client/build/index.html'));
-}); */
+  // TODO DB CECK IF CORRECT PASSWORD => YES, THEN ACCEPTED: TRUE, ELSE FALSE
+
+  // Data sended back to client
+  const data = {
+    accepted: true,
+    name: username,
+    pword: password
+  };
+
+  // data will be send back to client as response in json
+  response.json(data);
+});
 
 server.listen(port, (err) => {
   if (err) {

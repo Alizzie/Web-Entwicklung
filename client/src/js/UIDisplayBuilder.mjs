@@ -1,4 +1,5 @@
 import { resetMain } from './UIGenerator.mjs';
+import { createNewEventDisplay } from './UINewEventBuilder.mjs';
 
 function createEventDisplay () {
   const wrapper = document.createElement('div');
@@ -17,15 +18,14 @@ function noEventsDisplay () {
   wrapper.appendChild(addEventButton);
 
   addEventButton.addEventListener('click', () => {
-    resetMain();
+    createNewEventDisplay();
   });
 
   return wrapper;
 }
 
 export function createMainDisplay () {
-  resetMain();
-  const main = document.getElementsByTagName('main')[0];
+  const main = resetMain();
   main.classList.add('display-Wrapper');
   const noEvent = true;
 
