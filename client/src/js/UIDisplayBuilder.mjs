@@ -24,7 +24,7 @@ function noEventsDisplay () {
 }
 
 export function createMainDisplay () {
-  resetMain();n
+  resetMain();
   const main = document.getElementsByTagName('main')[0];
   main.classList.add('display-Wrapper');
   const noEvent = true;
