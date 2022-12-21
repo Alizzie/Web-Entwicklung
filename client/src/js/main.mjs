@@ -12,7 +12,7 @@ logging.addEventListener('submit', (event) => {
   const fields = JSON.stringify([uname, pword]);
 
   // Fetch Data and send them to the server
-  fetch(`http://localhost:${port}/`, {
+  fetch(`http://localhost:${port}/login`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
