@@ -8,6 +8,23 @@ const db = new sqlite3.Database('database.db', (err) => {
   console.log('Connected to the database.');
 });
 
+//Create Veranstalter Table 
+db.run(`CREATE TABLE IF NOT EXISTS veranstalter (
+    veranstalter_id INTEGER,
+    e_mail TEXT UNIQUE,
+    name TEXT,
+    password TEXT,
+    PRIMARY KEY(e_mail,veranstalter_id)
+  )`,
+  (err) => {
+    if (err) {
+      console.error(err.message);
+    } else {
+      console.log('Veranstalter table erstellt');
+    }
+  });
+
+
 // Create guestList Table
 db.run(`CREATE TABLE IF NOT EXISTS guestList (
     guestList_id INTEGER,  
@@ -63,10 +80,10 @@ db.run(`CREATE TABLE IF NOT EXISTS veranstaltungen (
     time TEXT,
     guestList_id INTEGER, 
     seatingPlan_id INTEGER, 
-    guest_id INTEGER,
+    veranstalter_id INTEGER,
     FOREIGN KEY(guestList_id) REFERENCES guestList(guestList_id),
     FOREIGN KEY(seatingPlan_id) REFERENCES seatingPlan(seatingPlan_id),
-    FOREIGN KEY(guest_id) REFERENCES guests(guest_id)
+    FOREIGN KEY(veranstalter_id) REFERENCES veranstalter(veranstalter_id)
     )`,
 (err) => {
   if (err) {
@@ -76,37 +93,43 @@ db.run(`CREATE TABLE IF NOT EXISTS veranstaltungen (
 });
 
 // Beispieldatensätze
-// GUEST TABLE: guest_id name child invitation_status
+// GUEST TABLE: guest_id (begins with 0), name, child, invitation_status
 /*
 const stmt = `INSERT INTO guests(guest_id, name, child, invitation_status) VALUES(?, ?, ?, ?)`;
-db.run(stmt,[01, 'Hans Honig', 0, 'eingeladen']);
-db.run(stmt,[02, 'Peter Lustig', 1 , 'zugesagt']);
-db.run(stmt,[03, 'Hannah Hatschi', 0, 'zugesagt']);
-db.run(stmt,[04, 'John Doe', 0, 'unbekannt']);
-db.run(stmt,[05, 'Peter unlustig', 0, 'abgesagt']);
+db.run(stmt,[1, 'Hans Honig', 0, 'eingeladen']);
+db.run(stmt,[2, 'Peter Lustig', 1 , 'zugesagt']);
+db.run(stmt,[3, 'Hannah Hatschi', 0, 'zugesagt']);
+db.run(stmt,[4, 'John Doe', 0, 'unbekannt']);
+db.run(stmt,[5, 'Peter unlustig', 0, 'abgesagt']);
 
-// GUEST LIST: guestList_id ,  guest_id
+// GUEST LIST: guestList_id (begins with 1),  guest_id
 const stmt2 = `INSERT INTO guestList(guestList_id, guest_id) VALUES(?, ?)`;
-db.run(stmt2,[11,01]);
-db.run(stmt2,[11,02]);
-db.run(stmt2,[11,03]);
-db.run(stmt2,[12,04]);
-db.run(stmt2,[12,05]);
+db.run(stmt2,[11,1]);
+db.run(stmt2,[11,2]);
+db.run(stmt2,[11,3]);
+db.run(stmt2,[12,4]);
+db.run(stmt2,[12,5]);
 
-// SEATING PLAN:  seatingPlan_id, countTables, seatsPerTable, seatsPerSide E {1,2}
+// SEATING PLAN:  seatingPlan_id (begins with 2), countTables, seatsPerTable, seatsPerSide E {1,2}
 const stmt3 = `INSERT INTO seatingPlan(seatingPlan_id, countTables, seatsPerTable, seatsPerSide) VALUES(?, ?, ?, ?)`;
 db.run(stmt3,[21,15,5,1]);
 db.run(stmt3,[22,20,4,2]);
 db.run(stmt3,[23,100,10,2]);
 
-// VERANSTALTUNGEN: id, name, date, time, guestList_id,seatingPlan_id , guest_id
-const stmt4 = `INSERT INTO veranstaltungen(id, name, date,time,guestList_id,seatingPlan_id,guest_id) VALUES(?, ?, ?, ?, ?, ?, ?)`;
-db.run(stmt4,[31,"Hochzeit 31",31122022,2000,11,23,01]) */
+// VERANSTALTER: veranstalter_id (begins with 3),e_mail,name,password, 
+const stmt5 = `INSERT INTO veranstalter(veranstalter_id, e_mail, name,password) VALUES(?, ?, ?, ?)`;
+db.run(stmt5,[31,'hnfl1438@hochschule-trier.de','henrik floeter','sagIchDirNichtHAHA']);
 
-// print the table
+// VERANSTALTUNGEN: id, name, date, time, guestList_id,seatingPlan_id , guest_id
+const stmt6 = `INSERT INTO veranstaltungen(id, name, date,time,guestList_id,seatingPlan_id,veranstalter_id) VALUES(?, ?, ?, ?, ?, ?, ?)`;
+db.run(stmt6,[41,"Hochzeit 31",31122022,2000,11,23,31]);
+*/
+
+
 
 // Example of an print statement
-db.all('SELECT * FROM guestList gL JOIN guests g on gL.guest_id = g.guest_id ', [], (err, rows) => {
+const exampleSTMT = 'SELECT * FROM guestList gL JOIN guests g on gL.guest_id = g.guest_id';
+db.all('select * from veranstaltungen v join veranstalter vr on v.veranstalter_id = vr.veranstalter_id', [], (err, rows) => {
   if (err) {
     throw err;
   }
@@ -114,6 +137,7 @@ db.all('SELECT * FROM guestList gL JOIN guests g on gL.guest_id = g.guest_id ', 
     console.log(row);
   });
 });
+
 
 // close the database connection
 db.close((err) => {
