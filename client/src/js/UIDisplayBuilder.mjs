@@ -10,10 +10,13 @@ function createEventDisplay () {
 function noEventsDisplay () {
   const wrapper = document.createElement('div');
   wrapper.classList.add('no-Event-Wrapper');
+
   const text = document.createElement('h1');
   text.textContent = 'No Events created';
+
   const addEventButton = document.createElement('button');
   addEventButton.textContent = 'Add new one';
+  
   wrapper.appendChild(text);
   wrapper.appendChild(addEventButton);
 
