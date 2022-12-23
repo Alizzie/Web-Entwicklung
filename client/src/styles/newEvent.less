@@ -1,0 +1,62 @@
+@import "style.less";
+@import "../../../node_modules/uikit/src/less/uikit.theme.less";
+
+
+.uk-heading-line {
+    overflow: visible;
+
+    span {
+        font-size: 1.8rem;
+    }
+}
+
+.uk-heading-line>::after, .uk-heading-line>::before {
+    width: 60%;
+}
+
+.eventParamsFormular button {
+    margin-top: @gap;
+}
+
+.creation-attributs {
+    .addFlexBoxRow;
+    flex-wrap: wrap;
+    justify-content: start;
+
+    & + & {
+        margin-top: @gap;
+    }
+
+    h2 {
+        width: @fullWidth;
+    }
+}
+
+.creation-form-elements{
+    .addFlexBoxColumn;
+    margin-right: @gap + 1;
+    margin-top: @smallGap;
+
+    label{
+        margin-right: @smallGap;
+    }
+}
+
+.creation-attributs > .creation-eventAttr{
+    width: @fullWidth;
+}
+
+.creation-attributs > .creation-eventAttr ~ .creation-eventAttr {
+    width: auto;
+}
+
+.creation-seatingAttr{
+    input:not([type='checkbox']){
+        width: 50%;
+        text-align: right;
+    }
+}
+
+.creation-seatingAttr:last-of-type {
+    flex-direction: row;
+}

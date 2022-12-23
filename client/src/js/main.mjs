@@ -26,8 +26,10 @@ logging.addEventListener('submit', (event) => {
     console.log('Object: ' + result + ' value: ' + result.accepted + ' name: ' + result.name);
 
     if (result.accepted) {
+      console.log('accepted');
       NavbarBuilder.createNavbar(result.name);
       DisplayBuilder.createMainDisplay();
+      NavbarBuilder.createFooter();
     } else {
       window.alert('Logging fehlgeschlagen!');
     }

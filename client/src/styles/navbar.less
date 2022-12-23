@@ -1,42 +1,23 @@
 @import "style.less";
 
 /* ----------------------- Navbar ---------------------------------*/
-.navbar-Wrapper{
-    position: relative;
-    background-color: @grayColor;
-    padding: @gap @gap + 2rem;
+.uk-navbar-container {
     .addFlexBoxRow;
-    justify-content: space-between;
+    padding: 0 @bigGap;
     box-shadow: @boxShadow;
-}
 
-.navbar-functionalities {
-    .addFlexBoxRow;
-
-    p + p{
-        margin-left: @gap;
+    a:hover {
+        cursor: @mousePointer;
     }
 }
 
-.navbar-userRole {
-    position: relative;
-    .roundedBorder;
-    padding: @paddingWidth;
-
-    .navbar-logOut {
-        display: none;
-        position: absolute;
-        right: 0;
-        top: 2rem;
-        width: 100%;
-        min-width: 5rem;
-        background-color: @grayColor;
-        box-shadow: @boxShadow;
-        padding: @paddingAroundBox;
-        z-index: 1;
-    }
+.uk-navbar-dropwdown {
+    width: 130px;
+    padding: @paddingAroundBox;
 }
 
-.navbar-userRole:hover .navbar-logOut {
-    display: block;
+footer {
+    position: absolute;
+    width: @fullWidth;
+    bottom: 0;
 }

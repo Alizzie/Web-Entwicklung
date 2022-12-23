@@ -1,37 +1,65 @@
-const body = document.body;
 
+const body = document.body;
 // Creating Navbar
-export function createNavbar (user) {
-  const navbar = document.createElement('header');
-  navbar.classList.add('navbar-Wrapper');
+export function createNavbar () {
+  const navbar = document.createElement('nav');
+  navbar.classList.add('uk-navbar-container');
   body.insertBefore(navbar, document.getElementsByTagName('main')[0]);
 
   // Left Functionalities
-  const functionalities = document.createElement('div');
-  functionalities.classList.add('navbar-functionalities');
-  const functions = ['Events', 'Guest lists', 'Seating Plans'];
+  const leftWrapper = document.createElement('div');
+  leftWrapper.classList.add('uk-navbar-left');
+  navbar.appendChild(leftWrapper);
 
-  for (const element of functions) {
-    const functionalty = document.createElement('p');
-    functionalty.textContent = element;
-    functionalities.appendChild(functionalty);
-  }
+  const functionalities = document.createElement('ul');
+  functionalities.classList.add('uk-navbar-nav');
+  leftWrapper.appendChild(functionalities);
 
-  navbar.appendChild(functionalities);
+  const functionality = document.createElement('li');
+  functionality.classList.add('uk-active');
+  const eventText = document.createElement('a');
+  eventText.href = '#';
+  eventText.textContent = 'Events';
+  functionality.appendChild(eventText);
+  functionalities.appendChild(functionality);
 
-  // Right User ID with Log-Out
-  const userRole = document.createElement('div');
-  userRole.classList.add('navbar-userRole');
-  const username = document.createElement('p');
-  username.textContent = user;
-  userRole.appendChild(username);
+  // Log-Out
+  const rightWrapper = document.createElement('div');
+  rightWrapper.classList.add('uk-navbar-right');
+  navbar.appendChild(rightWrapper);
 
-  const logOut = document.createElement('div');
-  logOut.classList.add('navbar-logOut');
-  const logOutText = document.createElement('span');
-  logOutText.textContent = 'Log Out';
-  logOut.appendChild(logOutText);
+  const userRole = document.createElement('ul');
+  userRole.classList.add('uk-navbar-nav');
+  rightWrapper.appendChild(userRole);
+
+  const logOut = document.createElement('li');
+  const uText = document.createElement('a');
+  uText.textContent = 'Log Out';
+  uText.href = '#';
+  logOut.appendChild(uText);
   userRole.appendChild(logOut);
+}
 
-  navbar.appendChild(userRole);
+export function createFooter () {
+  const footer = document.createElement('footer');
+  footer.classList.add('uk-navbar-container');
+  body.appendChild(footer);
+
+  const card = document.createElement('div');
+  card.classList.add('uk-navbar-left');
+  footer.appendChild(card);
+
+  const linksWrapper = document.createElement('ul');
+  linksWrapper.classList.add('uk-navbar-nav');
+  card.appendChild(linksWrapper);
+
+  const links = ['Impressum', 'Datenschutz'];
+  for (const link of links) {
+    const linkWrapper = document.createElement('li');
+    const linkText = document.createElement('a');
+    linkText.href = '#';
+    linkText.textContent = link;
+    linkWrapper.appendChild(linkText);
+    linksWrapper.appendChild(linkWrapper);
+  }
 }

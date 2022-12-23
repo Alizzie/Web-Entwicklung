@@ -15,8 +15,9 @@ function noEventsDisplay () {
   text.textContent = 'No Events created';
 
   const addEventButton = document.createElement('button');
+  addEventButton.classList.add('uk-button', 'uk-button-secondary');
   addEventButton.textContent = 'Add new one';
-  
+
   wrapper.appendChild(text);
   wrapper.appendChild(addEventButton);
 
@@ -28,8 +29,9 @@ function noEventsDisplay () {
 }
 
 export function createMainDisplay () {
-  const main = resetMain();
-  main.classList.add('display-Wrapper');
+  const main = createMainWrapper();
+
+  // TODO: CHECK IF THERE IS EVENTS
   const noEvent = true;
 
   if (noEvent) {
@@ -38,4 +40,15 @@ export function createMainDisplay () {
     const film = createEventDisplay();
     main.appendChild(film);
   }
+}
+
+export function createMainWrapper () {
+  const main = resetMain();
+  const classes = ['uk-card', 'uk-card-default', 'uk-card-large', 'uk-width-1-2', 'uk-height-large', 'uk-padding-large', 'uk-card-hover', 'display-Wrapper'];
+
+  for (const newClass of classes) {
+    main.classList.add(newClass);
+  }
+
+  return main;
 }

@@ -8,7 +8,7 @@ const db = new sqlite3.Database('database.db', (err) => {
   console.log('Connected to the database.');
 });
 
-//Create Veranstalter Table 
+// Create Veranstalter Table
 db.run(`CREATE TABLE IF NOT EXISTS veranstalter (
     veranstalter_id INTEGER,
     e_mail TEXT UNIQUE,
@@ -16,14 +16,13 @@ db.run(`CREATE TABLE IF NOT EXISTS veranstalter (
     password TEXT,
     PRIMARY KEY(e_mail,veranstalter_id)
   )`,
-  (err) => {
-    if (err) {
-      console.error(err.message);
-    } else {
-      console.log('Veranstalter table erstellt');
-    }
-  });
-
+(err) => {
+  if (err) {
+    console.error(err.message);
+  } else {
+    console.log('Veranstalter table erstellt');
+  }
+});
 
 // Create guestList Table
 db.run(`CREATE TABLE IF NOT EXISTS guestList (
@@ -116,7 +115,7 @@ db.run(stmt3,[21,15,5,1]);
 db.run(stmt3,[22,20,4,2]);
 db.run(stmt3,[23,100,10,2]);
 
-// VERANSTALTER: veranstalter_id (begins with 3),e_mail,name,password, 
+// VERANSTALTER: veranstalter_id (begins with 3),e_mail,name,password,
 const stmt5 = `INSERT INTO veranstalter(veranstalter_id, e_mail, name,password) VALUES(?, ?, ?, ?)`;
 db.run(stmt5,[31,'hnfl1438@hochschule-trier.de','henrik floeter','sagIchDirNichtHAHA']);
 
@@ -125,10 +124,8 @@ const stmt6 = `INSERT INTO veranstaltungen(id, name, date,time,guestList_id,seat
 db.run(stmt6,[41,"Hochzeit 31",31122022,2000,11,23,31]);
 */
 
-
-
 // Example of an print statement
-const exampleSTMT = 'SELECT * FROM guestList gL JOIN guests g on gL.guest_id = g.guest_id';
+// const exampleSTMT = 'SELECT * FROM guestList gL JOIN guests g on gL.guest_id = g.guest_id';
 db.all('select * from veranstaltungen v join veranstalter vr on v.veranstalter_id = vr.veranstalter_id', [], (err, rows) => {
   if (err) {
     throw err;
@@ -137,7 +134,6 @@ db.all('select * from veranstaltungen v join veranstalter vr on v.veranstalter_i
     console.log(row);
   });
 });
-
 
 // close the database connection
 db.close((err) => {

@@ -12,7 +12,8 @@
     "start": "npm run build && node server/src/server.mjs",
     "lint": "semistandard client/src/js/**/*.mjs",
     "format": "semistandard --fix",
-    "build": "npm run debug && npm run minify:css && npm run minify:js ",
+    "build": "npm run debug && npm run minify",
+    "minify": "npm run minify:css && npm run minify:js",
     "minify:css": "lessc --clean-css client/src/styles/style.less client/build/style.css",
     "minify:js": "terser client/build/bundle.js --compress --mangle --comments=false -o client/build/bundle.js",
     "testStart": "nodemon server/src/server.mjs"
@@ -31,6 +32,7 @@
   },
   "dependencies": {
     "express": "^4.18.2",
-    "sqlite3": "^5.1.4"
+    "sqlite3": "^5.1.4",
+    "uikit": "^3.15.19"
   }
 }

@@ -1,13 +1,19 @@
 @import "navbar.less";
 @import "display.less";
 @import "logging.less";
+@import "newEvent.less";
+@import (inline) "../../../node_modules/uikit/src/less/uikit.theme.less";
 
-@grayColor : #DDDDDD;
+@navbarColor: #f8f8f8;
+@bigGap: 2.5rem;
 @gap : 1.25rem;
-@boxShadow : 0px 8px 16px 0px rgba(0,0,0,0.2);
+@smallGap : 0.5rem;
+@boxShadow : 0px 4px 16px 0px rgba(0,0,0,0.2);
 @paddingAroundBox: 12px 16px;
 @paddingWidth: 5px 12px;
 @mainWidth : 85%;
+@fullWidth: 100%;
+@halfWidth: 50%;
 @mousePointer: pointer;
 
 * {
@@ -19,7 +25,7 @@
 
 
 html, body {
-    height: 100%;
+    height: @fullWidth;
     overflow: hidden;
 }
 
@@ -29,6 +35,19 @@ main{
 
 h1 {
     font-size: 2rem;
+}
+
+.uk-h2, h2 {
+    font-size: 1.25rem;
+    margin: 0;
+}
+
+.uk-padding-large {
+    padding: 50px 70px;
+}
+
+.uk-checkbox{
+    margin: 0;
 }
 
 /* ----------------------- Less Functions -------------------*/
@@ -59,4 +78,17 @@ h1 {
 .alignToHeigthCenter() {
     display: flex;
     align-items: center;
+}
+
+.createNewEventWrapper() {
+    .roundedBorder;
+    width: @halfWidth;
+    height: 400px;
+    padding: @paddingAroundBox;
+    background-color: @navbarColor;
+    .addFlexBoxColumn;
+}
+
+.centerText() {
+    text-align: center;
 }

@@ -1,9 +1,10 @@
-import { resetMain } from './UIGenerator.mjs';
+import { createMainWrapper } from './UIDisplayBuilder.mjs';
 
 const eventAttributes = [
   {
     name: 'Event Name',
-    type: 'text'
+    type: 'text',
+    placeholder: 'Event name'
   },
   {
     name: 'Date',
@@ -17,58 +18,89 @@ const eventAttributes = [
 
 const seatsPlanAttributes = [
   {
-    name: 'Anzahl rechteckiger Tische',
-    type: 'number'
+    name: 'Number of rectangular tables',
+    type: 'number',
+    placeholder: '0',
+    min: '0'
   },
   {
-    name: 'Anzahl Sitzplätze pro Tisch',
-    type: 'number'
+    name: 'Number of seats per table',
+    type: 'number',
+    placeholder: '0',
+    min: '0'
+
   },
   {
-    name: 'Beidseitig',
+    name: 'Both sides',
     type: 'checkbox'
   }
 ];
 
 export function createNewEventDisplay () {
-  const main = resetMain();
-  main.classList.add('creation-wrapper');
+  const main = createMainWrapper();
 
-  const form = document.createElement('form');
-
-  createEventAttributs(form);
-  createSeatingPlan(form);
-
-  main.appendChild(form);
+  main.appendChild(createHeading());
+  main.appendChild(createForm());
 }
 
-function createEventAttributs (form) {
-  const eventAttr = document.createElement('div');
+function createHeading () {
+  const heading = document.createElement('h1');
+  heading.classList.add('uk-heading-line', 'uk-text-center');
 
-  for (const attr of eventAttributes) {
-    const wrapper = createAttribut(attr);
+  const text = document.createElement('span');
+  text.textContent = 'Creating a new Event';
+  heading.appendChild(text);
+  return heading;
+}
+
+function createForm () {
+  const form = document.createElement('form');
+  form.action = '/';
+  form.method = 'post';
+  form.classList.add('eventParamsFormular');
+
+  const eventParams = [eventAttributes, 'creation-eventAttr', 'Event Parameters'];
+  const seatingParams = [seatsPlanAttributes, 'creation-seatingAttr', 'Seating Parameters'];
+
+  createAttributSections(form, eventParams);
+  createAttributSections(form, seatingParams);
+
+  createContinueBtn(form);
+
+  return form;
+}
+
+function createAttributSections (form, attrType) {
+  const [attrArray, className, heading] = attrType;
+  const eventAttr = document.createElement('div');
+  eventAttr.classList.add('creation-attributs');
+
+  const text = document.createElement('h2');
+  text.textContent = heading;
+  eventAttr.appendChild(text);
+
+  for (const attr of attrArray) {
+    const wrapper = createAttribut(attr, className);
     eventAttr.appendChild(wrapper);
   }
 
   form.appendChild(eventAttr);
 }
 
-function createSeatingPlan (form) {
-  const seatsAttr = document.createElement('div');
-
-  for (const attr of seatsPlanAttributes) {
-    const wrapper = createAttribut(attr);
-    seatsAttr.appendChild(wrapper);
-  }
-
-  form.appendChild(seatsAttr);
-}
-
-function createAttribut (attr) {
+function createAttribut (attr, className) {
   const wrapper = document.createElement('div');
   wrapper.classList.add('creation-form-elements');
+  wrapper.classList.add(className);
 
+  generateParameters(wrapper, attr);
+
+  return wrapper;
+}
+
+// Parameters with required Name and Type
+function generateParameters (wrapper, attr) {
   const label = document.createElement('label');
+  label.classList.add('uk-form-label');
   label.htmlFor = attr.name;
   label.textContent = attr.name;
 
@@ -76,8 +108,33 @@ function createAttribut (attr) {
   input.type = attr.type;
   input.name = attr.name;
 
+  if (attr.type === 'checkbox') {
+    input.classList.add('uk-checkbox');
+  } else {
+    input.classList.add('uk-input', 'uk-form-small');
+  }
+
+  generateOptionalAttributes(input, attr);
+
   wrapper.appendChild(label);
   wrapper.appendChild(input);
+}
 
-  return wrapper;
+// Optional: Placeholder, Min
+function generateOptionalAttributes (input, attr) {
+  if (attr.placeholder) {
+    input.placeholder = attr.placeholder;
+  }
+
+  if (attr.min) {
+    input.min = attr.min;
+  }
+}
+
+function createContinueBtn (form) {
+  const button = document.createElement('button');
+  button.textContent = 'Continue to the guest list';
+  button.type = 'submit';
+  button.classList.add('uk-button', 'uk-button-default');
+  form.appendChild(button);
 }
