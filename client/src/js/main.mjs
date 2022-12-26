@@ -1,5 +1,7 @@
 import * as NavbarBuilder from './UINavbarBuilder.mjs';
 import * as DisplayBuilder from './UIDisplayBuilder.mjs';
+import UIkit from 'uikit';
+UIkit.icon.call();
 
 const logging = document.getElementById('sign-in');
 console.log(logging);
@@ -21,9 +23,7 @@ logging.addEventListener('submit', (event) => {
   }).then(res => {
     return res.text();
   }).then(data => {
-    console.log('Data: ' + data);
     const result = JSON.parse(data);
-    console.log('Object: ' + result + ' value: ' + result.accepted + ' name: ' + result.name);
 
     if (result.accepted) {
       console.log('accepted');

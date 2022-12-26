@@ -1,0 +1,37 @@
+@import 'style.less';
+
+.guestListTable{
+    .addFlexBoxRow;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.uk-table {
+    box-shadow: @boxShadow;
+}
+
+.uk-text-truncate {
+    text-align: center;
+}
+
+.guestListTable{
+    tr{
+        cursor: @mousePointer;
+    }
+
+    th:nth-child(n+3) {
+        text-align: center;
+    }
+
+    td:nth-child(n+3) {
+        text-align: center;
+    }
+
+    .uk-table-responsive & + & {
+        margin: 10rem;
+    }
+}
+
+.uk-table-responsive + .uk-table-responsive {
+    margin-left: 6rem;
+}

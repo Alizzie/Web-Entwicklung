@@ -5,10 +5,11 @@
   "main": "",
   "scripts": {
     "clean": "rm -rf node_modules && rm -rf client/build",
-    "debug": "npm run lint && npm run html && npm run css && npm run js",
+    "debug": "npm run lint && npm run html && npm run css && npm run js && npm run img",
     "html": "mkdirp client/build && cp client/src/index.html client/build",
     "css": "mkdirp client/build && lessc client/src/styles/style.less client/build/style.css",
     "js": "mkdirp client/build && esbuild --bundle client/src/js/main.mjs --log-level=warning --outfile=client/build/bundle.js",
+    "img": "mkdirp client/build && cp -r client/src/images client/build",
     "start": "npm run build && node server/src/server.mjs",
     "lint": "semistandard client/src/js/**/*.mjs",
     "format": "semistandard --fix",
@@ -28,11 +29,11 @@
     "mkdirp": "^1.0.4",
     "nodemon": "^2.0.20",
     "semistandard": "^16.0.1",
-    "terser": "^5.16.1"
+    "terser": "^5.16.1",
+    "uikit": "^3.15.19"
   },
   "dependencies": {
     "express": "^4.18.2",
-    "sqlite3": "^5.1.4",
-    "uikit": "^3.15.19"
+    "sqlite3": "^5.1.4"
   }
 }

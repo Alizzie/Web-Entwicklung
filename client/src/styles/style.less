@@ -2,6 +2,7 @@
 @import "display.less";
 @import "logging.less";
 @import "newEvent.less";
+@import "guestList.less";
 @import (inline) "../../../node_modules/uikit/src/less/uikit.theme.less";
 
 @navbarColor: #f8f8f8;
@@ -31,6 +32,7 @@ html, body {
 
 main{
     margin: 5em auto;
+    width: @mainWidth;
 }
 
 h1 {
@@ -48,6 +50,10 @@ h1 {
 
 .uk-checkbox{
     margin: 0;
+}
+
+.uk-checkbox:checked, .uk-checkbox:checked:focus {
+    background-color: transparent;
 }
 
 /* ----------------------- Less Functions -------------------*/

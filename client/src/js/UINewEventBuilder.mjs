@@ -1,4 +1,5 @@
 import { createMainWrapper } from './UIDisplayBuilder.mjs';
+import { createGuestList } from './UIGuestListBuilder.mjs';
 
 const eventAttributes = [
   {
@@ -66,6 +67,7 @@ function createForm () {
   createAttributSections(form, seatingParams);
 
   createContinueBtn(form);
+  addEventListenerToForm(form);
 
   return form;
 }
@@ -137,4 +139,12 @@ function createContinueBtn (form) {
   button.type = 'submit';
   button.classList.add('uk-button', 'uk-button-default');
   form.appendChild(button);
+}
+
+function addEventListenerToForm (form) {
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    console.log('continuie to guestList');
+    createGuestList();
+  });
 }
