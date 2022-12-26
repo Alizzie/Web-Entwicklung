@@ -1,5 +1,5 @@
-import { createMainWrapper } from './UIDisplayBuilder.mjs';
-import { createGuestList } from './UIGuestListBuilder.mjs';
+import { createCardFormularDisplay } from './UIGenerator.mjs';
+import UINewGuestBuilder from './UINewGuestBuilder.mjs';
 
 const eventAttributes = [
   {
@@ -38,113 +38,41 @@ const seatsPlanAttributes = [
 ];
 
 export function createNewEventDisplay () {
-  const main = createMainWrapper();
+  // Heading and Class Name
+  const heading = 'Creating new Event';
+  const cName = 'creation-newEvent';
 
-  main.appendChild(createHeading());
-  main.appendChild(createForm());
+  // Button properties
+  const btnText = 'Continue to Guest List';
+
+  // Params
+  const eParams = [eventAttributes, 'creation-eventAttr', 'Event Parameters'];
+  const sParams = [seatsPlanAttributes, 'creation-seatingAttr', 'Seating Parameters'];
+
+  createCardFormularDisplay(heading, cName, btnText, [eParams, sParams]);
+  addEvent();
 }
 
-function createHeading () {
-  const heading = document.createElement('h1');
-  heading.classList.add('uk-heading-line', 'uk-text-center');
-
-  const text = document.createElement('span');
-  text.textContent = 'Creating a new Event';
-  heading.appendChild(text);
-  return heading;
-}
-
-function createForm () {
-  const form = document.createElement('form');
-  form.action = '/';
-  form.method = 'post';
-  form.classList.add('eventParamsFormular');
-
-  const eventParams = [eventAttributes, 'creation-eventAttr', 'Event Parameters'];
-  const seatingParams = [seatsPlanAttributes, 'creation-seatingAttr', 'Seating Parameters'];
-
-  createAttributSections(form, eventParams);
-  createAttributSections(form, seatingParams);
-
-  createContinueBtn(form);
-  addEventListenerToForm(form);
-
-  return form;
-}
-
-function createAttributSections (form, attrType) {
-  const [attrArray, className, heading] = attrType;
-  const eventAttr = document.createElement('div');
-  eventAttr.classList.add('creation-attributs');
-
-  const text = document.createElement('h2');
-  text.textContent = heading;
-  eventAttr.appendChild(text);
-
-  for (const attr of attrArray) {
-    const wrapper = createAttribut(attr, className);
-    eventAttr.appendChild(wrapper);
-  }
-
-  form.appendChild(eventAttr);
-}
-
-function createAttribut (attr, className) {
-  const wrapper = document.createElement('div');
-  wrapper.classList.add('creation-form-elements');
-  wrapper.classList.add(className);
-
-  generateParameters(wrapper, attr);
-
-  return wrapper;
-}
-
-// Parameters with required Name and Type
-function generateParameters (wrapper, attr) {
-  const label = document.createElement('label');
-  label.classList.add('uk-form-label');
-  label.htmlFor = attr.name;
-  label.textContent = attr.name;
-
-  const input = document.createElement('input');
-  input.type = attr.type;
-  input.name = attr.name;
-
-  if (attr.type === 'checkbox') {
-    input.classList.add('uk-checkbox');
-  } else {
-    input.classList.add('uk-input', 'uk-form-small');
-  }
-
-  generateOptionalAttributes(input, attr);
-
-  wrapper.appendChild(label);
-  wrapper.appendChild(input);
-}
-
-// Optional: Placeholder, Min
-function generateOptionalAttributes (input, attr) {
-  if (attr.placeholder) {
-    input.placeholder = attr.placeholder;
-  }
-
-  if (attr.min) {
-    input.min = attr.min;
-  }
-}
-
-function createContinueBtn (form) {
-  const button = document.createElement('button');
-  button.textContent = 'Continue to the guest list';
-  button.type = 'submit';
-  button.classList.add('uk-button', 'uk-button-default');
-  form.appendChild(button);
-}
-
-function addEventListenerToForm (form) {
-  form.addEventListener('submit', (event) => {
+// NEW EVENT FORMULAR EVENT LISTENER
+function addEvent () {
+  const newEventForm = document.getElementById('formular');
+  const port = window.location.port;
+  newEventForm.addEventListener('submit', (event) => {
     event.preventDefault();
-    console.log('continuie to guestList');
-    createGuestList();
+
+    const elements = Array.from(newEventForm.elements);
+    const data = elements.filter(x => x.tagName === 'INPUT').map(x => [x.name, x.value]);
+
+    fetch(`http://localhost:${port}/api/newEvent`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    }).then(res => {
+      return res.text();
+    }).then(data => {
+      new UINewGuestBuilder().createNewGuestDisplay();
+    }).catch(error => console.log(error));
   });
 }

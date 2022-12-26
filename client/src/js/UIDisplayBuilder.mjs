@@ -1,7 +1,7 @@
-import { resetMain } from './UIGenerator.mjs';
+import { createCardDisplay } from './UIGenerator.mjs';
 import { createNewEventDisplay } from './UINewEventBuilder.mjs';
 
-function createEventDisplay () {
+function eventDisplay () {
   const wrapper = document.createElement('div');
   wrapper.classList.add('display-event-Wrapper');
   return wrapper;
@@ -29,26 +29,15 @@ function noEventsDisplay () {
 }
 
 export function createMainDisplay () {
-  const main = createMainWrapper();
+  const wrapper = createCardDisplay();
 
   // TODO: CHECK IF THERE IS EVENTS
   const noEvent = true;
 
   if (noEvent) {
-    main.appendChild(noEventsDisplay());
+    wrapper.appendChild(noEventsDisplay());
   } else {
-    const film = createEventDisplay();
-    main.appendChild(film);
+    const film = eventDisplay();
+    wrapper.appendChild(film);
   }
-}
-
-export function createMainWrapper () {
-  const main = resetMain();
-  const classes = ['uk-card', 'uk-card-default', 'uk-card-large', 'uk-width-1-2', 'uk-height-large', 'uk-padding-large', 'uk-card-hover', 'display-Wrapper'];
-
-  for (const newClass of classes) {
-    main.classList.add(newClass);
-  }
-
-  return main;
 }

@@ -2,6 +2,10 @@
 @import "../../../node_modules/uikit/src/less/uikit.theme.less";
 
 
+.creation-newEvent {
+    width: 50%;
+}
+
 .uk-heading-line {
     overflow: visible;
 
@@ -18,7 +22,7 @@
     margin-top: @gap;
 }
 
-.creation-attributs {
+.uk-fieldset {
     .addFlexBoxRow;
     flex-wrap: wrap;
     justify-content: start;
@@ -42,11 +46,11 @@
     }
 }
 
-.creation-attributs > .creation-eventAttr{
+.uk-fieldset > .creation-eventAttr{
     width: @fullWidth;
 }
 
-.creation-attributs > .creation-eventAttr ~ .creation-eventAttr {
+.uk-fieldset > .creation-eventAttr ~ .creation-eventAttr {
     width: auto;
 }
 
@@ -59,4 +63,8 @@
 
 .creation-seatingAttr:last-of-type {
     flex-direction: row;
+}
+
+.creation-guestAttr + .creation-guestAttr {
+    width: 100%;
 }

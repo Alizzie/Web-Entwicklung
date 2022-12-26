@@ -1,4 +1,6 @@
 import { resetMain } from './UIGenerator.mjs';
+import UINewGuestBuilder from './UINewGuestBuilder.mjs';
+
 const headings = [
   {
     name: '',
@@ -31,7 +33,7 @@ const guestsList = [
   },
   {
     name: 'Elisa Du3',
-    status: 'Eingeladen',
+    status: 'invited',
     children: '0'
   },
   {
@@ -288,6 +290,9 @@ function generateAddBtn () {
   addBtn.textContent = 'Add';
 
   // TODO: CREATE ADD GUEST FORMULAR AS CLICK EVENT
+  addBtn.addEventListener('click', (event) => {
+    new UINewGuestBuilder().createNewGuestDisplay();
+  });
 
   return addBtn;
 }
@@ -349,6 +354,12 @@ function generateTableBody (guests) {
     row.appendChild(generateStatus(guest.status));
     row.appendChild(generateChildren(guest.children));
     row.appendChild(generateModifier());
+
+    row.addEventListener('click', (event) => {
+      const guestData = Array.from(row.cells).filter(x => x.classList.length !== 0)
+        .map(x => x.textContent);
+      new UINewGuestBuilder().editGuest(guestData);
+    });
   }
 
   // const length = guests.length;

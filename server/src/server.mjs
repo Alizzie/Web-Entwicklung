@@ -17,11 +17,7 @@ if (!process.argv[2]) {
   port = process.argv[2];
 }
 
-server.get('/', (request, response) => {
-  response.sendFile(path.join(dirname, '../../client/build/index.html'));
-});
-
-server.post('/login', function (request, response) {
+server.post('/api/login', function (request, response) {
   console.log('get login data', request.body);
   const [username, password] = request.body;
 
@@ -37,7 +33,19 @@ server.post('/login', function (request, response) {
   response.json(data);
 });
 
-server.post('/newEvent', function (request, response) {
+server.post('/api/newEvent', function (request, response) {
+  console.log('get new event data', request.body);
+  // const [name, date, time] = request.body;
+
+  // Data sended back to client
+  const data = {
+    accepted: true
+  };
+    // data will be send back to client as response in json
+  response.json(data);
+});
+
+server.post('/api/newGuest', function (request, response) {
   console.log('get new event data', request.body);
   // const [name, date, time] = request.body;
 

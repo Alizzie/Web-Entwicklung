@@ -3,8 +3,8 @@ import * as DisplayBuilder from './UIDisplayBuilder.mjs';
 import UIkit from 'uikit';
 UIkit.icon.call();
 
+// LOGGING EVENT LISTENER
 const logging = document.getElementById('sign-in');
-console.log(logging);
 const port = window.location.port;
 
 logging.addEventListener('submit', (event) => {
@@ -14,7 +14,7 @@ logging.addEventListener('submit', (event) => {
   const fields = JSON.stringify([uname, pword]);
 
   // Fetch Data and send them to the server
-  fetch(`http://localhost:${port}/login`, {
+  fetch(`http://localhost:${port}/api/login`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
