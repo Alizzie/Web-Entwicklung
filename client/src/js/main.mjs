@@ -29,7 +29,7 @@ logging.addEventListener('submit', (event) => {
       console.log('accepted');
       NavbarBuilder.createNavbar(result.name);
       DisplayBuilder.createMainDisplay();
-      NavbarBuilder.createFooter();
+      // NavbarBuilder.createFooter();
     } else {
       window.alert('Logging fehlgeschlagen!');
     }

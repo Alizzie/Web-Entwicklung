@@ -1,17 +1,48 @@
 @import "style.less";
 
-.uk-card-default.display-Wrapper {
+.uk-card-default.display-wrapper {
     .addFlexBoxColumn;
     align-items: center;
     margin: 0 auto;
     background-color: @navbarColor;
+    min-height: @minSize;
 
-    .no-Event-Wrapper{
+    .no-event-wrapper{
         .addFlexBoxColumn;
         align-items: center;
     }
 }
 
-.uk-card-default.display-Wrapper::selection {
+.uk-card-default.display-wrapper::selection {
     background-color: @navbarColor;
+}
+
+.display-event-wrapper {
+    .addFlexBoxRow();
+    flex-wrap: wrap;
+    justify-content: start;
+}
+
+.event-card {
+    min-width: @minSize;
+    margin: @bigGap 0 0 @bigGap+@bigGap;
+    cursor: @mousePointer;
+    padding: @gap @gap @bigGap @bigGap+1;
+}
+
+.edit-buttons-card-inside {
+    .addFlexBoxRow;
+    justify-content: end;
+
+    button {
+        height: @btnMinHeight;
+        font-size: 0.6rem;
+        line-height: 0;
+        border-radius: 7px;
+        padding: 0 @gap;
+    }
+
+    button + button {
+        margin-left: @smallGap;
+    }
 }

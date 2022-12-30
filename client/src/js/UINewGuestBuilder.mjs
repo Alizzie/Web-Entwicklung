@@ -12,7 +12,7 @@ export default class UINewGuestBuilder {
     this.gParams = [[this.guestAttributes, 'creation-guestAttr', 'Guest Parameters']];
   }
 
-  // NEW GUEST 
+  // NEW GUEST
   createNewGuestDisplay () {
     createCardFormularDisplay(this.heading, this.cName, this.btnText, this.gParams);
     this._addEvent();

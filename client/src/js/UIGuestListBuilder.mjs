@@ -1,3 +1,4 @@
+import { UIPaginationBuilder, Paginator } from './Pagination.mjs';
 import { resetMain } from './UIGenerator.mjs';
 import UINewGuestBuilder from './UINewGuestBuilder.mjs';
 
@@ -204,20 +205,7 @@ const guestsList = [
 // TODO: Variable variiert nach Window Size Groeße
 const tableSize = 7;
 
-const paginatedGuestList = async () => {
-  return paginateGuestList(guestsList, tableSize);
-};
-
-// Data Splitting into Arrays of each 6 elements
-function paginateGuestList (array, tableSize) {
-  const maxPages = Math.ceil(guestsList.length / tableSize);
-  return Array.from({ length: maxPages }, (_, i) => {
-    const start = i * tableSize;
-    return array.slice(start, start + tableSize);
-  });
-}
-
-export async function createGuestList () {
+export function createGuestList () {
   const main = resetMain();
 
   main.appendChild(generateEditButtons());
@@ -227,9 +215,12 @@ export async function createGuestList () {
   generateTables(tableWrapper, 0);
   main.appendChild(tableWrapper);
 
-  const maxPages = Math.ceil((await paginatedGuestList()).length / 2);
+  const paginatedGuestList = new Paginator(guestsList, tableSize).getPaginatedArray();
+  const maxPages = Math.ceil(paginatedGuestList.length / 2);
   const navigationWrapper = document.createElement('div');
-  navigationWrapper.appendChild(generatePagNavigation(maxPages));
+
+  const pagination = new UIPaginationBuilder(updateTables, maxPages);
+  navigationWrapper.appendChild(pagination.getNavigation());
   main.appendChild(navigationWrapper);
 }
 
@@ -237,14 +228,32 @@ function generateEditButtons () {
   const editButtons = document.createElement('div');
   editButtons.classList.add('uk-flex', 'uk-flex-between', 'uk-margin-bottom');
 
-  const modifierWrapper = document.createElement('div');
-  modifierWrapper.appendChild(generateSelectAllBtn());
-  modifierWrapper.appendChild(generateDeleteBtn());
-  editButtons.appendChild(modifierWrapper);
+  const modifierWrapper1 = document.createElement('div');
+  modifierWrapper1.appendChild(generateSelectAllBtn());
+  modifierWrapper1.appendChild(generateDeleteBtn());
 
-  editButtons.appendChild(generateAddBtn());
+  const modifierWrapper2 = document.createElement('div');
+  modifierWrapper2.appendChild(generateSeatingBtn());
+  modifierWrapper2.appendChild(generateAddBtn());
+
+  editButtons.appendChild(modifierWrapper1);
+  editButtons.appendChild(modifierWrapper2);
 
   return editButtons;
+}
+
+function generateSeatingBtn () {
+  const btn = document.createElement('button');
+  btn.classList.add('uk-button', 'uk-button-default');
+  btn.setAttribute('id', 'seatingBtn');
+  btn.textContent = 'Seating Plan';
+
+  btn.addEventListener('click', () => {
+    // ROUTE TO SEATING PLAN PAGE
+    console.log('Go to Seating Plan');
+  });
+
+  return btn;
 }
 
 function generateSelectAllBtn () {
@@ -297,11 +306,11 @@ function generateAddBtn () {
   return addBtn;
 }
 
-// TODO Create Two Tables When more Guests than 6!
+// Create Two Tables When more Guests than 6!
 // Pagination guestList with only 6 -> save all tables in array
 // Per Side only two tables next to each other
-async function generateTables (outsideWrapper, pagTableIndex) {
-  const guestArr = await paginatedGuestList();
+function generateTables (outsideWrapper, pagTableIndex) {
+  const guestArr = new Paginator(guestsList, tableSize).getPaginatedArray();
 
   const start = pagTableIndex * 2;
   const end = start + 1;
@@ -324,6 +333,17 @@ async function generateTables (outsideWrapper, pagTableIndex) {
     guestListTable.appendChild(generateTableBody(tableGuests));
   }
 }
+
+const updateTables = function (page) {
+  const table = document.getElementsByClassName('guestListTable')[0];
+  table.innerHTML = '';
+  generateTables(table, page);
+
+  if (document.getElementById('selectAllBtn').classList.contains('uk-button-default')) {
+    const delBtn = document.getElementById('deleteBtn');
+    delBtn.disabled = true;
+  }
+};
 
 function generateTableHead () {
   const head = document.createElement('thead');
@@ -354,32 +374,10 @@ function generateTableBody (guests) {
     row.appendChild(generateStatus(guest.status));
     row.appendChild(generateChildren(guest.children));
     row.appendChild(generateModifier());
-
-    row.addEventListener('click', (event) => {
-      const guestData = Array.from(row.cells).filter(x => x.classList.length !== 0)
-        .map(x => x.textContent);
-      new UINewGuestBuilder().editGuest(guestData);
-    });
   }
-
-  // const length = guests.length;
-  // generateEmptyRows(tableBody, 1);
 
   return tableBody;
 }
-
-/* function generateEmptyRows (tableBody, numberOfRows) {
-  for (let i = 0; i < numberOfRows; i++) {
-    const row = document.createElement('tr');
-    tableBody.appendChild(row);
-
-    row.appendChild(generateCheckboxCell());
-    row.appendChild(generateGuestName('Add new Guest'));
-    row.appendChild(generateStatus(''));
-    row.appendChild(generateChildren(''));
-    row.appendChild(generateModifier());
-  }
-} */
 
 function generateCheckboxCell () {
   const checkboxCell = document.createElement('td');
@@ -455,103 +453,11 @@ function generateModifier () {
   plusImage.height = '16';
   modifierCell.appendChild(plusImage);
 
-  return modifierCell;
-}
-
-function generatePagNavigation (maxPages) {
-  const navigation = document.createElement('nav');
-  const list = document.createElement('ul');
-  list.classList.add('uk-pagination', 'uk-flex-center');
-  navigation.appendChild(list);
-
-  for (let i = 0; i < maxPages + 2; i++) {
-    const navigationItem = document.createElement('li');
-    list.appendChild(navigationItem);
-
-    const link = document.createElement('a');
-    link.href = '#';
-    navigationItem.appendChild(link);
-
-    if (i === 0) {
-      const previous = document.createElement('span');
-      previous.setAttribute('uk-pagination-previous', '');
-      navigationItem.classList.add('uk-pagination-previous');
-      link.appendChild(previous);
-    } else if (i === maxPages + 1) {
-      const next = document.createElement('span');
-      next.setAttribute('uk-pagination-next', '');
-      navigationItem.classList.add('uk-pagination-next');
-      link.appendChild(next);
-    } else {
-      link.textContent = i;
-      navigationItem.classList.add('paginationItem');
-
-      if (i === 1) {
-        navigationItem.classList.add('uk-active');
-      }
-    }
-
-    addClickEvent(navigationItem);
-  }
-
-  return navigation;
-}
-
-function addClickEvent (element) {
-  element.addEventListener('click', () => {
-    const previousElem = document.getElementsByClassName('uk-active paginationItem')[0];
-    const type = element.classList;
-
-    if (type.contains('paginationItem')) {
-      previousElem.classList.remove('uk-active');
-      numberClickEvent(element);
-    }
-
-    if (type.contains('uk-pagination-previous')) {
-      previousClickEvent(previousElem);
-    }
-
-    if (type.contains('uk-pagination-next')) {
-      nextClickEvent(previousElem);
-    }
+  modifierCell.addEventListener('click', () => {
+    const guestData = Array.from(modifierCell.parentNode.cells).filter(x => x.classList.length !== 0)
+      .map(x => x.textContent);
+    new UINewGuestBuilder().editGuest(guestData);
   });
-}
 
-function previousClickEvent (previousElem) {
-  const items = document.getElementsByClassName('paginationItem');
-
-  if (previousElem !== items[0]) {
-    const nextElem = previousElem.previousSibling;
-    nextElem.classList.add('uk-active');
-    previousElem.classList.remove('uk-active');
-
-    const tablePage = parseInt(nextElem.textContent);
-    updateTables(tablePage - 1);
-  }
-}
-
-function nextClickEvent (previousElem) {
-  const items = document.getElementsByClassName('paginationItem');
-
-  if (previousElem !== items[items.length - 1]) {
-    const nextElem = previousElem.nextSibling;
-    nextElem.classList.add('uk-active');
-    previousElem.classList.remove('uk-active');
-
-    const tablePage = parseInt(nextElem.textContent);
-    updateTables(tablePage - 1);
-  }
-}
-
-function numberClickEvent (element) {
-  const tablePage = parseInt(element.textContent);
-  element.classList.add('uk-active');
-
-  updateTables(tablePage - 1);
-}
-
-function updateTables (page) {
-  const table = document.getElementsByClassName('guestListTable')[0];
-  table.innerHTML = '';
-  generateTables(table, page);
+  return modifierCell;
 }

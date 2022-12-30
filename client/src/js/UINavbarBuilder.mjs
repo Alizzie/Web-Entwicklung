@@ -1,3 +1,4 @@
+import { createMainDisplay } from './UIDisplayBuilder.mjs';
 
 const body = document.body;
 // Creating Navbar
@@ -18,10 +19,12 @@ export function createNavbar () {
   const functionality = document.createElement('li');
   functionality.classList.add('uk-active');
   const eventText = document.createElement('a');
-  eventText.href = '#';
+  eventText.href = '/';
   eventText.textContent = 'Events';
   functionality.appendChild(eventText);
   functionalities.appendChild(functionality);
+
+  functionality.addEventListener('click', () => createMainDisplay());
 
   // Log-Out
   const rightWrapper = document.createElement('div');
@@ -53,7 +56,7 @@ export function createFooter () {
   linksWrapper.classList.add('uk-navbar-nav');
   card.appendChild(linksWrapper);
 
-  const links = ['Impressum', 'Datenschutz'];
+  const links = ['Imprint', 'Data Protection'];
   for (const link of links) {
     const linkWrapper = document.createElement('li');
     const linkText = document.createElement('a');

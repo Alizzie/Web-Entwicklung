@@ -16,6 +16,8 @@
 @fullWidth: 100%;
 @halfWidth: 50%;
 @mousePointer: pointer;
+@minSize : 400px;
+@btnMinHeight: 20px;
 
 * {
     margin: 0;
@@ -31,7 +33,7 @@ html, body {
 }
 
 main{
-    margin: 7em auto;
+    margin: 5rem auto;
     width: @mainWidth;
 }
 
@@ -42,6 +44,10 @@ h1 {
 .uk-h2, h2 {
     font-size: 1.25rem;
     margin: 0;
+}
+
+h3 {
+    margin-top: @gap;
 }
 
 .uk-padding-large {
