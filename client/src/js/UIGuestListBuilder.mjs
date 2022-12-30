@@ -22,190 +22,21 @@ const headings = [
 ];
 
 const guestsList = [
-  {
-    name: 'Elisa Du1',
-    status: 'Eingeladen',
-    children: '0'
-  },
-  {
-    name: 'Elisa Du2',
-    status: 'Eingeladen',
-    children: '0'
-  },
-  {
-    name: 'Elisa Du3',
-    status: 'invited',
-    children: '0'
-  },
-  {
-    name: 'Elisa Du4',
-    status: 'Eingeladen',
-    children: '1'
-  },
-  {
-    name: 'Elisa Du5',
-    status: 'Eingeladen',
-    children: '1'
-  },
-  {
-    name: 'Aliiziee Du6',
-    status: 'Eingeladen',
-    children: '1'
-  },
-  {
-    name: 'Elisa Du7',
-    status: 'Eingeladen',
-    children: '1'
-  },
-  {
-    name: 'Elisa Du8',
-    status: 'Eingeladen',
-    children: '1'
-  },
-  {
-    name: 'Elisa Du9',
-    status: 'Eingeladen',
-    children: '1'
-  },
-  {
-    name: 'Elisa Du10',
-    status: 'Eingeladen',
-    children: '1'
-  },
-  {
-    name: 'Elisa Du11',
-    status: 'Eingeladen',
-    children: '1'
-  }, {
-    name: 'Elisa Du12',
-    status: 'Eingeladen',
-    children: '1'
-  },
-  {
-    name: 'Elisa Du13',
-    status: 'Eingeladen',
-    children: '1'
-  },
-  {
-    name: 'Elisa Du10',
-    status: 'Eingeladen',
-    children: '1'
-  },
-  {
-    name: 'Elisa Du11',
-    status: 'Eingeladen',
-    children: '1'
-  }, {
-    name: 'Elisa Du12',
-    status: 'Eingeladen',
-    children: '1'
-  },
-  {
-    name: 'Elisa Du13',
-    status: 'Eingeladen',
-    children: '1'
-  },
-  {
-    name: 'Elisa Du10',
-    status: 'Eingeladen',
-    children: '1'
-  },
-  {
-    name: 'Elisa Du11',
-    status: 'Eingeladen',
-    children: '1'
-  }, {
-    name: 'Elisa Du12',
-    status: 'Eingeladen',
-    children: '1'
-  },
-  {
-    name: 'Elisa Du13',
-    status: 'Eingeladen',
-    children: '1'
-  },
-  {
-    name: 'Elisa Du10',
-    status: 'Eingeladen',
-    children: '1'
-  },
-  {
-    name: 'Elisa Du11',
-    status: 'Eingeladen',
-    children: '1'
-  }, {
-    name: 'Elisa Du12',
-    status: 'Eingeladen',
-    children: '1'
-  },
-  {
-    name: 'Elisa Du13',
-    status: 'Eingeladen',
-    children: '1'
-  },
-  {
-    name: 'Elisa Du10',
-    status: 'Eingeladen',
-    children: '1'
-  },
-  {
-    name: 'Elisa Du11',
-    status: 'Eingeladen',
-    children: '1'
-  }, {
-    name: 'Elisa Du12',
-    status: 'Eingeladen',
-    children: '1'
-  },
-  {
-    name: 'Elisa Du13',
-    status: 'Eingeladen',
-    children: '1'
-  },
-  {
-    name: 'Elisa Du10',
-    status: 'Eingeladen',
-    children: '1'
-  },
-  {
-    name: 'Elisa Du11',
-    status: 'Eingeladen',
-    children: '1'
-  }, {
-    name: 'Elisa Du12',
-    status: 'Eingeladen',
-    children: '1'
-  },
-  {
-    name: 'Elisa Du13',
-    status: 'Eingeladen',
-    children: '1'
-  },
-  {
-    name: 'Elisa Du10',
-    status: 'Eingeladen',
-    children: '1'
-  },
-  {
-    name: 'Elisa Du11',
-    status: 'Eingeladen',
-    children: '1'
-  }, {
-    name: 'Elisa Du12',
-    status: 'Eingeladen',
-    children: '1'
-  },
-  {
-    name: 'Elisa Du13',
-    status: 'Eingeladen',
-    children: '1'
-  }
 ];
 
 // TODO: Variable variiert nach Window Size Groeße
 const tableSize = 7;
 
 export function createGuestList () {
+  // WITHOUT DATABASE RANDOM NUMBERS OF GUESTS
+  for (let i = 0; i < Math.random() * 1000; i++) {
+    guestsList.push({
+      name: 'Elisa Du',
+      status: 'invited',
+      children: '0'
+    });
+  }
+
   const main = resetMain();
 
   main.appendChild(generateEditButtons());
@@ -299,7 +130,7 @@ function generateAddBtn () {
   addBtn.textContent = 'Add';
 
   // TODO: CREATE ADD GUEST FORMULAR AS CLICK EVENT
-  addBtn.addEventListener('click', (event) => {
+  addBtn.addEventListener('click', () => {
     new UINewGuestBuilder().createNewGuestDisplay();
   });
 

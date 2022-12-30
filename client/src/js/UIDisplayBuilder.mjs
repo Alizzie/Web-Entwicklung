@@ -1,47 +1,40 @@
+import { Paginator, UIPaginationBuilder } from './Pagination.mjs';
 import { createCardDisplay, resetMain } from './UIGenerator.mjs';
 import { createNewEventDisplay } from './UINewEventBuilder.mjs';
 
 const events = [
-  {
-    name: 'Event 1',
-    date: '2020-02-02',
-    time: '12:09'
-  },
-  {
-    name: 'Event 2',
-    date: '2020-02-2002',
-    time: '12:09'
-  },
-  {
-    name: 'Event 3',
-    date: '2020-02-2002',
-    time: '12:09'
-  },
-  {
-    name: 'Event 4',
-    date: '2020-02-2002',
-    time: '12:09'
-  },
-  {
-    name: 'Event 5',
-    date: '2020-02-2002',
-    time: '12:09'
-  }
+
 ];
 
 // MAIN DISPLAY FUNCTION
 export function createMainDisplay () {
+  // WITHOUT DATABASE RANDOM NUMBER OF EVENTS
+  for (let i = 0; i < Math.random() * 10; i++) {
+    events.push({
+      name: 'Event 5',
+      date: '2020-02-2002',
+      time: '12:09'
+    });
+  }
+
   // TODO: CHECK IF THERE IS EVENTS
-  const noEvent = true;
+  let noEvent = false;
+  if (events.length === 0) {
+    noEvent = true;
+  }
+
   // ==============================
   if (noEvent) {
     const wrapper = createCardDisplay();
     wrapper.appendChild(noEventsDisplay());
   } else {
-    console.log('EVENTS');
     const main = resetMain();
     main.appendChild(generateAddBtn());
-    main.appendChild(eventDisplay());
+    main.appendChild(eventDisplay(0));
+
+    const paginatedEventList = new Paginator(events, 6).getPaginatedArray();
+    const pagination = new UIPaginationBuilder(updatePagEvents, paginatedEventList.length);
+    main.appendChild(pagination.getNavigation());
   }
 }
 
@@ -68,16 +61,29 @@ function noEventsDisplay () {
 }
 
 // DISPLAY WHEN EVENT EXISTS
+const updatePagEvents = function (pageIndex) {
+  const eventWrapper = document.getElementsByClassName('display-event-wrapper')[0];
+  eventWrapper.innerHTML = '';
+  generateEvents(eventWrapper, pageIndex);
+};
+
 function eventDisplay () {
   const wrapper = document.createElement('div');
   wrapper.classList.add('display-event-wrapper');
 
-  // ITERATE THROUGH ALL EVENTS IN DATABASE
-  for (const e of events) {
-    wrapper.appendChild(createEventBlock(e));
-  }
+  generateEvents(wrapper, 0);
 
   return wrapper;
+}
+
+function generateEvents (wrapper, pageIndex) {
+  const eventArr = new Paginator(events, 6).getPaginatedArray();
+  console.log(eventArr, pageIndex);
+
+  // ITERATE THROUGH ALL EVENTS IN DATABASE
+  for (const e of eventArr[pageIndex]) {
+    wrapper.appendChild(createEventBlock(e));
+  }
 }
 
 function createEventBlock (params) {
