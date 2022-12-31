@@ -19,7 +19,6 @@ export function createNavbar () {
   const functionality = document.createElement('li');
   functionality.classList.add('uk-active');
   const eventText = document.createElement('a');
-  eventText.href = '/';
   eventText.textContent = 'Events';
   functionality.appendChild(eventText);
   functionalities.appendChild(functionality);
@@ -38,7 +37,7 @@ export function createNavbar () {
   const logOut = document.createElement('li');
   const uText = document.createElement('a');
   uText.textContent = 'Log Out';
-  uText.href = '#';
+  uText.href = '/';
   logOut.appendChild(uText);
   userRole.appendChild(logOut);
 }

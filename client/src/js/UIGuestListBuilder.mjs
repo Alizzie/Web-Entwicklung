@@ -153,7 +153,7 @@ function generateTables (outsideWrapper, pagTableIndex) {
     }
 
     const tableWrapper = document.createElement('div');
-    tableWrapper.classList.add('uk-table-responsive', 'uk-width-1-2', 'uk-margin-bottom');
+    tableWrapper.classList.add('uk-table-responsive', 'uk-width-1-2');
     outsideWrapper.appendChild(tableWrapper);
 
     const guestListTable = document.createElement('table');

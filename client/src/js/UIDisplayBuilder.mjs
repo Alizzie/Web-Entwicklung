@@ -19,7 +19,7 @@ export function createMainDisplay () {
 
   // TODO: CHECK IF THERE IS EVENTS
   let noEvent = false;
-  if (events.length === 0) {
+  if (events.length < 7) {
     noEvent = true;
   }
 
@@ -61,12 +61,6 @@ function noEventsDisplay () {
 }
 
 // DISPLAY WHEN EVENT EXISTS
-const updatePagEvents = function (pageIndex) {
-  const eventWrapper = document.getElementsByClassName('display-event-wrapper')[0];
-  eventWrapper.innerHTML = '';
-  generateEvents(eventWrapper, pageIndex);
-};
-
 function eventDisplay () {
   const wrapper = document.createElement('div');
   wrapper.classList.add('display-event-wrapper');
@@ -75,6 +69,12 @@ function eventDisplay () {
 
   return wrapper;
 }
+
+const updatePagEvents = function (pageIndex) {
+  const eventWrapper = document.getElementsByClassName('display-event-wrapper')[0];
+  eventWrapper.innerHTML = '';
+  generateEvents(eventWrapper, pageIndex);
+};
 
 function generateEvents (wrapper, pageIndex) {
   const eventArr = new Paginator(events, 6).getPaginatedArray();
@@ -144,6 +144,10 @@ function generateAddBtn () {
   addBtn.textContent = 'Create Event';
 
   div.appendChild(addBtn);
+
+  addBtn.addEventListener('click', () => {
+    createNewEventDisplay();
+  });
 
   return div;
 }

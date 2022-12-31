@@ -1,9 +1,9 @@
 @import 'style.less';
 
 .guestListTable{
-    .addFlexBoxRow;
-    justify-content: center;
-    align-items: flex-start;
+    .flexRow;
+    .flexStartCenter;
+    min-height: @eventsMinHeight;
 }
 
 .uk-table {
@@ -11,7 +11,7 @@
 }
 
 .uk-text-truncate {
-    text-align: center;
+    .centerText;
 }
 
 .guestListTable{
@@ -20,11 +20,11 @@
     }
 
     th:nth-child(n+3) {
-        text-align: center;
+        .centerText;
     }
 
     td:nth-child(n+3) {
-        text-align: center;
+        .centerText;
     }
 
     .uk-table-responsive & + & {

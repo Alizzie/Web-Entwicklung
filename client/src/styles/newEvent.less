@@ -1,9 +1,9 @@
 @import "style.less";
 @import "../../../node_modules/uikit/src/less/uikit.theme.less";
 
-
 .creation-newEvent {
-    width: 50%;
+    width: @halfWidth;
+    .alignToWidthCenter;
 }
 
 .uk-heading-line {
@@ -15,7 +15,7 @@
 }
 
 .uk-heading-line>::after, .uk-heading-line>::before {
-    width: 60%;
+    width: @halfWidth + 10;
 }
 
 .eventParamsFormular button {
@@ -23,9 +23,9 @@
 }
 
 .uk-fieldset {
-    .addFlexBoxRow;
-    flex-wrap: wrap;
-    justify-content: start;
+    .flexRow;
+    .flexWrap;
+    .flexCenterStart;
 
     & + & {
         margin-top: @gap;
@@ -37,7 +37,7 @@
 }
 
 .creation-form-elements{
-    .addFlexBoxColumn;
+    .flexCol;
     margin-right: @gap + 1;
     margin-top: @smallGap;
 
@@ -56,15 +56,19 @@
 
 .creation-seatingAttr{
     input:not([type='checkbox']){
-        width: 50%;
+        width: @halfWidth;
         text-align: right;
     }
 }
 
 .creation-seatingAttr:last-of-type {
-    flex-direction: row;
+    .flexRow;
+}
+
+.creation-newGuest {
+    .alignToWidthCenter;
 }
 
 .creation-guestAttr + .creation-guestAttr {
-    width: 100%;
+    width: @fullWidth;
 }

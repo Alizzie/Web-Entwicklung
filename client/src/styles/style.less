@@ -5,7 +5,7 @@
 @import "guestList.less";
 @import (inline) "../../../node_modules/uikit/src/less/uikit.theme.less";
 
-@navbarColor: #f8f8f8;
+// GENERAL VARIABLES
 @bigGap: 2.5rem;
 @gap : 1.25rem;
 @smallGap : 0.5rem;
@@ -16,9 +16,19 @@
 @fullWidth: 100%;
 @halfWidth: 50%;
 @mousePointer: pointer;
-@minSize : 400px;
 @btnMinHeight: 20px;
 
+// NAVBAR VARIABLE
+@navbarColor: #f8f8f8;
+
+// EVENT CARDS VARIABLE
+@eventCardMinHeight: 175px;
+@eventMinWidth : 400px;
+@eventCardMarginTop: 40px;
+@eventsMinHeight: 2 * @eventCardMinHeight + 2 * @eventCardMarginTop;
+
+
+// HTML PREDEF TAGS
 * {
     margin: 0;
     padding: 0;
@@ -33,7 +43,7 @@ html, body {
 }
 
 main{
-    margin: 5rem auto;
+    margin: 6rem auto;
     width: @mainWidth;
 }
 
@@ -62,18 +72,7 @@ h3 {
     background-color: transparent;
 }
 
-/* ----------------------- Less Functions -------------------*/
-.addFlexBoxColumn() {
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-}
-
-.addFlexBoxRow() {
-    .alignToHeigthCenter;
-    flex-direction: row;
-}
-
+// FUNCTIONS BORDER
 .border() {
     border: 1px solid black;
 }
@@ -83,6 +82,7 @@ h3 {
     border-radius: 5px;
 }
 
+// FUNCTIONS CENTERING
 .alignToWidthCenter() {
     margin: 0 auto;
 }
@@ -94,4 +94,46 @@ h3 {
 
 .centerText() {
     text-align: center;
+}
+
+// FUNCTIONS FLEXBOXES 
+.flexCol() {
+    display: flex;
+    flex-direction: column;
+}
+
+.flexRow() {
+    display: flex;
+    flex-direction: row;
+}
+
+// Align-items justify-items
+.flexCenterCenter() {
+    justify-content: center;
+    align-items: center;
+}
+
+.flexCenterStart() {
+    align-items: center;
+    justify-content: start;
+}
+
+.flexCenterEnd() {
+    align-items: center;
+    justify-content: end;
+}
+
+.flexStartCenter() {
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.flexStartStart() {
+    justify-content: start;
+    align-items: flex-start;
+}
+
+// Flex Wrap
+.flexWrap() {
+    flex-wrap: wrap;
 }

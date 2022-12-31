@@ -1,40 +1,41 @@
 @import "style.less";
 
-.uk-card-default.display-wrapper {
-    .addFlexBoxColumn;
-    align-items: center;
-    margin: 0 auto;
+.display-wrapper {
+    .flexCol;
+    .flexCenterCenter;
+    .alignToWidthCenter;
     background-color: @navbarColor;
-    min-height: @minSize;
+    min-height: @eventMinWidth;
 
     .no-event-wrapper{
-        .addFlexBoxColumn;
-        align-items: center;
+        .flexCol;
+        .flexCenterCenter;
     }
 }
 
-.uk-card-default.display-wrapper::selection {
+.display-wrapper::selection {
     background-color: @navbarColor;
 }
 
+// DISPLAY IF EVENT EXISTS 
 .display-event-wrapper {
-    .addFlexBoxRow();
-    flex-wrap: wrap;
-    justify-content: start;
-    min-height: @minSize;
+    .flexRow;
+    .flexStartStart;
+    .flexWrap;
+    min-height: @eventsMinHeight;
     margin-bottom: @bigGap;
 }
 
 .event-card {
-    min-width: @minSize;
+    min-width: @eventMinWidth;
     margin: @bigGap 0 0 @bigGap+@bigGap;
     cursor: @mousePointer;
     padding: @gap @gap @bigGap @bigGap+1;
 }
 
 .edit-buttons-card-inside {
-    .addFlexBoxRow;
-    justify-content: end;
+    .flexRow;
+    .flexCenterEnd;
 
     button {
         height: @btnMinHeight;

@@ -14,7 +14,7 @@ export function createCardDisplay () {
   const div = document.createElement('div');
   main.appendChild(div);
 
-  const classes = ['uk-card', 'uk-card-default', 'uk-card-large', 'uk-width-1-2', 'uk-padding-large', 'uk-card-hover', 'display-Wrapper'];
+  const classes = ['uk-card', 'uk-card-default', 'uk-card-large', 'uk-width-1-2', 'uk-padding-large', 'uk-card-hover', 'display-wrapper'];
 
   for (const newClass of classes) {
     div.classList.add(newClass);
