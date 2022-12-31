@@ -29,7 +29,7 @@ const tableSize = 7;
 
 export function createGuestList () {
   // WITHOUT DATABASE RANDOM NUMBERS OF GUESTS
-  for (let i = 0; i < Math.random() * 1000; i++) {
+  for (let i = 0; i < 10; i++) {
     guestsList.push({
       name: 'Elisa Du',
       status: 'invited',
@@ -42,7 +42,7 @@ export function createGuestList () {
   main.appendChild(generateEditButtons());
 
   const tableWrapper = document.createElement('div');
-  tableWrapper.classList.add('guestListTable');
+  tableWrapper.classList.add('guestlist-table');
   generateTables(tableWrapper, 0);
   main.appendChild(tableWrapper);
 

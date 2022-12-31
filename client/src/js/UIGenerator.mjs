@@ -47,7 +47,7 @@ function createForm (params, btnTxt) {
   form.method = 'post';
   form.action = '/';
   form.setAttribute('id', 'formular');
-  form.classList.add('eventParamsFormular');
+  form.classList.add('event-params-formular');
 
   const div = document.createElement('div');
   createFormForEvent(div, params);

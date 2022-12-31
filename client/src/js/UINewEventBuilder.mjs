@@ -40,14 +40,14 @@ const seatsPlanAttributes = [
 export function createNewEventDisplay () {
   // Heading and Class Name
   const heading = 'Creating new Event';
-  const cName = 'creation-newEvent';
+  const cName = 'creation-new-event';
 
   // Button properties
   const btnText = 'Continue to Guest List';
 
   // Params
-  const eParams = [eventAttributes, 'creation-eventAttr', 'Event Parameters'];
-  const sParams = [seatsPlanAttributes, 'creation-seatingAttr', 'Seating Parameters'];
+  const eParams = [eventAttributes, 'creation-event-attr', 'Event Parameters'];
+  const sParams = [seatsPlanAttributes, 'creation-seating-attr', 'Seating Parameters'];
 
   createCardFormularDisplay(heading, cName, btnText, [eParams, sParams]);
   addEvent();

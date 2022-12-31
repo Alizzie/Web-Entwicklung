@@ -1,7 +1,7 @@
 @import "style.less";
 @import "../../../node_modules/uikit/src/less/uikit.theme.less";
 
-.creation-newEvent {
+.creation-new-event {
     width: @halfWidth;
     .alignToWidthCenter;
 }
@@ -18,7 +18,7 @@
     width: @halfWidth + 10;
 }
 
-.eventParamsFormular button {
+.event-params-formular button {
     margin-top: @gap;
 }
 
@@ -46,29 +46,25 @@
     }
 }
 
-.uk-fieldset > .creation-eventAttr{
+.uk-fieldset > .creation-event-attr{
     width: @fullWidth;
 }
 
-.uk-fieldset > .creation-eventAttr ~ .creation-eventAttr {
+.uk-fieldset > .creation-event-attr ~ .creation-event-attr {
     width: auto;
 }
 
-.creation-seatingAttr{
+.creation-seating-attr{
     input:not([type='checkbox']){
         width: @halfWidth;
         text-align: right;
     }
 }
 
-.creation-seatingAttr:last-of-type {
+.creation-seating-attr:last-of-type {
     .flexRow;
 }
 
-.creation-newGuest {
-    .alignToWidthCenter;
-}
-
-.creation-guestAttr + .creation-guestAttr {
+.creation-guest-attr + .creation-guest-attr {
     width: @fullWidth;
 }

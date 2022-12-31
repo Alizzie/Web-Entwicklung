@@ -9,7 +9,7 @@ export default class UINewGuestBuilder {
 
     this.guestAttributes = this._guestParams();
 
-    this.gParams = [[this.guestAttributes, 'creation-guestAttr', 'Guest Parameters']];
+    this.gParams = [[this.guestAttributes, 'creation-guest-attr', 'Guest Parameters']];
   }
 
   // NEW GUEST
