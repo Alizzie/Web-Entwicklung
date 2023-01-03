@@ -1,67 +1,60 @@
-import { createMainDisplay } from './UIDisplayBuilder.mjs';
+import UIDisplayBuilder from './UIDisplayBuilder.mjs';
 
-const body = document.body;
-// Creating Navbar
-export function createNavbar () {
-  const navbar = document.createElement('nav');
-  navbar.classList.add('uk-navbar-container');
-  body.insertBefore(navbar, document.getElementsByTagName('main')[0]);
+export default class UINavbarBuilder {
+  constructor () {
+    this._body = document.body;
+    this._navbar = this._createNavbarConstruction();
+  }
 
-  // Left Functionalities
-  const leftWrapper = document.createElement('div');
-  leftWrapper.classList.add('uk-navbar-left');
-  navbar.appendChild(leftWrapper);
+  createNavbar () {
+    this._body.insertBefore(this._navbar, document.getElementsByTagName('main')[0]);
 
-  const functionalities = document.createElement('ul');
-  functionalities.classList.add('uk-navbar-nav');
-  leftWrapper.appendChild(functionalities);
+    this._fillLeftSide();
+    this._fillRightSide();
+  }
 
-  const functionality = document.createElement('li');
-  functionality.classList.add('uk-active');
-  const eventText = document.createElement('a');
-  eventText.textContent = 'Events';
-  functionality.appendChild(eventText);
-  functionalities.appendChild(functionality);
+  _createNavbarConstruction () {
+    const navbar = document.createElement('nav');
+    navbar.classList.add('uk-navbar-container');
 
-  functionality.addEventListener('click', () => createMainDisplay());
+    // Left Side
+    this._leftWrapper = document.createElement('div');
+    this._leftWrapper.classList.add('uk-navbar-left');
+    navbar.appendChild(this._leftWrapper);
 
-  // Log-Out
-  const rightWrapper = document.createElement('div');
-  rightWrapper.classList.add('uk-navbar-right');
-  navbar.appendChild(rightWrapper);
+    // Right Side
+    this._rightWrapper = document.createElement('div');
+    this._rightWrapper.classList.add('uk-navbar-right');
+    navbar.appendChild(this._rightWrapper);
 
-  const userRole = document.createElement('ul');
-  userRole.classList.add('uk-navbar-nav');
-  rightWrapper.appendChild(userRole);
+    return navbar;
+  }
 
-  const logOut = document.createElement('li');
-  const uText = document.createElement('a');
-  uText.textContent = 'Log Out';
-  uText.href = '/';
-  logOut.appendChild(uText);
-  userRole.appendChild(logOut);
-}
+  _fillLeftSide () {
+    const links = document.createElement('ul');
+    links.classList.add('uk-navbar-nav');
+    this._leftWrapper.appendChild(links);
 
-export function createFooter () {
-  const footer = document.createElement('footer');
-  footer.classList.add('uk-navbar-container');
-  body.appendChild(footer);
+    const linkItem = document.createElement('li');
+    linkItem.classList.add('uk-active');
+    const text = document.createElement('a');
+    text.textContent = 'Events';
+    linkItem.appendChild(text);
+    links.appendChild(linkItem);
 
-  const card = document.createElement('div');
-  card.classList.add('uk-navbar-left');
-  footer.appendChild(card);
+    linkItem.addEventListener('click', () => new UIDisplayBuilder().createMainDisplay());
+  }
 
-  const linksWrapper = document.createElement('ul');
-  linksWrapper.classList.add('uk-navbar-nav');
-  card.appendChild(linksWrapper);
+  _fillRightSide () {
+    const userRole = document.createElement('ul');
+    userRole.classList.add('uk-navbar-nav');
+    this._rightWrapper.appendChild(userRole);
 
-  const links = ['Imprint', 'Data Protection'];
-  for (const link of links) {
-    const linkWrapper = document.createElement('li');
-    const linkText = document.createElement('a');
-    linkText.href = '#';
-    linkText.textContent = link;
-    linkWrapper.appendChild(linkText);
-    linksWrapper.appendChild(linkWrapper);
+    const logOut = document.createElement('li');
+    const uText = document.createElement('a');
+    uText.textContent = 'Log Out';
+    uText.href = '/';
+    logOut.appendChild(uText);
+    userRole.appendChild(logOut);
   }
 }

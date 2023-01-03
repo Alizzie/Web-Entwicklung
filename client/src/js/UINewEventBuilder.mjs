@@ -37,42 +37,46 @@ const seatsPlanAttributes = [
   }
 ];
 
-export function createNewEventDisplay () {
-  // Heading and Class Name
-  const heading = 'Creating new Event';
-  const cName = 'creation-new-event';
+export default class UINewEventBuilder {
+  constructor () {
+    // Heading and Class Name
+    this._heading = 'Creating new Event';
+    this._cName = 'creation-new-event';
 
-  // Button properties
-  const btnText = 'Continue to Guest List';
+    // Button properties
+    this._btnText = 'Continue to Guest List';
 
-  // Params
-  const eParams = [eventAttributes, 'creation-event-attr', 'Event Parameters'];
-  const sParams = [seatsPlanAttributes, 'creation-seating-attr', 'Seating Parameters'];
+    // Params
+    this._eParams = [eventAttributes, 'creation-event-attr', 'Event Parameters'];
+    this._sParams = [seatsPlanAttributes, 'creation-seating-attr', 'Seating Parameters'];
+  }
 
-  createCardFormularDisplay(heading, cName, btnText, [eParams, sParams]);
-  addEvent();
-}
+  createNewEventDisplay () {
+    createCardFormularDisplay(this._heading, this._cName, this._btnText, [this._eParams, this._sParams]);
+    this._addEvent();
+  }
 
-// NEW EVENT FORMULAR EVENT LISTENER
-function addEvent () {
-  const newEventForm = document.getElementById('formular');
-  const port = window.location.port;
-  newEventForm.addEventListener('submit', (event) => {
-    event.preventDefault();
+  _addEvent () {
+    const newEventForm = document.getElementById('formular');
+    const port = window.location.port;
 
-    const elements = Array.from(newEventForm.elements);
-    const data = elements.filter(x => x.tagName === 'INPUT').map(x => [x.name, x.value]);
+    newEventForm.addEventListener('submit', (event) => {
+      event.preventDefault();
 
-    fetch(`http://localhost:${port}/api/newEvent`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    }).then(res => {
-      return res.text();
-    }).then(data => {
-      new UINewGuestBuilder().createNewGuestDisplay();
-    }).catch(error => console.log(error));
-  });
+      const elements = Array.from(newEventForm.elements);
+      const data = elements.filter(x => x.tagName === 'INPUT').map(x => [x.name, x.value]);
+
+      fetch(`http://localhost:${port}/api/newEvent`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      }).then(res => {
+        return res.text();
+      }).then(data => {
+        new UINewGuestBuilder().createNewGuestDisplay();
+      }).catch(error => console.log(error));
+    });
+  }
 }

@@ -3,7 +3,8 @@
 @import "logging.less";
 @import "newEvent.less";
 @import "guestList.less";
-@import (inline) "../../../node_modules/uikit/src/less/uikit.theme.less";
+@import "seatingPlan.less";
+@import "../../../node_modules/uikit/src/less/uikit.theme.less";
 
 // GENERAL VARIABLES
 @bigGap: 2.5rem;
@@ -131,6 +132,11 @@ h3 {
 .flexStartStart() {
     justify-content: start;
     align-items: flex-start;
+}
+
+.flexStartBetween() {
+    align-items: start;
+    justify-content: space-between;
 }
 
 // Flex Wrap

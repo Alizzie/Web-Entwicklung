@@ -3,31 +3,30 @@ import { createGuestList } from './UIGuestListBuilder.mjs';
 
 export default class UINewGuestBuilder {
   constructor () {
-    this.heading = 'Add new Guest';
-    this.cName = 'creation-newGuest';
-    this.btnText = 'Add Guest';
+    this._heading = 'Add new Guest';
+    this._cName = 'creation-newGuest';
+    this._btnText = 'Add Guest';
 
-    this.guestAttributes = this._guestParams();
+    this._guestAttributes = this._guestParams();
 
-    this.gParams = [[this.guestAttributes, 'creation-guest-attr', 'Guest Parameters']];
+    this._gParams = [[this._guestAttributes, 'creation-guest-attr', 'Guest Parameters']];
   }
 
   // NEW GUEST
   createNewGuestDisplay () {
-    createCardFormularDisplay(this.heading, this.cName, this.btnText, this.gParams);
+    createCardFormularDisplay(this._heading, this._cName, this._btnText, this._gParams);
     this._addEvent();
   }
 
   // EDIT EXISITNG GUEST
   editGuest (guestData) {
-    this.heading = 'Edit Guest';
-    this.btnText = 'Save Guest';
+    this._heading = 'Edit Guest';
+    this._btnText = 'Save Guest';
     this.createNewGuestDisplay();
     this._fillGuestData(guestData);
   }
 
   _fillGuestData (guestData) {
-    console.log(guestData);
     const [guestName, guestStatus, children] = guestData;
 
     const inputs = document.getElementsByTagName('input');

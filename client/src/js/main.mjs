@@ -1,5 +1,5 @@
-import * as NavbarBuilder from './UINavbarBuilder.mjs';
-import * as DisplayBuilder from './UIDisplayBuilder.mjs';
+import UINavbarBuilder from './UINavbarBuilder.mjs';
+import UIDisplayBuilder from './UIDisplayBuilder.mjs';
 import UIkit from 'uikit';
 UIkit.icon.call();
 
@@ -24,12 +24,11 @@ logging.addEventListener('submit', (event) => {
     return res.text();
   }).then(data => {
     const result = JSON.parse(data);
-
+    console.log(result);
     if (result.accepted) {
       console.log('accepted');
-      NavbarBuilder.createNavbar(result.name);
-      DisplayBuilder.createMainDisplay();
-      // NavbarBuilder.createFooter();
+      new UINavbarBuilder().createNavbar();
+      new UIDisplayBuilder().createMainDisplay();
     } else {
       window.alert('Logging fehlgeschlagen!');
     }

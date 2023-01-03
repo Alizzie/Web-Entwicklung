@@ -1,6 +1,7 @@
 import { UIPaginationBuilder, Paginator } from './Pagination.mjs';
 import { resetMain } from './UIGenerator.mjs';
 import UINewGuestBuilder from './UINewGuestBuilder.mjs';
+import UISeatingPlanBuilder from './UISeatingPlanBuilder.mjs';
 
 const headings = [
   {
@@ -21,7 +22,7 @@ const headings = [
   }
 ];
 
-const guestsList = [
+export const guestsList = [
 ];
 
 // TODO: Variable variiert nach Window Size Groeße
@@ -33,7 +34,8 @@ export function createGuestList () {
     guestsList.push({
       name: 'Elisa Du',
       status: 'invited',
-      children: '0'
+      children: '0',
+      table: ''
     });
   }
 
@@ -80,8 +82,7 @@ function generateSeatingBtn () {
   btn.textContent = 'Seating Plan';
 
   btn.addEventListener('click', () => {
-    // ROUTE TO SEATING PLAN PAGE
-    console.log('Go to Seating Plan');
+    new UISeatingPlanBuilder(guestsList).createSeatingPlan();
   });
 
   return btn;
@@ -166,7 +167,7 @@ function generateTables (outsideWrapper, pagTableIndex) {
 }
 
 const updateTables = function (page) {
-  const table = document.getElementsByClassName('guestListTable')[0];
+  const table = document.getElementsByClassName('guestlist-table')[0];
   table.innerHTML = '';
   generateTables(table, page);
 

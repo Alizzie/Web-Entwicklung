@@ -1,0 +1,38 @@
+@import "style.less";
+
+.seating-plan {
+    .flexCol;
+}
+.guest-tables-wrapper {
+    .flexRow;
+    margin-left: @bigGap;
+    margin-top: @bigGap;
+    overflow: scroll;
+    max-height: 450px;
+    padding-top: 10px;
+
+    .uk-card{
+        height: @fullWidth;
+        margin-bottom: @bigGap;
+        margin-right: @bigGap;
+        min-width: 250px;
+    }
+
+    .uk-card:first-child {
+        margin-left: @bigGap;
+    }
+
+    span {
+        font-size: 15px;
+    }
+    
+    h3 {
+        margin-top: 0;
+        .centerText;
+    }
+}
+
+.uk-form-custom.guest-table {
+    .flexCol;
+    max-width: 200px;
+}

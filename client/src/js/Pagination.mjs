@@ -1,32 +1,32 @@
 export class Paginator {
   constructor (array, maxSize) {
-    this.array = array;
-    this.maxSize = maxSize;
-    this.paginatedArray = this._paginateArray();
+    this._array = array;
+    this._maxSize = maxSize;
+    this._paginatedArray = this._paginateArray();
   }
 
   getPaginatedArray () {
-    return this.paginatedArray;
+    return this._paginatedArray;
   }
 
   _paginateArray () {
-    const maxPages = Math.ceil(this.array.length / this.maxSize);
+    const maxPages = Math.ceil(this._array.length / this._maxSize);
     return Array.from({ length: maxPages }, (_, i) => {
-      const start = i * this.maxSize;
-      return this.array.slice(start, start + this.maxSize);
+      const start = i * this._maxSize;
+      return this._array.slice(start, start + this._maxSize);
     });
   }
 }
 
 export class UIPaginationBuilder {
-  constructor (updateFunc, maxPages) {
-    this.updateFunc = updateFunc;
-    this.maxPages = maxPages;
+  constructor (obj, maxPages) {
+    this._pagObj = obj;
+    this._maxPages = maxPages;
     this._buildPaginationNav();
   }
 
   getNavigation () {
-    return this.navigation;
+    return this._navigation;
   }
 
   _buildPaginationNav () {
@@ -37,15 +37,15 @@ export class UIPaginationBuilder {
   }
 
   _buildOutsideWrapper () {
-    this.navigation = document.createElement('nav');
-    this.navigationList = document.createElement('ul');
-    this.navigationList.classList.add('uk-pagination', 'uk-flex-center');
-    this.navigation.appendChild(this.navigationList);
+    this._navigation = document.createElement('nav');
+    this._navigationList = document.createElement('ul');
+    this._navigationList.classList.add('uk-pagination', 'uk-flex-center');
+    this._navigation.appendChild(this._navigationList);
   }
 
   _buildNavigationItemWrapper () {
     const navigationItem = document.createElement('li');
-    this.navigationList.appendChild(navigationItem);
+    this._navigationList.appendChild(navigationItem);
 
     const link = document.createElement('a');
     link.href = '#';
@@ -59,10 +59,10 @@ export class UIPaginationBuilder {
     item.classList.add('uk-pagination-previous');
     item.addEventListener('click', () => this._previousClickEvent());
 
-    this.previous = document.createElement('span');
-    this.previous.setAttribute('uk-pagination-previous', '');
+    this._previous = document.createElement('span');
+    this._previous.setAttribute('uk-pagination-previous', '');
 
-    link.appendChild(this.previous);
+    link.appendChild(this._previous);
   }
 
   _buildNextArrow () {
@@ -70,14 +70,14 @@ export class UIPaginationBuilder {
     item.classList.add('uk-pagination-next');
     item.addEventListener('click', () => this._nextClickEvent());
 
-    this.next = document.createElement('span');
-    this.next.setAttribute('uk-pagination-next', '');
+    this._next = document.createElement('span');
+    this._next.setAttribute('uk-pagination-next', '');
 
-    link.appendChild(this.next);
+    link.appendChild(this._next);
   }
 
   _buildItemField () {
-    for (let i = 0; i < this.maxPages; i++) {
+    for (let i = 0; i < this._maxPages; i++) {
       const [item, link] = this._buildNavigationItemWrapper();
 
       link.textContent = i + 1;
@@ -99,7 +99,7 @@ export class UIPaginationBuilder {
     clickedElem.classList.add('uk-active');
 
     const nextPage = parseInt(clickedElem.textContent) - 1;
-    this.updateFunc(nextPage);
+    this._pagObj.callUpdateFunc(nextPage);
   }
 
   _previousClickEvent () {
@@ -112,7 +112,7 @@ export class UIPaginationBuilder {
       activeElem.classList.remove('uk-active');
 
       const nextPage = parseInt(nextActiveElem.textContent) - 1;
-      this.updateFunc(nextPage);
+      this._pagObj.callUpdateFunc(nextPage);
     }
   }
 
@@ -126,7 +126,7 @@ export class UIPaginationBuilder {
       activeElem.classList.remove('uk-active');
 
       const nextPage = parseInt(nextActiveElem.textContent) - 1;
-      this.updateFunc(nextPage);
+      this._pagObj.callUpdateFunc(nextPage);
     }
   }
 }
