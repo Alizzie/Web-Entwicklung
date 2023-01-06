@@ -17,45 +17,13 @@ if (!process.argv[2]) {
   port = process.argv[2];
 }
 
-server.post('/api/login', function (request, response) {
-  console.log('get login data', request.body);
-  const [username, password] = request.body;
 
-  // TODO DB CECK IF CORRECT PASSWORD => YES, THEN ACCEPTED: TRUE, ELSE FALSE
+// REQUESTS 
+import {loginRouter} from '../src/routes/login.mjs'; 
+server.use('/api/login',loginRouter); 
 
-  // Data sended back to client
-  const data = {
-    accepted: true,
-    name: username,
-    pword: password
-  };
-    // data will be send back to client as response in json
-  response.json(data);
-});
+//server.use('api/newEvent',eventRouter); 
 
-server.post('/api/newEvent', function (request, response) {
-  console.log('get new event data', request.body);
-  // const [name, date, time] = request.body;
-
-  // Data sended back to client
-  const data = {
-    accepted: true
-  };
-    // data will be send back to client as response in json
-  response.json(data);
-});
-
-server.post('/api/newGuest', function (request, response) {
-  console.log('get new event data', request.body);
-  // const [name, date, time] = request.body;
-
-  // Data sended back to client
-  const data = {
-    accepted: true
-  };
-    // data will be send back to client as response in json
-  response.json(data);
-});
 
 server.listen(port, (err) => {
   if (err) {
