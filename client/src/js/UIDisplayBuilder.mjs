@@ -1,5 +1,6 @@
 import { Paginator, UIPaginationBuilder } from './Pagination.mjs';
-import { createCardDisplay, resetMain } from './UIGenerator.mjs';
+import Resetter from './Resetter.mjs';
+import UICardGenerator from './UIGenerator.mjs';
 import UINewEventBuilder from './UINewEventBuilder.mjs';
 
 const events = [
@@ -9,22 +10,23 @@ const events = [
 export default class UIDisplayBuilder {
   constructor () {
     this._events = this._getEvents();
+    this._main = new Resetter().getMain();
+
+    this._paginatedEventList = new Paginator(events, 6).getPaginatedArray();
+    this._paginator = new UIPaginationBuilder(this, this._paginatedEventList.length);
   }
 
   createMainDisplay () {
     const noEvent = this._checkIfEventsExist();
 
     if (noEvent) {
-      const wrapper = createCardDisplay();
-      wrapper.appendChild(this._noEventsDisplay());
+      this._card = new UICardGenerator().getCard();
+      this._card.appendChild(this._noEventsDisplay());
     } else {
-      const main = resetMain();
-      main.appendChild(this._generateAddBtn());
-      main.appendChild(this._eventDisplay());
+      this._main.appendChild(this._generateAddBtn());
+      this._main.appendChild(this._eventDisplay());
 
-      const paginatedEventList = new Paginator(events, 6).getPaginatedArray();
-      const pagination = new UIPaginationBuilder(this, paginatedEventList.length);
-      main.appendChild(pagination.getNavigation());
+      this._main.appendChild(this._paginator.getNavigation());
     }
   }
 
@@ -97,7 +99,7 @@ export default class UIDisplayBuilder {
 
   _createEventBlock (params) {
     const div = document.createElement('div');
-    div.classList.add('uk-card', 'uk-card-default', 'event-card');
+    div.classList.add('uk-card', 'uk-card-default', 'event-card', 'uk-card-hover');
 
     div.appendChild(this._createEditBtnInsideEventCard());
 
@@ -119,29 +121,19 @@ export default class UIDisplayBuilder {
     div.classList.add('edit-buttons-card-inside');
 
     div.appendChild(this._generateDeleteBtn());
-    div.appendChild(this._generateEditBtn());
 
     return div;
   }
 
   _generateDeleteBtn () {
     const deleteBtn = document.createElement('button');
-    deleteBtn.classList.add('uk-button', 'uk-button-default');
+    deleteBtn.classList.add('uk-button', 'uk-button-secondary');
     deleteBtn.setAttribute('id', 'deleteBtn');
     deleteBtn.textContent = 'Delete';
 
     // TODO : Delete Guests from DATABANK AS CLICK EVENT
 
     return deleteBtn;
-  }
-
-  _generateEditBtn () {
-    const editBtn = document.createElement('button');
-    editBtn.classList.add('uk-button', 'uk-button-primary');
-    editBtn.setAttribute('id', 'editBtn');
-    editBtn.textContent = 'Edit';
-
-    return editBtn;
   }
 
   _generateAddBtn () {

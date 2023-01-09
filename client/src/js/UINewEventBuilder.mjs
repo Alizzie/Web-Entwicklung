@@ -1,5 +1,5 @@
-import { createCardFormularDisplay } from './UIGenerator.mjs';
 import UINewGuestBuilder from './UINewGuestBuilder.mjs';
+import UICardGenerator from './UIGenerator.mjs';
 
 const eventAttributes = [
   {
@@ -49,15 +49,19 @@ export default class UINewEventBuilder {
     // Params
     this._eParams = [eventAttributes, 'creation-event-attr', 'Event Parameters'];
     this._sParams = [seatsPlanAttributes, 'creation-seating-attr', 'Seating Parameters'];
+
+    this._cardGenerator = new UICardGenerator();
   }
 
   createNewEventDisplay () {
-    createCardFormularDisplay(this._heading, this._cName, this._btnText, [this._eParams, this._sParams]);
+    this._cardGenerator.formularCardConstructor(this._heading, this._cName, this._btnText, [this._eParams, this._sParams]);
+    this._cardGenerator.createCardFormularDisplay();
     this._addEvent();
   }
 
   _addEvent () {
-    const newEventForm = document.getElementById('formular');
+    const newEventForm = this._cardGenerator.getFormular();
+    console.log(newEventForm);
     const port = window.location.port;
 
     newEventForm.addEventListener('submit', (event) => {

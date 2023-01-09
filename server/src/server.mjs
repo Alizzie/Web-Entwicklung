@@ -1,6 +1,9 @@
 import path from 'path';
 import express from 'express';
 
+// REQUESTS
+import { loginRouter } from '../src/routes/login.mjs';
+
 const server = express();
 server.use(express.json());
 server.use(express.urlencoded({ extended: true }));
@@ -17,13 +20,9 @@ if (!process.argv[2]) {
   port = process.argv[2];
 }
 
+server.use('/api/login', loginRouter);
 
-// REQUESTS 
-import {loginRouter} from '../src/routes/login.mjs'; 
-server.use('/api/login',loginRouter); 
-
-//server.use('api/newEvent',eventRouter); 
-
+// server.use('api/newEvent',eventRouter);
 
 server.listen(port, (err) => {
   if (err) {

@@ -1,5 +1,5 @@
 import { UIPaginationBuilder, Paginator } from './Pagination.mjs';
-import { resetMain } from './UIGenerator.mjs';
+import Resetter from './Resetter.mjs';
 import UINewGuestBuilder from './UINewGuestBuilder.mjs';
 import UISeatingPlanBuilder from './UISeatingPlanBuilder.mjs';
 
@@ -39,7 +39,7 @@ export function createGuestList () {
     });
   }
 
-  const main = resetMain();
+  const main = new Resetter().getMain();
 
   main.appendChild(generateEditButtons());
 

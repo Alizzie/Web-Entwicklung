@@ -1,4 +1,4 @@
-import { createCardFormularDisplay } from './UIGenerator.mjs';
+import UICardGenerator from './UIGenerator.mjs';
 import { createGuestList } from './UIGuestListBuilder.mjs';
 
 export default class UINewGuestBuilder {
@@ -10,11 +10,14 @@ export default class UINewGuestBuilder {
     this._guestAttributes = this._guestParams();
 
     this._gParams = [[this._guestAttributes, 'creation-guest-attr', 'Guest Parameters']];
+
+    this._cardGenerator = new UICardGenerator();
   }
 
   // NEW GUEST
   createNewGuestDisplay () {
-    createCardFormularDisplay(this._heading, this._cName, this._btnText, this._gParams);
+    this._cardGenerator.formularCardConstructor(this._heading, this._cName, this._btnText, this._gParams);
+    this._cardGenerator.createCardFormularDisplay();
     this._addEvent();
   }
 
@@ -43,15 +46,16 @@ export default class UINewGuestBuilder {
   }
 
   _addEvent () {
-    const newEventForm = document.getElementById('formular');
-    const port = window.location.port;
+    const newEventForm = this._cardGenerator.getFormular();
+    // const port = window.location.port;
     newEventForm.addEventListener('submit', (event) => {
       event.preventDefault();
 
-      const elements = Array.from(newEventForm.elements);
-      const data = elements.filter(x => x.tagName === 'INPUT' || x.tagName === 'SELECT').map(x => [x.name, x.value]);
+      // const elements = Array.from(newEventForm.elements);
+      // const data = elements.filter(x => x.tagName === 'INPUT' || x.tagName === 'SELECT').map(x => [x.name, x.value]);
+      createGuestList();
 
-      fetch(`http://localhost:${port}/api/newGuest`, {
+      /* fetch(`http://localhost:${port}/api/newGuest`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -63,7 +67,7 @@ export default class UINewGuestBuilder {
         const result = JSON.parse(data);
         console.log(result);
         createGuestList();
-      }).catch(error => console.log(error));
+      }).catch(error => console.log(error)); */
     });
   }
 

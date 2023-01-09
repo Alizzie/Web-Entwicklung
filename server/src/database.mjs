@@ -19,8 +19,6 @@ db.run(`CREATE TABLE IF NOT EXISTS veranstalter (
 (err) => {
   if (err) {
     console.error(err.message);
-  } else {
-   
   }
 });
 
@@ -34,8 +32,6 @@ db.run(`CREATE TABLE IF NOT EXISTS guestList (
 (err) => {
   if (err) {
     console.error(err.message);
-  } else {
-  
   }
 });
 
@@ -50,7 +46,6 @@ db.run(`CREATE TABLE IF NOT EXISTS seatingPlan (
   if (err) {
     console.error(err.message);
   }
- 
 });
 
 // Create guest Table
@@ -64,7 +59,6 @@ db.run(`CREATE TABLE IF NOT EXISTS guests (
   if (err) {
     console.error(err.message);
   }
-  
 }
 );
 
@@ -88,7 +82,6 @@ db.run(`CREATE TABLE IF NOT EXISTS veranstaltungen (
   if (err) {
     console.error(err.message);
   }
-  
 });
 
 // Beispieldatensätze
@@ -119,13 +112,10 @@ db.run(stmt3,[23,100,10,2]);
 const stmt5 = `INSERT INTO veranstalter(veranstalter_id, email, name,password) VALUES(?, ?, ?, ?)`;
 db.run(stmt5,[31,'root@root.com','root','root']);
 
-
 // VERANSTALTUNGEN: id, name, date, time, guestList_id,seatingPlan_id , guest_id
 const stmt6 = `INSERT INTO veranstaltungen(id, name, date,time,guestList_id,seatingPlan_id,veranstalter_id) VALUES(?, ?, ?, ?, ?, ?, ?)`;
 db.run(stmt6,[41,"Hochzeit 31",31122022,2000,11,23,31]);
 */
-
-
 
 // Example of an print statement
 // const exampleSTMT = 'SELECT * FROM guestList gL JOIN guests g on gL.guest_id = g.guest_id';
@@ -139,10 +129,10 @@ db.all('select * from veranstalter ', [], (err, rows) => {
   });
 });
 
-export {db} ; 
+export { db };
 
 // close the database connection
-/* 
+/*
 db.close((err) => {
   if (err) {
     console.error(err.message);

@@ -6,20 +6,40 @@
     <title>Webapp Example</title>
     <link rel="stylesheet" href="style.css" />
     <script defer src="bundle.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.15.20/dist/js/uikit.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.15.20/dist/js/uikit-icons.min.js"></script>
 </head>
 
 <body>
 
     <main class="login">
-        <form action="/" class="login-data" method="post" id="sign-in">
-            <label for="uname">Username</label>
-            <input type="text" placeholder="Enter username" id="uame" name="uname" required>
-            <label for="pwordField">Password</label>
-            <input type="password" placeholder="Enter password" name="pword" id="pwordField" required>
-            <button type="submit">Login</button>
-            <br>
-            <button type="signUp">Sign Up</button>
-        </form>
+        <div class="uk-card uk-card-default uk-card-hover uk-margin-auto uk-width-1-2@m">
+            <form class="uk-padding-large" action="/" class="login-data" method="post" id="sign-in">
+                <h1 class="uk-card-title uk-text-center">Login</h3>
+                <fieldset class="uk-fieldset">
+                    <label for="uname">Username</label>
+                    <div class="uk-inline uk-width-1-1">
+                        <span class="uk-form-icon" uk-icon="icon: user"></span>
+                        <input class="uk-input" id="uname" type="text" aria-label="Not clickable icon" required>
+                    </div>
+                </fieldset>
+
+                <fieldset class="uk-fieldset">
+                    <label for="pword">Password</label>
+                    <div class="uk-inline uk-width-1-1">
+                        <span class="uk-form-icon uk-form-icon" uk-icon="icon: lock"></span>
+                        <input class="uk-input" id="pword" type="text" aria-label="Not clickable icon" required>
+                    </div>
+                </fieldset>
+
+                <div class="uk-margin">
+                    <button class="uk-width-1-1@m uk-button uk-button-primary" type="submit">Login</button>
+                </div>
+                <div class="uk-text-small uk-text-center">
+                    Not registered? <a href="#">Create an account</a>
+                </div>
+            </form>
+        </div>
     </main>
 </body>
 </html>

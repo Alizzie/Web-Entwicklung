@@ -1,4 +1,4 @@
-import { resetMain } from './UIGenerator.mjs';
+import Resetter from './Resetter.mjs';
 import { createGuestList } from './UIGuestListBuilder.mjs';
 
 export default class UISeatingPlanBuilder {
@@ -11,7 +11,7 @@ export default class UISeatingPlanBuilder {
   }
 
   createSeatingPlan () {
-    const main = resetMain();
+    const main = new Resetter().getMain();
     this._seatingPlanWrapper = this._generateWrapper();
     main.appendChild(this._seatingPlanWrapper);
 
