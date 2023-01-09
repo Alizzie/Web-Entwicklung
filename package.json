@@ -15,7 +15,7 @@
     "format": "semistandard --fix",
     "build": "npm run debug && npm run minify",
     "minify": "npm run minify:css && npm run minify:js",
-    "minify:css": "lessc --clean-css client/src/styles/style.less client/build/style.css",
+    "minify:css": "lessc --rewrite-urls=all --clean-css client/src/styles/style.less client/build/style.css",
     "minify:js": "terser client/build/bundle.js --compress --mangle --comments=false -o client/build/bundle.js",
     "testStart": "nodemon server/src/server.mjs"
   },
