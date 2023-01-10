@@ -1,23 +1,29 @@
+import UIkit from 'uikit';
 import { Paginator, UIPaginationBuilder } from './Pagination.mjs';
 import Resetter from './Resetter.mjs';
+import ServerCommunications from './ServerRequests.mjs';
 import UICardGenerator from './UIGenerator.mjs';
 import UINewEventBuilder from './UINewEventBuilder.mjs';
 
-const events = [
-
-];
-
 export default class UIDisplayBuilder {
-  constructor () {
-    this._events = this._getEvents();
-    this._main = new Resetter().getMain();
-    this._displayWrapper =
+  constructor (events) {
+    this._events = events;
+    this._startPagination();
+  }
 
+  static async initalizeEventsDisplay () {
+    const response = await new ServerCommunications().get('/api/events');
+    return new UIDisplayBuilder(response).createMainDisplay();
+  }
+
+  _startPagination () {
     this._paginatedEventList = new Paginator(this._events, 6).getPaginatedArray();
     this._paginator = new UIPaginationBuilder(this, this._paginatedEventList.length);
+    this._nextPage = 0;
   }
 
   createMainDisplay () {
+    this._main = new Resetter().getMain();
     const noEvent = this._checkIfEventsExist();
 
     if (noEvent) {
@@ -31,30 +37,19 @@ export default class UIDisplayBuilder {
 
       this._displayWrapper = this._generateDisplayWrapper('display-event-wrapper');
       this._main.appendChild(this._displayWrapper);
-      this._generateEvents(0);
+      this._generateEvents();
 
       this._main.appendChild(this._paginator.getNavigation());
     }
   }
 
   callUpdateFunc (nextPage) {
-    this._updatePagEvents(nextPage);
-  }
-
-  _getEvents () {
-    for (let i = 0; i < Math.random() * 10; i++) {
-      events.push({
-        name: 'Event 5',
-        date: '2020-02-2002',
-        time: '12:09'
-      });
-    }
-
-    return events;
+    this._nextPage = nextPage;
+    this._updatePagEvents();
   }
 
   _checkIfEventsExist () {
-    return this._events.length < 7;
+    return this._events.length === 0;
   }
 
   // DISPLAY WHEN NO EVENT EXISTS
@@ -81,21 +76,22 @@ export default class UIDisplayBuilder {
     return wrapper;
   }
 
-  _updatePagEvents (pageIndex) {
+  _updatePagEvents () {
     this._displayWrapper.innerHTML = '';
-    this._generateEvents(pageIndex);
+    this._generateEvents(this._nextPage);
   }
 
-  _generateEvents (pageIndex) {
-    // ITERATE THROUGH ALL EVENTS IN DATABASE
-    for (const e of this._paginatedEventList[pageIndex]) {
-      this._displayWrapper.appendChild(this._createEventBlock(e));
+  _generateEvents () {
+    const curGuests = this._paginatedEventList[this._nextPage];
+    for (let i = 0; i < curGuests.length; i++) {
+      this._displayWrapper.appendChild(this._createEventBlock(curGuests[i], i));
     }
   }
 
-  _createEventBlock (params) {
+  _createEventBlock (params, idNum) {
     const div = document.createElement('div');
     div.classList.add('uk-card', 'uk-card-default', 'event-card', 'uk-card-hover');
+    div.setAttribute('id', idNum);
 
     div.appendChild(this._createEditBtnInsideEventCard());
 
@@ -124,12 +120,35 @@ export default class UIDisplayBuilder {
   _generateDeleteBtn () {
     const deleteBtn = document.createElement('button');
     deleteBtn.classList.add('uk-button', 'uk-button-secondary');
-    deleteBtn.setAttribute('id', 'deleteBtn');
+    deleteBtn.setAttribute('id', 'js-modal-comfirm');
     deleteBtn.textContent = 'Delete';
 
     // TODO : Delete Guests from DATABANK AS CLICK EVENT
+    deleteBtn.addEventListener('click', event => {
+      const message = `Delete Event '${event.target.parentElement.nextSibling.textContent}'?`;
+      UIkit.modal.confirm(message).then(
+        () => this._deleteEventListener(event),
+        () => { UIkit.notification('Canceled', { timeout: 5000 }); });
+    });
 
     return deleteBtn;
+  }
+
+  async _deleteEventListener (event) {
+    // EventCard ID + EventsArray * PageIndex = Index Of EventsArray
+    const cardID = parseInt(event.target.parentElement.parentElement.id);
+    const eventsIndex = cardID + this._nextPage * 6;
+    const data = JSON.stringify({ id: this._events[eventsIndex].id });
+
+    const response = await new ServerCommunications('DELETE').request('/api/events', data);
+    if (response) {
+      UIkit.notification('Successful deleted', 'success', { timeout: 5000 });
+    }
+
+    this._events.splice(eventsIndex, 1);
+    this._startPagination();
+
+    this.createMainDisplay();
   }
 
   _generateAddBtn () {

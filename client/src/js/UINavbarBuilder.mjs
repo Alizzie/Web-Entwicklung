@@ -42,7 +42,7 @@ export default class UINavbarBuilder {
     linkItem.appendChild(text);
     links.appendChild(linkItem);
 
-    linkItem.addEventListener('click', () => new UIDisplayBuilder().createMainDisplay());
+    linkItem.addEventListener('click', () => UIDisplayBuilder.initalizeEventsDisplay());
   }
 
   _fillRightSide () {

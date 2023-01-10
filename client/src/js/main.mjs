@@ -1,6 +1,7 @@
 import UINavbarBuilder from './UINavbarBuilder.mjs';
 import UIDisplayBuilder from './UIDisplayBuilder.mjs';
 import UIkit from 'uikit';
+import ServerCommunications from './ServerRequests.mjs';
 UIkit.icon.call();
 
 // LOGGING EVENT LISTENER
@@ -10,33 +11,21 @@ logging.addEventListener('submit', (event) => {
   event.preventDefault();
   const uname = logging.elements.uname.value;
   const pword = logging.elements.pword.value;
-  const fields = JSON.stringify([uname, pword]);
+  const data = JSON.stringify([uname, pword]);
 
   // Fetch Data and send them to the server
-  checkLogging(fields).then(success => {
+  checkLogging(data).then(success => {
     if (success) {
+      UIkit.notification('Successful Logging', 'success', { timeout: 5000 });
       new UINavbarBuilder().createNavbar();
-      new UIDisplayBuilder().createMainDisplay();
+      UIDisplayBuilder.initalizeEventsDisplay();
     } else {
-      window.alert('Logging fehlgeschlagen!');
+      UIkit.notification('Logging failed', 'danger', { timeout: 5000 });
     }
   }).catch(err => err.message);
 });
 
-async function checkLogging (fields) {
-  const response = await fetch('/api/login', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: fields
-  });
-
-  if (!response.ok) {
-    const message = `An Error has occured: ${response.status}`;
-    throw new Error(message);
-  }
-
-  const resBody = await response.json();
-  return resBody.accepted;
+async function checkLogging (data) {
+  const response = await new ServerCommunications('POST').request('/api/login', data);
+  return response.accepted;
 }
