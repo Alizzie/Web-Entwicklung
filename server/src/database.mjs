@@ -120,7 +120,7 @@ db.run(stmt6,[41,"Hochzeit 31",31122022,2000,11,23,31]);
 // Example of an print statement
 // const exampleSTMT = 'SELECT * FROM guestList gL JOIN guests g on gL.guest_id = g.guest_id';
 
-const stmt6 = 'INSERT INTO veranstaltungen(id, name, date,time,guestList_id,seatingPlan_id,veranstalter_id) VALUES(?, ?, ?, ?, ?, ?, ?)';
+/* const stmt6 = 'INSERT INTO veranstaltungen(id, name, date,time,guestList_id,seatingPlan_id,veranstalter_id) VALUES(?, ?, ?, ?, ?, ?, ?)';
 db.run(stmt6, [0, 'Hochzeit 31', 31122022, 2000, 11, 23, 31]);
 db.run(stmt6, [1, 'Hochzeit 30', 31122022, 2000, 11, 23, 31]);
 db.run(stmt6, [2, 'Hochzeit 32', 31122022, 2000, 11, 23, 31]);
@@ -129,7 +129,7 @@ db.run(stmt6, [4, 'Hochzeit 34', 31122022, 2000, 11, 23, 31]);
 db.run(stmt6, [5, 'Hochzeit 35', 31122022, 2000, 11, 23, 31]);
 db.run(stmt6, [6, 'Hochzeit 36', 31122022, 2000, 11, 23, 31]);
 db.run(stmt6, [7, 'Hochzeit 37', 31122022, 2000, 11, 23, 31]);
-
+*/
 db.all('select * from veranstalter ', [], (err, rows) => {
   if (err) {
     throw err;

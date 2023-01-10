@@ -61,26 +61,13 @@ export default class UINewEventBuilder {
 
   _addEvent () {
     const newEventForm = this._cardGenerator.getFormular();
-    console.log(newEventForm);
-    const port = window.location.port;
-
     newEventForm.addEventListener('submit', (event) => {
       event.preventDefault();
 
       const elements = Array.from(newEventForm.elements);
       const data = elements.filter(x => x.tagName === 'INPUT').map(x => [x.name, x.value]);
-
-      fetch(`http://localhost:${port}/api/newEvent`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-      }).then(res => {
-        return res.text();
-      }).then(data => {
-        new UINewGuestBuilder().createNewGuestDisplay();
-      }).catch(error => console.log(error));
+      console.log(data);
+      new UINewGuestBuilder().createNewGuestDisplay();
     });
   }
 }

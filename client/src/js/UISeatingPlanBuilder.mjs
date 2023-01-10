@@ -1,3 +1,4 @@
+import UIkit from 'uikit';
 import Resetter from './Resetter.mjs';
 import UIGuestListBuilder from './UIGuestListBuilder.mjs';
 
@@ -25,24 +26,41 @@ export default class UISeatingPlanBuilder {
   }
 
   _fillSeatingPlanWrapper () {
-    this._seatingPlanWrapper.appendChild(this._backGuestlistBtn());
+    this._seatingPlanWrapper.appendChild(this._addBtns());
     this._seatingPlanWrapper.appendChild(this._generateSeatingTables());
   }
 
-  _backGuestlistBtn () {
+  _addBtns () {
     const buttonWrapper = document.createElement('div');
     buttonWrapper.classList.add('uk-flex', 'uk-flex-right');
+    buttonWrapper.appendChild(this._backGuestlistBtn());
+    buttonWrapper.appendChild(this._saveAllBtn());
 
+    return buttonWrapper;
+  }
+
+  _saveAllBtn () {
     const button = document.createElement('button');
-    button.classList.add('uk-button', 'uk-button-secondary');
+    button.classList.add('uk-button', 'uk-button-primary');
+    button.textContent = 'Save';
+
+    button.addEventListener('click', () => {
+      UIkit.notification('Seating Plan saved', 'success', { timeout: 3000 });
+    });
+
+    return button;
+  }
+
+  _backGuestlistBtn () {
+    const button = document.createElement('button');
+    button.classList.add('uk-button', 'uk-button-default');
     button.textContent = 'Guest List';
-    buttonWrapper.appendChild(button);
 
     button.addEventListener('click', () => {
       new UIGuestListBuilder().createGuestList();
     });
 
-    return buttonWrapper;
+    return button;
   }
 
   _generateSeatingTables () {

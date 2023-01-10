@@ -47,27 +47,12 @@ export default class UINewGuestBuilder {
 
   _addEvent () {
     const newEventForm = this._cardGenerator.getFormular();
-    // const port = window.location.port;
     newEventForm.addEventListener('submit', (event) => {
       event.preventDefault();
 
       // const elements = Array.from(newEventForm.elements);
       // const data = elements.filter(x => x.tagName === 'INPUT' || x.tagName === 'SELECT').map(x => [x.name, x.value]);
       new UIGuestListBuilder().createGuestList();
-
-      /* fetch(`http://localhost:${port}/api/newGuest`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-      }).then(res => {
-        return res.text();
-      }).then(data => {
-        const result = JSON.parse(data);
-        console.log(result);
-        createGuestList();
-      }).catch(error => console.log(error)); */
     });
   }
 
