@@ -11,6 +11,7 @@ export default class UIDisplayBuilder {
   constructor () {
     this._events = this._getEvents();
     this._main = new Resetter().getMain();
+    this._displayWrapper =
 
     this._paginatedEventList = new Paginator(this._events, 6).getPaginatedArray();
     this._paginator = new UIPaginationBuilder(this, this._paginatedEventList.length);
@@ -21,10 +22,16 @@ export default class UIDisplayBuilder {
 
     if (noEvent) {
       this._card = new UICardGenerator().getCard();
-      this._card.appendChild(this._noEventsDisplay());
+
+      this._displayWrapper = this._generateDisplayWrapper('no-event-wrapper');
+      this._card.appendChild(this._displayWrapper);
+      this._noEventsDisplay();
     } else {
       this._main.appendChild(this._generateAddBtn());
-      this._main.appendChild(this._eventDisplay());
+
+      this._displayWrapper = this._generateDisplayWrapper('display-event-wrapper');
+      this._main.appendChild(this._displayWrapper);
+      this._generateEvents(0);
 
       this._main.appendChild(this._paginator.getNavigation());
     }
@@ -52,9 +59,6 @@ export default class UIDisplayBuilder {
 
   // DISPLAY WHEN NO EVENT EXISTS
   _noEventsDisplay () {
-    const wrapper = document.createElement('div');
-    wrapper.classList.add('no-event-wrapper');
-
     const text = document.createElement('h1');
     text.textContent = 'No Events created';
 
@@ -62,38 +66,30 @@ export default class UIDisplayBuilder {
     addEventButton.classList.add('uk-button', 'uk-button-secondary');
     addEventButton.textContent = 'Add new one';
 
-    wrapper.appendChild(text);
-    wrapper.appendChild(addEventButton);
+    this._displayWrapper.appendChild(text);
+    this._displayWrapper.appendChild(addEventButton);
 
     addEventButton.addEventListener('click', () => {
       new UINewEventBuilder().createNewEventDisplay();
     });
-
-    return wrapper;
   }
 
   // DISPLAY WHEN EVENT EXISTS
-  _eventDisplay () {
+  _generateDisplayWrapper (className) {
     const wrapper = document.createElement('div');
-    wrapper.classList.add('display-event-wrapper');
-
-    this._generateEvents(wrapper, 0);
-
+    wrapper.classList.add(className);
     return wrapper;
   }
 
   _updatePagEvents (pageIndex) {
-    const eventWrapper = document.getElementsByClassName('display-event-wrapper')[0];
-    eventWrapper.innerHTML = '';
-    this._generateEvents(eventWrapper, pageIndex);
+    this._displayWrapper.innerHTML = '';
+    this._generateEvents(pageIndex);
   }
 
-  _generateEvents (wrapper, pageIndex) {
-    const eventArr = new Paginator(events, 6).getPaginatedArray();
-
+  _generateEvents (pageIndex) {
     // ITERATE THROUGH ALL EVENTS IN DATABASE
-    for (const e of eventArr[pageIndex]) {
-      wrapper.appendChild(this._createEventBlock(e));
+    for (const e of this._paginatedEventList[pageIndex]) {
+      this._displayWrapper.appendChild(this._createEventBlock(e));
     }
   }
 
