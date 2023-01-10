@@ -12,7 +12,7 @@ export default class UIDisplayBuilder {
     this._events = this._getEvents();
     this._main = new Resetter().getMain();
 
-    this._paginatedEventList = new Paginator(events, 6).getPaginatedArray();
+    this._paginatedEventList = new Paginator(this._events, 6).getPaginatedArray();
     this._paginator = new UIPaginationBuilder(this, this._paginatedEventList.length);
   }
 

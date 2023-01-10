@@ -1,5 +1,5 @@
 import UICardGenerator from './UIGenerator.mjs';
-import { createGuestList } from './UIGuestListBuilder.mjs';
+import UIGuestListBuilder from './UIGuestListBuilder.mjs';
 
 export default class UINewGuestBuilder {
   constructor () {
@@ -53,7 +53,7 @@ export default class UINewGuestBuilder {
 
       // const elements = Array.from(newEventForm.elements);
       // const data = elements.filter(x => x.tagName === 'INPUT' || x.tagName === 'SELECT').map(x => [x.name, x.value]);
-      createGuestList();
+      new UIGuestListBuilder().createGuestList();
 
       /* fetch(`http://localhost:${port}/api/newGuest`, {
         method: 'POST',

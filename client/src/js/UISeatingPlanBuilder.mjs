@@ -1,5 +1,5 @@
 import Resetter from './Resetter.mjs';
-import { createGuestList } from './UIGuestListBuilder.mjs';
+import UIGuestListBuilder from './UIGuestListBuilder.mjs';
 
 export default class UISeatingPlanBuilder {
   constructor (guests) {
@@ -39,7 +39,7 @@ export default class UISeatingPlanBuilder {
     buttonWrapper.appendChild(button);
 
     button.addEventListener('click', () => {
-      createGuestList();
+      new UIGuestListBuilder().createGuestList();
     });
 
     return buttonWrapper;
