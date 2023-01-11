@@ -3,7 +3,7 @@ import { db } from '../database.mjs';
 
 export const eventRouter = express.Router();
 // TODO VERANSTALTER ID ODER NAME herholen
-const veranstalterId = '42828481831';
+const veranstalterId = '31';
 
 eventRouter.get('/', (request, response) => {
   // ID besorgen von Account der eingelogt ist
@@ -21,27 +21,39 @@ eventRouter.get('/', (request, response) => {
 });
 
 eventRouter.post('/', (request, response) => {
-  const sqlStmtSeatingPlan = 'INSERT INTO seatingPlan(countTables, seatsPerTable, seatsPerSide) VALUES(?, ?, ?)';
-  const sqlStmtEvents = 'INSERT INTO veranstaltungen(name, date,time,seatingPlan_id,veranstalter_id) VALUES(?, ?, ?, ?, ?)';
   const body = request.body;
   const seatingPlanData = [body.countTables, body.countTableSeats, body.useBothSides === 'on' ? 2 : 1];
-
-  // Inserting the seatingPlan first, so that we get an auto generated seatingPlan_id
+  const sqlStmtSeatingPlan = 'INSERT INTO seatingPlan(countTables, seatsPerTable, seatsPerSide) VALUES(?, ?, ?)';
+  // Creating the seatingPlan first, so that we get an auto generated seatingPlan_id
   db.run(sqlStmtSeatingPlan, seatingPlanData, err => {
     if (err) {
       throw err;
     }
   });
-  // getting the seatingPlan_id to insert it then in the 'veranstaltungen' table
+
   db.get('SELECT last_insert_rowid() as seatingPlanId', (err, row) => {
     if (err) {
       throw (err);
     }
-    const eventData = [body.name, body.date, body.time, row.seatingPlanId, veranstalterId];
-    db.run(sqlStmtEvents, eventData, (err) => {
+    const seatingPlanId = row.seatingPlanId;
+    // Creating guestList before Event,so that we get an auto generated guestList_id
+    db.run('INSERT INTO guestList DEFAULT VALUES', (err) => {
       if (err) {
-        throw err.message;
+        throw err;
       }
+      db.get('SELECT last_insert_rowid() as guestListId', (err, row) => {
+        if (err) {
+          throw err;
+        }
+        const guestListId = row.guestListId;
+        const sqlStmtEvents = 'INSERT INTO veranstaltungen(name, date,time,guestList_id,seatingPlan_id,veranstalter_id) VALUES(?, ?, ?, ?, ?, ?)';
+        const eventData = [body.name, body.date, body.time, guestListId, seatingPlanId, veranstalterId];
+        db.run(sqlStmtEvents, eventData, (err) => {
+          if (err) {
+            throw err.message;
+          }
+        });
+      });
     });
   });
 });

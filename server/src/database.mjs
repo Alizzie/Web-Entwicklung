@@ -24,10 +24,7 @@ db.run(`CREATE TABLE IF NOT EXISTS veranstalter (
 
 // Create guestList Table
 db.run(`CREATE TABLE IF NOT EXISTS guestList (
-    guestList_id INTEGER,  
-    guest_id INTEGER,
-    PRIMARY KEY(guestList_id,guest_id),
-    FOREIGN KEY(guest_id) REFERENCES guests(guest_id)
+    guestList_id INTEGER PRIMARY KEY
     )`,
 (err) => {
   if (err) {
@@ -130,7 +127,7 @@ db.run(stmt6, [5, 'Hochzeit 35', 31122022, 2000, 11, 23, 31]);
 db.run(stmt6, [6, 'Hochzeit 36', 31122022, 2000, 11, 23, 31]);
 db.run(stmt6, [7, 'Hochzeit 37', 31122022, 2000, 11, 23, 31]);
 */
-db.all('select * from veranstaltungen ', [], (err, rows) => {
+db.all('select * from veranstalter ', [], (err, rows) => {
   if (err) {
     throw err;
   }
