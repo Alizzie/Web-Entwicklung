@@ -30,14 +30,14 @@ eventRouter.post('/', (request, response) => {
       throw err;
     }
   });
-  
-  db.get('SELECT last_insert_rowid() as seatingPlanId', (err, row) => { 
+
+  db.get('SELECT last_insert_rowid() as seatingPlanId', (err, row) => {
     if (err) {
       throw (err);
     }
-    const seatingPlanId = row.seatingPlanId; 
+    const seatingPlanId = row.seatingPlanId;
     // Creating guestList before Event,so that we get an auto generated guestList_id
-    db.run('INSERT INTO guestList DEFAULT VALUES', (err) => { 
+    db.run('INSERT INTO guestList DEFAULT VALUES', (err) => {
       if (err) {
         throw err;
       }
