@@ -1,6 +1,7 @@
 import UINewGuestBuilder from './UINewGuestBuilder.mjs';
 import UICardGenerator from './UIGenerator.mjs';
 import ServerCommunications from './ServerRequests.mjs';
+import UIkit from 'uikit';
 
 const eventAttributes = [
   {
@@ -20,13 +21,13 @@ const eventAttributes = [
 
 const seatsPlanAttributes = [
   {
-    name: 'Number of rectangular tables',
+    name: 'Rectangular tables',
     type: 'number',
     placeholder: '0',
     min: '0'
   },
   {
-    name: 'Number of seats per table',
+    name: 'Seats per table',
     type: 'number',
     placeholder: '0',
     min: '0'
@@ -65,21 +66,22 @@ export default class UINewEventBuilder {
     newEventForm.addEventListener('submit', (event) => {
       event.preventDefault();
 
-      const elements = Array.from(newEventForm.elements);
-      const eventData = elements.filter(x => x.tagName === 'INPUT').map(x => [x.name, x.value]);
-
+      const elements = newEventForm.elements;
       const data = JSON.stringify({
-        name: eventData[0][1],
-        date: eventData[1][1],
-        time: eventData[2][1],
-        countTables: eventData[3][1],
-        countTableSeats: eventData[4][1],
-        useBothSides: eventData[5][1]
+        name: elements['Event Name'].value,
+        date: elements.Date.value,
+        time: elements.Time.value,
+        countTables: elements['Rectangular tables'].value,
+        countTableSeats: elements['Seats per table'].value,
+        useBothSides: elements['Both sides'].checked ? 1 : 0
       });
-      console.log('json: ', data);
+
       const response = new ServerCommunications('POST').request('/api/events', data);
-      console.log(response);
-      console.log(eventData);
+      if (response) {
+        UIkit.notification('Successful created new Event', 'success', { timeout: 3000 });
+      } else {
+        UIkit.notification('Failed to create Event', 'danger', { timeout: 3000 });
+      }
       new UINewGuestBuilder().createNewGuestDisplay();
     });
   }
