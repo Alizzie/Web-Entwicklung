@@ -128,7 +128,7 @@ export default class UIDisplayBuilder {
       const message = `Delete Event '${event.target.parentElement.nextSibling.textContent}'?`;
       UIkit.modal.confirm(message).then(
         () => this._deleteEventListener(event),
-        () => { UIkit.notification('Canceled', { timeout: 5000 }); });
+        () => { UIkit.notification('Canceled', { timeout: 3000 }); });
     });
 
     return deleteBtn;
@@ -142,7 +142,7 @@ export default class UIDisplayBuilder {
 
     const response = await new ServerCommunications('DELETE').request('/api/events', data);
     if (response) {
-      UIkit.notification('Successful deleted', 'success', { timeout: 5000 });
+      UIkit.notification('Successful deleted', 'success', { timeout: 3000 });
     }
 
     this._events.splice(eventsIndex, 1);
