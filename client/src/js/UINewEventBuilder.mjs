@@ -1,5 +1,6 @@
 import UINewGuestBuilder from './UINewGuestBuilder.mjs';
 import UICardGenerator from './UIGenerator.mjs';
+import ServerCommunications from './ServerRequests.mjs';
 
 const eventAttributes = [
   {
@@ -65,8 +66,20 @@ export default class UINewEventBuilder {
       event.preventDefault();
 
       const elements = Array.from(newEventForm.elements);
-      const data = elements.filter(x => x.tagName === 'INPUT').map(x => [x.name, x.value]);
-      console.log(data);
+      const eventData = elements.filter(x => x.tagName === 'INPUT').map(x => [x.name, x.value]);
+
+      const data = JSON.stringify({
+        name: eventData[0][1],
+        date: eventData[1][1],
+        time: eventData[2][1],
+        countTables: eventData[3][1],
+        countTableSeats: eventData[4][1],
+        useBothSides: eventData[5][1]
+      });
+      console.log('json: ', data);
+      const response = new ServerCommunications('POST').request('/api/events', data);
+      console.log(response);
+      console.log(eventData);
       new UINewGuestBuilder().createNewGuestDisplay();
     });
   }
