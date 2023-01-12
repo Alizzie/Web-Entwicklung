@@ -22,7 +22,7 @@ eventRouter.get('/', (request, response) => {
 
 eventRouter.post('/', (request, response) => {
   const body = request.body;
-  const seatingPlanData = [body.countTables, body.countTableSeats, body.useBothSides === 'on' ? 2 : 1];
+  const seatingPlanData = [body.countTables, body.countTableSeats, body.useBothSides];
   const sqlStmtSeatingPlan = 'INSERT INTO seatingPlan(countTables, seatsPerTable, seatsPerSide) VALUES(?, ?, ?)';
   // Creating the seatingPlan first, so that we get an auto generated seatingPlan_id
   db.run(sqlStmtSeatingPlan, seatingPlanData, err => {

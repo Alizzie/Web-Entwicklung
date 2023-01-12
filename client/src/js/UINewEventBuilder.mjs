@@ -73,7 +73,7 @@ export default class UINewEventBuilder {
         time: elements.Time.value,
         countTables: elements['Rectangular tables'].value,
         countTableSeats: elements['Seats per table'].value,
-        useBothSides: elements['Both sides'].checked ? 1 : 0
+        useBothSides: elements['Both sides'].checked ? 2 : 1
       });
 
       const response = new ServerCommunications('POST').request('/api/events', data);
