@@ -1,20 +1,23 @@
+// import ServerCommunications from './ServerRequests.mjs';
+import ServerCommunications from './ServerRequests.mjs';
 import UICardGenerator from './UIGenerator.mjs';
 import UIGuestListBuilder from './UIGuestListBuilder.mjs';
 
 export default class UINewGuestBuilder {
-  constructor () {
+  constructor (veranstaltungId) {
     this._heading = 'Add new Guest';
     this._cName = 'creation-newGuest';
     this._btnText = 'Add Guest';
-
     this._guestAttributes = this._guestParams();
 
     this._gParams = [[this._guestAttributes, 'creation-guest-attr', 'Guest Parameters']];
 
     this._cardGenerator = new UICardGenerator();
+    this._veranstaltungId = veranstaltungId;
   }
 
-  // NEW GUEST
+  // EVERY GUEST BELONGS TO A GUEST LIST, A GUEST LIST BELONGS TO AN EVENT
+  // ONLY THE EVENT_ID IS NEEDED TO GET EVERY ALL OTHER IDS e.g. ( GUESTLIST_ID, GUEST_ID, ...)
   createNewGuestDisplay () {
     this._cardGenerator.formularCardConstructor(this._heading, this._cName, this._btnText, this._gParams);
     this._cardGenerator.createCardFormularDisplay();
@@ -45,14 +48,26 @@ export default class UINewGuestBuilder {
     select.value = guestStatus;
   }
 
-  _addEvent () {
-    const newEventForm = this._cardGenerator.getFormular();
-    newEventForm.addEventListener('submit', (event) => {
+  _addEvent () { // _addGuest?
+    const newGuestForm = this._cardGenerator.getFormular();
+    newGuestForm.addEventListener('submit', (event) => {
+      const elements = newGuestForm.elements;
       event.preventDefault();
+      // Data from Formular needed
+      const data = JSON.stringify({
+        name: elements[1].value,
+        children: elements[2].value, // 0 = false , 1 = true
+        invitationStatus: elements[3].value,
+        veranstaltungId: this._veranstaltungId
+      });
+      console.log(this._veranstaltungId);
+      console.log(data);
 
-      // const elements = Array.from(newEventForm.elements);
+      // const response = new ServerCommunications('POST').request('/api/events', data);
+      // const elements = Array.from(newGuestForm.elements);
       // const data = elements.filter(x => x.tagName === 'INPUT' || x.tagName === 'SELECT').map(x => [x.name, x.value]);
-      new UIGuestListBuilder().createGuestList();
+      new ServerCommunications('POST').request('/api/guest', data);
+      UIGuestListBuilder.initializeGuestList(this._veranstaltungId);
     });
   }
 

@@ -3,7 +3,7 @@ import { db } from '../database.mjs';
 
 export const eventRouter = express.Router();
 // TODO VERANSTALTER ID ODER NAME herholen
-const veranstalterId = '31';
+export const veranstalterId = '31';
 
 eventRouter.get('/', (request, response) => {
   // ID besorgen von Account der eingelogt ist
@@ -39,11 +39,17 @@ eventRouter.post('/', (request, response) => {
       if (err) {
         throw err.message;
       }
+      db.get('SELECT last_insert_rowid() as veranstaltung_id', (err, row) => {
+        if (err) {
+          throw err;
+        }
+        response.json(row);
+      });
     });
   });
 });
 
-async function getIds () {
+export async function getIds () {
   const sId = await requestSeatingPlanId();
   const gId = await requestGuestListId();
   return { sId, gId };

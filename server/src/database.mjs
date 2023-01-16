@@ -49,8 +49,10 @@ db.run(`CREATE TABLE IF NOT EXISTS seatingPlan (
 db.run(`CREATE TABLE IF NOT EXISTS guests (
     guest_id INTEGER PRIMARY KEY,
     name TEXT NOT NULL,
-    child INTEGER NOT NULL CHECK (child IN (0, 1)),
-    invitation_status TEXT NOT NULL CHECK(invitation_status IN ('unbekannt', 'eingeladen', 'zugesagt', 'abgesagt'))
+    child INTEGER NOT NULL CHECK (child IN (0, 1)), 
+    invitation_status TEXT NOT NULL CHECK(invitation_status IN ('unknown', 'invited', 'accepted', 'declined')),
+    guestList_id INTEGER,
+    FOREIGN KEY(guestList_id) REFERENCES guestList(guestList_id)
     )`,
 (err) => {
   if (err) {
@@ -69,10 +71,10 @@ db.run(`CREATE TABLE IF NOT EXISTS veranstaltungen (
     date TEXT,
     time TEXT,
     guestList_id INTEGER, 
-    seatingPlan_id INTEGER, 
+    seatingPlan_id INTEGER , 
     veranstalter_id INTEGER,
-    FOREIGN KEY(guestList_id) REFERENCES guestList(guestList_id),
-    FOREIGN KEY(seatingPlan_id) REFERENCES seatingPlan(seatingPlan_id),
+    FOREIGN KEY(guestList_id) REFERENCES guestList(guestList_id) ON DELETE CASCADE,
+    FOREIGN KEY(seatingPlan_id) REFERENCES seatingPlan(seatingPlan_id) ON DELETE CASCADE,
     FOREIGN KEY(veranstalter_id) REFERENCES veranstalter(veranstalter_id)
     )`,
 (err) => {
