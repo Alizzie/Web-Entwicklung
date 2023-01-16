@@ -3,6 +3,7 @@ import { Paginator, UIPaginationBuilder } from './Pagination.mjs';
 import Resetter from './Resetter.mjs';
 import ServerCommunications from './ServerRequests.mjs';
 import UICardGenerator from './UIGenerator.mjs';
+import UIGuestListBuilder from './UIGuestListBuilder.mjs';
 import UINewEventBuilder from './UINewEventBuilder.mjs';
 
 export default class UIDisplayBuilder {
@@ -104,6 +105,13 @@ export default class UIDisplayBuilder {
     p.classList.add('uk-text-meta', 'uk-margin-remove-top');
     p.textContent = params.date + ', ' + params.time;
     div.appendChild(p);
+
+    div.addEventListener('click', (event) => {
+      // const cardID = parseInt(event.id);
+      const eventsIndex = this._nextPage * 6; // 6 in const umlagern
+      const veranstaltungId = this._events[eventsIndex].id;
+      UIGuestListBuilder.initializeGuestList(veranstaltungId);
+    });
 
     return div;
   }

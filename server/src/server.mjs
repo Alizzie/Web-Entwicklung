@@ -4,6 +4,7 @@ import express from 'express';
 // REQUESTS
 import { loginRouter } from '../src/routes/login.mjs';
 import { eventRouter } from './routes/event.mjs';
+import { guestRouter } from './routes/guest.mjs';
 
 const server = express();
 server.use(express.json());
@@ -23,6 +24,7 @@ if (!process.argv[2]) {
 
 server.use('/api/login', loginRouter);
 server.use('/api/events', eventRouter);
+server.use('/api/guest', guestRouter);
 
 server.listen(port, (err) => {
   if (err) {

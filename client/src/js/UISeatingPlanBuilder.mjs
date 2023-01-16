@@ -3,12 +3,13 @@ import Resetter from './Resetter.mjs';
 import UIGuestListBuilder from './UIGuestListBuilder.mjs';
 
 export default class UISeatingPlanBuilder {
-  constructor (guests) {
+  constructor (guests, veranstalungId) {
     this._numOfTables = 8;
     this._numOfSeatsperTable = 4;
     this._guestList = guests;
     this._tables = this._generateTables();
     this._prevIndex = 0;
+    this._veranstalungId = veranstalungId;
   }
 
   createSeatingPlan () {
@@ -57,7 +58,7 @@ export default class UISeatingPlanBuilder {
     button.textContent = 'Guest List';
 
     button.addEventListener('click', () => {
-      new UIGuestListBuilder().createGuestList();
+      UIGuestListBuilder.initializeGuestList(this._veranstalungId);
     });
 
     return button;

@@ -1,5 +1,7 @@
 import { UIPaginationBuilder, Paginator } from './Pagination.mjs';
 import Resetter from './Resetter.mjs';
+import ServerCommunications from './ServerRequests.mjs';
+// import ServerCommunications from './ServerRequests.mjs';
 import UINewGuestBuilder from './UINewGuestBuilder.mjs';
 import UISeatingPlanBuilder from './UISeatingPlanBuilder.mjs';
 
@@ -9,11 +11,12 @@ export const guestsList = [
 // TODO: Variable variiert nach Window Size Groeße
 
 export default class UIGuestListBuilder {
-  constructor () {
-    this._guests = this._getGuests();
+  constructor (veranstaltungId, guestList) {
+    this._guests = guestList;
     this._main = new Resetter().getMain();
     this._tableWrapper = this._generateTableWrapper();
     this._heading = this._getHeadings();
+    this.veranstaltungId = veranstaltungId; // A GUESTLIST BELONGS TO ONE EVENT
 
     this._paginatedGuestList = new Paginator(this._guests, 7).getPaginatedArray();
     this._maxPages = Math.ceil(this._paginatedGuestList.length / 2);
@@ -21,6 +24,11 @@ export default class UIGuestListBuilder {
     this._pagination = new UIPaginationBuilder(this, this._maxPages);
 
     this._initializeButtons();
+  }
+
+  static async initializeGuestList (veranstaltungId) {
+    const guests = await new ServerCommunications('GET').request(`/api/guest/${veranstaltungId}`);
+    new UIGuestListBuilder(veranstaltungId, guests).createGuestList();
   }
 
   createGuestList () {
@@ -35,20 +43,6 @@ export default class UIGuestListBuilder {
 
   callUpdateFunc (nextPage) {
     this._updateTables(nextPage);
-  }
-
-  _getGuests () {
-    // WITHOUT DATABASE RANDOM NUMBERS OF GUESTS
-    for (let i = 0; i < 10; i++) {
-      guestsList.push({
-        name: 'Elisa Du',
-        status: 'invited',
-        children: '0',
-        table: ''
-      });
-    }
-
-    return guestsList;
   }
 
   _getHeadings () {
@@ -112,7 +106,7 @@ export default class UIGuestListBuilder {
     btn.textContent = 'Seating Plan';
 
     btn.addEventListener('click', () => {
-      new UISeatingPlanBuilder(guestsList).createSeatingPlan();
+      new UISeatingPlanBuilder(guestsList, this.veranstaltungId).createSeatingPlan();
     });
 
     return btn;
@@ -162,7 +156,7 @@ export default class UIGuestListBuilder {
 
     // TODO: CREATE ADD GUEST FORMULAR AS CLICK EVENT
     addBtn.addEventListener('click', () => {
-      new UINewGuestBuilder().createNewGuestDisplay();
+      new UINewGuestBuilder(this.veranstaltungId).createNewGuestDisplay();
     });
 
     return addBtn;

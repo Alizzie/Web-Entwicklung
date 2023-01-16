@@ -1,5 +1,6 @@
 import express from 'express';
 import { db } from '../database.mjs';
+// import { veranstalterId } from './event.mjs';
 
 export const loginRouter = express.Router();
 
@@ -23,20 +24,19 @@ loginRouter.post('/', function (request, response) {
   });
 });
 
-/*
-loginRouter.post('/signUp' ,function (request,response) {
-    const addUser = 'INSERT INTO veranstalter(name,password,email) VALUES(?,?,?)';
-    db.run(addUser,request.body, (err) => {
-        let signedUp = true;
-        if(err){
-            console.log("something went wrong");
-            signedUp = false;
-            throw err;
-        }
-        data = {
-            acces:signedUp
-        }
-    })
+loginRouter.post('/signUp', function (request, response) {
+  const addUser = 'INSERT INTO veranstalter(name,password,email) VALUES(?,?,?)';
+  db.run(addUser, request.body, (err) => {
+    let signedUp = true;
+    if (err) {
+      console.log('something went wrong');
+      signedUp = false;
+      // throw err;
+    }
+    const data = {
+      acces: signedUp
+    };
 
-    });
-*/
+    response.json(data);
+  });
+});

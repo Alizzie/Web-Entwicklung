@@ -1,7 +1,8 @@
-import UINewGuestBuilder from './UINewGuestBuilder.mjs';
+
 import UICardGenerator from './UIGenerator.mjs';
 import ServerCommunications from './ServerRequests.mjs';
 import UIkit from 'uikit';
+import UIGuestListBuilder from './UIGuestListBuilder.mjs';
 
 const eventAttributes = [
   {
@@ -77,12 +78,14 @@ export default class UINewEventBuilder {
       });
 
       const response = new ServerCommunications('POST').request('/api/events', data);
-      if (response) {
-        UIkit.notification('Successful created new Event', 'success', { timeout: 3000 });
-      } else {
-        UIkit.notification('Failed to create Event', 'danger', { timeout: 3000 });
-      }
-      new UINewGuestBuilder().createNewGuestDisplay();
+      response.then(data => {
+        if (data) {
+          UIkit.notification('Successful created new Event', 'success', { timeout: 3000 });
+        } else {
+          UIkit.notification('Failed to create Event', 'danger', { timeout: 3000 });
+        }
+        UIGuestListBuilder.initializeGuestList(data.veranstaltung_id);
+      });
     });
   }
 }
