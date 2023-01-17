@@ -7,7 +7,7 @@ export default class UICardGenerator {
   }
 
   _initalizeCard () {
-    this._classes = ['uk-card', 'uk-card-default', 'uk-card-large', 'uk-width-1-2', 'uk-padding-large', 'uk-card-hover', 'display-wrapper'];
+    this._classes = ['uk-card', 'uk-card-default', 'uk-card-large', 'uk-width-1-2@l', 'uk-padding-large', 'uk-card-hover', 'display-wrapper'];
     this._card = document.createElement('div');
     this._main.appendChild(this._card);
     this._applyCardClasses();

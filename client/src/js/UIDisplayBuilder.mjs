@@ -110,6 +110,7 @@ export default class UIDisplayBuilder {
       const cardID = parseInt(event.target.id);
       const eventsIndex = cardID + this._nextPage * 6; // 6 in const umlagern
       const veranstaltungId = this._events[eventsIndex].id;
+      console.log('veranstaltungId', veranstaltungId);
       UIGuestListBuilder.initializeGuestList(veranstaltungId);
     });
 

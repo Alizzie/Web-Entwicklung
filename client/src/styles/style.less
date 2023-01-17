@@ -7,6 +7,7 @@
 @import "../../../node_modules/uikit/src/less/uikit.theme.less";
 
 // GENERAL VARIABLES
+@basicFontSize: 16px;
 @bigGap: 2.5rem;
 @gap : 1.25rem;
 @smallGap : 0.5rem;
@@ -34,7 +35,13 @@
     margin: 0;
     padding: 0;
     font-family: "Helvetica", sans-serif;
-    font-size: 16px;
+    font-size: @basicFontSize;
+
+    @media (max-width: 768px) {
+
+        font-size: 12px;
+        
+    }
 }
 
 
@@ -142,4 +149,19 @@ h3 {
 // Flex Wrap
 .flexWrap() {
     flex-wrap: wrap;
+}
+
+
+@media (max-width: 768px) {
+
+    @basicFontSize: 10px;
+
+    main{
+        background-color: black;
+    }
+
+    .uk-heading-line span{
+        font-size: 1.5rem;
+    }
+    
 }
