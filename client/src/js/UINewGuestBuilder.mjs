@@ -1,4 +1,3 @@
-// import ServerCommunications from './ServerRequests.mjs';
 import ServerCommunications from './ServerRequests.mjs';
 import UICardGenerator from './UIGenerator.mjs';
 import UIGuestListBuilder from './UIGuestListBuilder.mjs';
