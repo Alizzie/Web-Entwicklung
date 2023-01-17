@@ -107,9 +107,10 @@ export default class UIDisplayBuilder {
     div.appendChild(p);
 
     div.addEventListener('click', (event) => {
-      // const cardID = parseInt(event.id);
-      const eventsIndex = this._nextPage * 6; // 6 in const umlagern
+      const cardID = parseInt(event.target.id);
+      const eventsIndex = cardID + this._nextPage * 6; // 6 in const umlagern
       const veranstaltungId = this._events[eventsIndex].id;
+      console.log('veranstaltungId', veranstaltungId);
       UIGuestListBuilder.initializeGuestList(veranstaltungId);
     });
 
