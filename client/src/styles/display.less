@@ -24,6 +24,10 @@
     .flexWrap;
     min-height: @eventsMinHeight;
     margin-bottom: @bigGap;
+
+    @media (max-width: 768px) {
+        .flexStartCenter;
+    }
 }
 
 .event-card {
@@ -31,6 +35,14 @@
     margin: @bigGap 0 0 @bigGap+@bigGap;
     cursor: @mousePointer;
     padding: @gap @gap @bigGap @bigGap+1;
+
+    @media (max-width: 768px) {
+        margin-left: 0;        
+    }
+
+    @media (max-width: 500px) {
+        min-width: @eventMinWidth - 100;        
+    }
 }
 
 .edit-buttons-card-inside {
@@ -44,6 +56,10 @@
         line-height: 0;
         border-radius: 7px;
         padding: 0 @gap;
+
+        @media (max-width: 500px) {
+            width: 3 * @btnMinHeight - 10;       
+        }
     }
 
     button + button {

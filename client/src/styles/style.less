@@ -39,7 +39,7 @@
 
     @media (max-width: 768px) {
 
-        font-size: 12px;
+        font-size: 14px;
         
     }
 }
@@ -53,6 +53,10 @@ html, body {
 main{
     margin: 6rem auto;
     width: @mainWidth;
+
+    @media (max-width: 768px) {
+        margin-top: 4rem;        
+    }
 }
 
 h1 {
@@ -78,6 +82,10 @@ h3 {
 
 .uk-card-title {
     font-size: 1.8rem;
+
+    @media (max-width:768px) {
+        font-size: 1.6rem;
+    }
 }
 
 // FUNCTIONS BORDER
@@ -158,6 +166,10 @@ h3 {
 
     .uk-heading-line span{
         font-size: 1.5rem;
+    }
+
+    .uk-form-label, .uk-form-small, .uk-button, .uk-navbar-nav>li>a {
+        font-size: .8rem;
     }
     
 }
