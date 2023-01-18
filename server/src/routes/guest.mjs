@@ -45,14 +45,8 @@ guestRouter.delete('/', (request, response) => {
   const guestIds = request.body.guestIds; // this is a array of ids
   console.log('guestIds:::', guestIds);
 
-  db.all('SELECT * from GUESTS', (err, row) => {
-    if (err) {
-      throw err;
-    }
-    console.log('rows:::', row);
-  });
-  const sqlStmt = 'DELETE FROM guests WHERE guest_id IN (?)';
-  db.run(sqlStmt, guestIds, (err) => {
+  const sqlStmt = 'DELETE FROM guests WHERE guest_id IN (' + guestIds.join(',') + ')';
+  db.run(sqlStmt, (err) => {
     if (err) {
       response.status(500).json({ error: err.message });
     } else {
