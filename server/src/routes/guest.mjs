@@ -40,3 +40,17 @@ guestRouter.post('/', (request, response) => {
     });
   });
 });
+
+guestRouter.delete('/', (request, response) => {
+  const guestIds = request.body.guestIds; // this is a array of ids
+  console.log('guestIds:::', guestIds);
+
+  const sqlStmt = 'DELETE FROM guests WHERE guest_id IN (' + guestIds.join(',') + ')';
+  db.run(sqlStmt, (err) => {
+    if (err) {
+      response.status(500).json({ error: err.message });
+    } else {
+      response.json({ message: 'Guests deleted' });
+    }
+  });
+});
