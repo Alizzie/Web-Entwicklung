@@ -2,11 +2,15 @@ import UINavbarBuilder from './UINavbarBuilder.mjs';
 import UIDisplayBuilder from './UIDisplayBuilder.mjs';
 import UIkit from 'uikit';
 import ServerCommunications from './ServerRequests.mjs';
+import SignUpBuilder from './SignUpBuilder.mjs';
 UIkit.icon.call();
 
 // SIGN UP EVENT LISTENER
-/*
 const signUp = document.getElementById('sign-up');
+signUp.addEventListener('click', () => {
+  new SignUpBuilder().createSignUpDisplay();
+});
+/*
 
 signUp.addEventListener('submit', (event) => {
   event.preventDefault();

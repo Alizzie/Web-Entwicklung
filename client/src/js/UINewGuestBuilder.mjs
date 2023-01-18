@@ -21,7 +21,7 @@ export default class UINewGuestBuilder {
   createNewGuestDisplay () {
     this._cardGenerator.formularCardConstructor(this._heading, this._cName, this._btnText, this._gParams);
     this._cardGenerator.createCardFormularDisplay();
-    this._addEvent();
+    this._addGuest();
   }
 
   // EDIT EXISITNG GUEST
@@ -48,7 +48,7 @@ export default class UINewGuestBuilder {
     select.value = guestStatus;
   }
 
-  _addEvent () { // _addGuest?
+  _addGuest () {
     const newGuestForm = this._cardGenerator.getFormular();
     newGuestForm.addEventListener('submit', (event) => {
       event.preventDefault();
