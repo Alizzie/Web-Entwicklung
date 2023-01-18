@@ -159,13 +159,18 @@ export default class UIDisplayBuilder {
     div.appendChild(p);
 
     div.addEventListener('click', (event) => {
-      const cardID = parseInt(event.target.id);
+      let cardID;
+      if (event.target.tagName === 'DIV') {
+        cardID = parseInt(event.target.id);
+      } else if (event.target.tagName === 'P' || event.target.tagName === 'H3') {
+        cardID = parseInt(event.target.parentElement.id);
+      }
 
-      console.log('Events', this._events);
-      const eventsIndex = cardID + this._nextPage * this._maxPages; // 6 in const umlagern
-      const veranstaltungId = this._events[eventsIndex].id;
-      console.log('veranstaltungId', veranstaltungId);
-      UIGuestListBuilder.initializeGuestList(veranstaltungId);
+      if (cardID != null) {
+        const eventsIndex = cardID + this._nextPage * (this._getMaxPages() * 2);
+        const veranstaltungId = this._events[eventsIndex].id;
+        UIGuestListBuilder.initializeGuestList(veranstaltungId);
+      }
     });
 
     return div;
@@ -186,7 +191,6 @@ export default class UIDisplayBuilder {
     deleteBtn.setAttribute('id', 'js-modal-comfirm');
     deleteBtn.textContent = 'Delete';
 
-    // TODO : Delete Guests from DATABANK AS CLICK EVENT
     deleteBtn.addEventListener('click', event => {
       const message = `Delete Event '${event.target.parentElement.nextSibling.textContent}'?`;
       UIkit.modal.confirm(message).then(
@@ -200,7 +204,7 @@ export default class UIDisplayBuilder {
   async _deleteEventListener (event) {
     // EventCard ID + EventsArray * PageIndex = Index Of EventsArray
     const cardID = parseInt(event.target.parentElement.parentElement.id);
-    const eventsIndex = cardID + this._nextPage * 6;
+    const eventsIndex = cardID + this._nextPage * (this._getMaxPages() * 2);
     const data = JSON.stringify({ id: this._events[eventsIndex].id });
 
     const response = await new ServerCommunications('DELETE').request('/api/events', data);
