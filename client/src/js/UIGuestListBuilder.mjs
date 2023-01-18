@@ -1,3 +1,4 @@
+import UIkit from 'uikit';
 import { UIPaginationBuilder, Paginator } from './Pagination.mjs';
 import Resetter from './Resetter.mjs';
 import ServerCommunications from './ServerRequests.mjs';
@@ -134,19 +135,26 @@ export default class UIGuestListBuilder {
     deleteBtn.setAttribute('id', 'deleteBtn');
     deleteBtn.textContent = 'Delete';
 
-    console.log(this._guests);
-
-    // TODO : Delete Guests from DATABANK AS CLICK EVENT
     deleteBtn.addEventListener('click', () => {
-      const checkboxes = Array.from(document.getElementsByClassName('uk-checkbox'));
-      const checkedCheckboxes = checkboxes.filter(x => x.checked).map(x => x.id);
-
-      // STEP 2: Send all guest ids to the server
-      new ServerCommunications('DELETE').request('/api/guest', JSON.stringify({ guestIds: checkedCheckboxes })).then(
-        () => UIGuestListBuilder.initializeGuestList(this.eventId));
+      UIkit.modal.confirm('Delete guests?').then(
+        () => this._deleteEventListener(),
+        () => { UIkit.notification('Canceled', { timeout: 3000 }); }
+      );
     });
 
     return deleteBtn;
+  }
+
+  async _deleteEventListener (event) {
+    const checkboxes = Array.from(document.getElementsByClassName('uk-checkbox'));
+    const checkedCheckboxes = checkboxes.filter(x => x.checked).map(x => x.id);
+
+    const response = await new ServerCommunications('DELETE').request('/api/guest', JSON.stringify({ guestIds: checkedCheckboxes }));
+    if (response) {
+      UIkit.notification('Successful deleted', 'success', { timeout: 3000 });
+    }
+
+    UIGuestListBuilder.initializeGuestList(this.eventId);
   }
 
   _generateAddBtn () {

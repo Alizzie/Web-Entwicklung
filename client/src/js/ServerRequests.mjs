@@ -36,6 +36,8 @@ export default class ServerCommunications {
       body: data
     });
 
+    console.log('server', response);
+
     if (!response.ok) {
       this._onError(response.status);
     }

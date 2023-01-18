@@ -1,3 +1,4 @@
+import UIkit from 'uikit';
 import ServerCommunications from './ServerRequests.mjs';
 import UICardGenerator from './UIGenerator.mjs';
 import UIGuestListBuilder from './UIGuestListBuilder.mjs';
@@ -50,9 +51,9 @@ export default class UINewGuestBuilder {
   _addEvent () { // _addGuest?
     const newGuestForm = this._cardGenerator.getFormular();
     newGuestForm.addEventListener('submit', (event) => {
-      const elements = newGuestForm.elements;
       event.preventDefault();
-      // Data from Formular needed
+
+      const elements = newGuestForm.elements;
       const data = JSON.stringify({
         name: elements.Name.value,
         children: elements.Children.checked ? 1 : 0, // 0 = false , 1 = true
@@ -60,11 +61,16 @@ export default class UINewGuestBuilder {
         veranstaltungId: this._veranstaltungId
       });
 
-      // const response = new ServerCommunications('POST').request('/api/events', data);
-      // const elements = Array.from(newGuestForm.elements);
-      // const data = elements.filter(x => x.tagName === 'INPUT' || x.tagName === 'SELECT').map(x => [x.name, x.value]);
-      new ServerCommunications('POST').request('/api/guest', data);
-      UIGuestListBuilder.initializeGuestList(this._veranstaltungId);
+      const response = new ServerCommunications('POST').request('/api/guest', data);
+      console.log(response);
+      response.then(data => {
+        if (data) {
+          UIkit.notification('Successful added new guest', 'success', { timeout: 3000 });
+        } else {
+          UIkit.notification('Failed to add new guest', 'danger', { timeout: 3000 });
+        }
+        UIGuestListBuilder.initializeGuestList(this._veranstaltungId);
+      });
     });
   }
 

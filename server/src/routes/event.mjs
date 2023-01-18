@@ -30,7 +30,15 @@ eventRouter.post('/', (request, response) => {
     }
   });
 
-  // Creating new Event
+  // Creating the guestList with default values
+  const sqltStmtGuestList = 'INSERT INTO guestList DEFAULT VALUES';
+  db.run(sqltStmtGuestList, err => {
+    if (err) {
+      throw err;
+    }
+  });
+
+  // Creating new Event by getting ids of seatingPlan and guestList first
   getIds().then(x => {
     console.log('next IDs ', x);
     const eventData = [body.name, body.date, body.time, x.gId, x.sId, veranstalterId];
@@ -39,6 +47,7 @@ eventRouter.post('/', (request, response) => {
       if (err) {
         throw err.message;
       }
+
       db.get('SELECT last_insert_rowid() as veranstaltung_id', (err, row) => {
         if (err) {
           throw err;
@@ -62,26 +71,19 @@ function requestSeatingPlanId () {
         return reject(err);
       }
 
-      console.log('gotten id' + row.seatingPlanId);
-      return resolve(row.seatingPlanId + 1);
+      return resolve(row.seatingPlanId);
     });
   });
 }
 
 function requestGuestListId () {
   return new Promise((resolve, reject) => {
-    // Creating guestList before Event,so that we get an auto generated guestList_id
-    db.run('INSERT INTO guestList DEFAULT VALUES', (err) => {
+    db.get('SELECT last_insert_rowid() as guestListId', (err, row) => {
       if (err) {
         throw reject(err);
       }
-      db.get('SELECT last_insert_rowid() as guestListId', (err, row) => {
-        if (err) {
-          throw reject(err);
-        }
-        console.log('gotten guestlist', row.guestListId);
-        return resolve(row.guestListId + 1);
-      });
+
+      return resolve(row.guestListId);
     });
   });
 }

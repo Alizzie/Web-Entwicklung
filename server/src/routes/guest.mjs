@@ -32,12 +32,15 @@ guestRouter.post('/', (request, response) => {
 
     const data = [body.name, body.children, body.invitationStatus, row.guestListId];
     console.log('data', data);
+
     db.run(sqlStmt, data, (err) => {
       if (err) {
         throw err;
       }
     });
   });
+
+  response.json({ message: 'Guests added' });
 });
 
 guestRouter.delete('/', (request, response) => {
