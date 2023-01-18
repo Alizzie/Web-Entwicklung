@@ -17,16 +17,17 @@ export default class UIGuestListBuilder {
     this._tableWrapper = this._generateTableWrapper();
     this._heading = this._getHeadings();
     this.eventId = eventId; // A GUESTLIST BELONGS TO ONE EVENT
-   
-    this._paginatedGuestList = new Paginator(this._guests, 7).getPaginatedArray();
+    this._tableWidth = 7;
+    this._paginatedGuestList = new Paginator(this._guests, this._tableWidth).getPaginatedArray();
     this._maxPages = Math.ceil(this._paginatedGuestList.length / 2);
-    console.log(this._maxPages);
+    console.log('Tables', this._paginatedGuestList);
     this._pagination = new UIPaginationBuilder(this, this._maxPages);
 
     this._initializeButtons();
   }
 
   static async initializeGuestList (eventId) {
+    console.log(eventId);
     const guests = await new ServerCommunications('GET').request(`/api/guest/${eventId}`);
     new UIGuestListBuilder(eventId, guests).createGuestList();
   }
@@ -43,6 +44,13 @@ export default class UIGuestListBuilder {
 
   callUpdateFunc (nextPage) {
     this._updateTables(nextPage);
+  }
+
+  _getTableWidth () {
+    const marginWidth = 0;
+    const cardWidth = 7;
+
+    return [marginWidth, cardWidth];
   }
 
   _getHeadings () {

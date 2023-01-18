@@ -6,6 +6,16 @@ import UICardGenerator from './UIGenerator.mjs';
 import UIGuestListBuilder from './UIGuestListBuilder.mjs';
 import UINewEventBuilder from './UINewEventBuilder.mjs';
 
+window.onresize = check;
+
+function check () {
+  const main = document.getElementsByTagName('main')[0];
+
+  if (UIDisplayBuilder && main.classList.contains('display-event')) {
+    UIDisplayBuilder.initalizeEventsDisplay();
+  }
+}
+
 export default class UIDisplayBuilder {
   constructor (events) {
     this._events = events;
@@ -18,13 +28,38 @@ export default class UIDisplayBuilder {
   }
 
   _startPagination () {
-    this._paginatedEventList = new Paginator(this._events, 6).getPaginatedArray();
-    this._paginator = new UIPaginationBuilder(this, this._paginatedEventList.length);
+    this._paginatedEventList = new Paginator(this._events, this._getMaxPages()).getPaginatedArray();
+    this._maxPages = Math.ceil(this._paginatedEventList.length / 2);
+    this._paginator = new UIPaginationBuilder(this, this._maxPages);
     this._nextPage = 0;
+  }
+
+  _getEventCardWidth () {
+    let marginWidth = 80;
+    let cardWidth = 400;
+
+    if (window.innerWidth === 500) {
+      marginWidth = 0;
+      cardWidth = 300;
+    }
+
+    return [marginWidth, cardWidth];
+  }
+
+  _getMaxPages () {
+    const [margin, width] = this._getEventCardWidth();
+    let mainWidth = window.getComputedStyle(document.getElementsByTagName('main')[0]).width;
+    mainWidth = parseFloat(mainWidth.slice(0, -2));
+
+    const fullItemWidth = margin + width;
+
+    const maxPages = Math.floor((mainWidth + margin) / fullItemWidth);
+    return maxPages;
   }
 
   createMainDisplay () {
     this._main = new Resetter().getMain();
+    this._main.classList.add('display-event');
     const noEvent = this._checkIfEventsExist();
 
     if (noEvent) {
@@ -83,9 +118,26 @@ export default class UIDisplayBuilder {
   }
 
   _generateEvents () {
-    const curGuests = this._paginatedEventList[this._nextPage];
-    for (let i = 0; i < curGuests.length; i++) {
-      this._displayWrapper.appendChild(this._createEventBlock(curGuests[i], i));
+    for (let row = 0; row < 2; row++) {
+      const curGuests = this._paginatedEventList[this._nextPage * 2 + row];
+
+      if (!curGuests || curGuests.length === 0) {
+        break;
+      }
+
+      const rowWrapper = document.createElement('div');
+      rowWrapper.classList.add('display-row-wrapper');
+      this._displayWrapper.appendChild(rowWrapper);
+
+      let lastCurGuests; let lengthLastGuests = 0;
+      if (row === 1) {
+        lastCurGuests = this._paginatedEventList[this._nextPage * 2];
+        lengthLastGuests = lastCurGuests.length;
+      }
+
+      for (let i = 0; i < curGuests.length; i++) {
+        rowWrapper.appendChild(this._createEventBlock(curGuests[i], i + lengthLastGuests));
+      }
     }
   }
 
@@ -108,7 +160,9 @@ export default class UIDisplayBuilder {
 
     div.addEventListener('click', (event) => {
       const cardID = parseInt(event.target.id);
-      const eventsIndex = cardID + this._nextPage * 6; // 6 in const umlagern
+
+      console.log('Events', this._events);
+      const eventsIndex = cardID + this._nextPage * this._maxPages; // 6 in const umlagern
       const veranstaltungId = this._events[eventsIndex].id;
       console.log('veranstaltungId', veranstaltungId);
       UIGuestListBuilder.initializeGuestList(veranstaltungId);

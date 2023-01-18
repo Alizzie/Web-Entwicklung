@@ -19,22 +19,30 @@
 
 // DISPLAY IF EVENT EXISTS 
 .display-event-wrapper {
-    .flexRow;
+    .flexCol;
     .flexStartStart;
-    .flexWrap;
     min-height: @eventsMinHeight;
-    margin-bottom: @bigGap;
+    margin: 0 auto @bigGap;
+    width: min-content;
 
     @media (max-width: 768px) {
         .flexStartCenter;
     }
 }
 
+.display-row-wrapper {
+    .flexRow;
+}
+
 .event-card {
     min-width: @eventMinWidth;
-    margin: @bigGap 0 0 @bigGap+@bigGap;
+    margin-top: @bigGap;
     cursor: @mousePointer;
     padding: @gap @gap @bigGap @bigGap+1;
+
+    & + & {
+        margin-left: 2 * @bigGap;
+    }
 
     @media (max-width: 768px) {
         margin-left: 0;        
