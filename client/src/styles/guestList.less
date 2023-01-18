@@ -26,12 +26,21 @@
     td:nth-child(n+3) {
         .centerText;
     }
-
-    .uk-table-responsive & + & {
-        margin: 10rem;
-    }
 }
 
-.uk-table-responsive + .uk-table-responsive {
+.table + .table {
     margin-left: 6rem;
+}
+
+.table-buttons {
+    .flexRow;
+
+    @media (max-width: 768px) {
+        .flexCol;   
+        
+        button {
+            height: @btnMinHeight;
+            line-height: @btnMinHeight;
+        }
+    }
 }

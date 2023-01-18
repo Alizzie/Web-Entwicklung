@@ -6,9 +6,9 @@ import UICardGenerator from './UIGenerator.mjs';
 import UIGuestListBuilder from './UIGuestListBuilder.mjs';
 import UINewEventBuilder from './UINewEventBuilder.mjs';
 
-window.onresize = check;
+window.onresize = resizeDisplay;
 
-function check () {
+function resizeDisplay () {
   const main = document.getElementsByTagName('main')[0];
 
   if (UIDisplayBuilder && main.classList.contains('display-event')) {
@@ -25,6 +25,33 @@ export default class UIDisplayBuilder {
   static async initalizeEventsDisplay () {
     const response = await new ServerCommunications().get('/api/events');
     return new UIDisplayBuilder(response).createMainDisplay();
+  }
+
+  createMainDisplay () {
+    this._main = new Resetter().getMain();
+    this._main.classList.add('display-event');
+    const noEvent = this._checkIfEventsExist();
+
+    if (noEvent) {
+      this._card = new UICardGenerator().getCard();
+
+      this._displayWrapper = this._generateDisplayWrapper('no-event-wrapper');
+      this._card.appendChild(this._displayWrapper);
+      this._noEventsDisplay();
+    } else {
+      this._main.appendChild(this._generateAddBtn());
+
+      this._displayWrapper = this._generateDisplayWrapper('display-event-wrapper');
+      this._main.appendChild(this._displayWrapper);
+      this._generateEvents();
+
+      this._main.appendChild(this._paginator.getNavigation());
+    }
+  }
+
+  callUpdateFunc (nextPage) {
+    this._nextPage = nextPage;
+    this._updatePagEvents();
   }
 
   _startPagination () {
@@ -55,33 +82,6 @@ export default class UIDisplayBuilder {
 
     const maxPages = Math.floor((mainWidth + margin) / fullItemWidth);
     return maxPages;
-  }
-
-  createMainDisplay () {
-    this._main = new Resetter().getMain();
-    this._main.classList.add('display-event');
-    const noEvent = this._checkIfEventsExist();
-
-    if (noEvent) {
-      this._card = new UICardGenerator().getCard();
-
-      this._displayWrapper = this._generateDisplayWrapper('no-event-wrapper');
-      this._card.appendChild(this._displayWrapper);
-      this._noEventsDisplay();
-    } else {
-      this._main.appendChild(this._generateAddBtn());
-
-      this._displayWrapper = this._generateDisplayWrapper('display-event-wrapper');
-      this._main.appendChild(this._displayWrapper);
-      this._generateEvents();
-
-      this._main.appendChild(this._paginator.getNavigation());
-    }
-  }
-
-  callUpdateFunc (nextPage) {
-    this._nextPage = nextPage;
-    this._updatePagEvents();
   }
 
   _checkIfEventsExist () {
@@ -214,7 +214,6 @@ export default class UIDisplayBuilder {
 
     this._events.splice(eventsIndex, 1);
     this._startPagination();
-
     this.createMainDisplay();
   }
 

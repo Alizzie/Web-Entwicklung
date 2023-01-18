@@ -1,84 +1,64 @@
 import { UIPaginationBuilder, Paginator } from './Pagination.mjs';
 import Resetter from './Resetter.mjs';
 import ServerCommunications from './ServerRequests.mjs';
-// import ServerCommunications from './ServerRequests.mjs';
+import UICardGenerator from './UIGenerator.mjs';
 import UINewGuestBuilder from './UINewGuestBuilder.mjs';
 import UISeatingPlanBuilder from './UISeatingPlanBuilder.mjs';
-
-export const guestsList = [
-];
-
-// TODO: Variable variiert nach Window Size Groeße
 
 export default class UIGuestListBuilder {
   constructor (eventId, guestList) {
     this._guests = guestList;
     this._main = new Resetter().getMain();
-    this._tableWrapper = this._generateTableWrapper();
+    this._tableWrapper = this._generateTableWrapper('guestlist-table');
     this._heading = this._getHeadings();
-    this.eventId = eventId; // A GUESTLIST BELONGS TO ONE EVENT
-    this._tableWidth = 7;
-    this._paginatedGuestList = new Paginator(this._guests, this._tableWidth).getPaginatedArray();
-    this._maxPages = Math.ceil(this._paginatedGuestList.length / 2);
-    console.log('Tables', this._paginatedGuestList);
-    this._pagination = new UIPaginationBuilder(this, this._maxPages);
+    this.eventId = eventId;
 
+    this._startPagination();
     this._initializeButtons();
   }
 
   static async initializeGuestList (eventId) {
-    console.log(eventId);
     const guests = await new ServerCommunications('GET').request(`/api/guest/${eventId}`);
     new UIGuestListBuilder(eventId, guests).createGuestList();
   }
 
   createGuestList () {
+    this._main.classList.add('display-guestlist');
     this._main.appendChild(this._generateEditButtons());
     this._main.appendChild(this._tableWrapper);
-    this._generateTables(0);
 
-    const navigationWrapper = document.createElement('div');
-    navigationWrapper.appendChild(this._pagination.getNavigation());
-    this._main.appendChild(navigationWrapper);
+    if (this._guests.length === 0) {
+      this._card = new UICardGenerator().getCard();
+      this._tableWrapper = this._generateTableWrapper('no-guest-wrapper');
+      this._card.appendChild(this._tableWrapper);
+      this._noGuestsDisplay();
+    } else {
+      this._generateTables(0);
+      const navigationWrapper = document.createElement('div');
+      navigationWrapper.appendChild(this._pagination.getNavigation());
+      this._main.appendChild(navigationWrapper);
+    }
   }
 
   callUpdateFunc (nextPage) {
     this._updateTables(nextPage);
   }
 
-  _getTableWidth () {
-    const marginWidth = 0;
-    const cardWidth = 7;
+  _startPagination () {
+    this._tableWidth = 7;
+    this._paginatedGuestList = new Paginator(this._guests, this._tableWidth).getPaginatedArray();
+    this._maxPages = this._paginatedGuestList.length;
 
-    return [marginWidth, cardWidth];
+    if (window.innerWidth > 1200) {
+      this._maxPages = Math.ceil(this._paginatedGuestList.length / 2);
+    }
+
+    this._pagination = new UIPaginationBuilder(this, this._maxPages);
   }
 
-  _getHeadings () {
-    const headings = [
-      {
-        name: '',
-        class: 'uk-table-shrink'
-      }, {
-        name: 'Guest Name',
-        class: 'uk-table-expand'
-      }, {
-        name: 'Status',
-        class: 'uk-width-small'
-      }, {
-        name: 'Children',
-        class: 'uk-width-small'
-      }, {
-        name: 'Edit',
-        class: 'uk-table-shrink'
-      }
-    ];
-
-    return headings;
-  }
-
-  _generateTableWrapper () {
+  _generateTableWrapper (className) {
     const tableWrapper = document.createElement('div');
-    tableWrapper.classList.add('guestlist-table');
+    tableWrapper.classList.add(className);
     return tableWrapper;
   }
 
@@ -87,10 +67,12 @@ export default class UIGuestListBuilder {
     editButtons.classList.add('uk-flex', 'uk-flex-between', 'uk-margin-bottom');
 
     const modifierWrapper1 = document.createElement('div');
+    modifierWrapper1.classList.add('table-buttons');
     modifierWrapper1.appendChild(this._selectAllBtn);
     modifierWrapper1.appendChild(this._delBtn);
 
     const modifierWrapper2 = document.createElement('div');
+    modifierWrapper2.classList.add('table-buttons');
     modifierWrapper2.appendChild(this._seatingBtn);
     modifierWrapper2.appendChild(this._addBtn);
 
@@ -114,7 +96,7 @@ export default class UIGuestListBuilder {
     btn.textContent = 'Seating Plan';
 
     btn.addEventListener('click', () => {
-      new UISeatingPlanBuilder(guestsList, this.eventId).createSeatingPlan();
+      new UISeatingPlanBuilder(this._guests, this.eventId).createSeatingPlan();
     });
 
     return btn;
@@ -152,7 +134,17 @@ export default class UIGuestListBuilder {
     deleteBtn.setAttribute('id', 'deleteBtn');
     deleteBtn.textContent = 'Delete';
 
+    console.log(this._guests);
+
     // TODO : Delete Guests from DATABANK AS CLICK EVENT
+    deleteBtn.addEventListener('click', () => {
+      const checkboxes = Array.from(document.getElementsByClassName('uk-checkbox'));
+      const checkedCheckboxes = checkboxes.filter(x => x.checked).map(x => x.id);
+
+      // STEP 2: Send all guest ids to the server
+      new ServerCommunications('DELETE').request('/api/guest', JSON.stringify({ guestIds: checkedCheckboxes })).then(
+        () => UIGuestListBuilder.initializeGuestList(this.eventId));
+    });
 
     return deleteBtn;
   }
@@ -162,7 +154,6 @@ export default class UIGuestListBuilder {
     addBtn.classList.add('uk-button', 'uk-button-primary');
     addBtn.textContent = 'Add';
 
-    // TODO: CREATE ADD GUEST FORMULAR AS CLICK EVENT
     addBtn.addEventListener('click', () => {
       new UINewGuestBuilder(this.eventId).createNewGuestDisplay();
     });
@@ -171,8 +162,14 @@ export default class UIGuestListBuilder {
   }
 
   _generateTables (pagTableIndex) {
-    const start = pagTableIndex * 2;
-    const end = start + 1;
+    let start = pagTableIndex;
+    let end = start;
+
+    if (window.innerWidth > 1200) {
+      start = start * 2;
+      end = end + 1;
+    }
+
     for (let i = start; i <= end; i++) {
       const tableGuests = this._paginatedGuestList[i];
 
@@ -181,7 +178,7 @@ export default class UIGuestListBuilder {
       }
 
       const tableWrapper = document.createElement('div');
-      tableWrapper.classList.add('uk-table-responsive', 'uk-width-1-2');
+      tableWrapper.classList.add('table', 'uk-width-1-2@l');
       this._tableWrapper.appendChild(tableWrapper);
 
       const guestListTable = document.createElement('table');
@@ -191,6 +188,22 @@ export default class UIGuestListBuilder {
       guestListTable.appendChild(this._generateTableHead());
       guestListTable.appendChild(this._generateTableBody(tableGuests));
     }
+  }
+
+  _noGuestsDisplay () {
+    const text = document.createElement('h1');
+    text.textContent = 'No Guests';
+
+    const addEventButton = document.createElement('button');
+    addEventButton.classList.add('uk-button', 'uk-button-secondary');
+    addEventButton.textContent = 'Add first Guest';
+
+    this._tableWrapper.appendChild(text);
+    this._tableWrapper.appendChild(addEventButton);
+
+    addEventButton.addEventListener('click', () => {
+      new UINewGuestBuilder(this.eventId).createNewGuestDisplay();
+    });
   }
 
   _updateTables (page) {
@@ -227,23 +240,26 @@ export default class UIGuestListBuilder {
       const row = document.createElement('tr');
       tableBody.appendChild(row);
 
-      row.appendChild(this._generateCheckboxCell());
+      console.log(guest);
+
+      row.appendChild(this._generateCheckboxCell(guest.guest_id));
       row.appendChild(this._generateGuestName(guest.name));
-      row.appendChild(this._generateStatus(guest.status));
-      row.appendChild(this._generateChildren(guest.children));
+      row.appendChild(this._generateStatus(guest.invitation_status));
+      row.appendChild(this._generateChildren(guest.child));
       row.appendChild(this._generateModifier());
     }
 
     return tableBody;
   }
 
-  _generateCheckboxCell () {
+  _generateCheckboxCell (guestId) {
     const checkboxCell = document.createElement('td');
     const checkbox = document.createElement('input');
     checkbox.classList.add('uk-checkbox');
     checkbox.type = 'checkbox';
     checkbox.ariaLabel = 'Checkbox';
     checkboxCell.appendChild(checkbox);
+    checkbox.id = guestId;
 
     if (this._selectAllBtn.classList.contains('uk-button-secondary')) {
       checkbox.checked = true;
@@ -289,11 +305,11 @@ export default class UIGuestListBuilder {
     const childrenCell = document.createElement('td');
     childrenCell.classList.add('uk-text-truncate');
 
-    if (children === '1') {
+    if (children === 1) {
       childrenCell.textContent = 'Yes';
     }
 
-    if (children === '0') {
+    if (children === 0) {
       childrenCell.textContent = 'No';
     }
 
@@ -316,5 +332,28 @@ export default class UIGuestListBuilder {
     });
 
     return modifierCell;
+  }
+
+  _getHeadings () {
+    const headings = [
+      {
+        name: '',
+        class: 'uk-table-shrink'
+      }, {
+        name: 'Guest Name',
+        class: 'uk-table-expand'
+      }, {
+        name: 'Status',
+        class: 'uk-width-small'
+      }, {
+        name: 'Children',
+        class: 'uk-width-small'
+      }, {
+        name: 'Edit',
+        class: 'uk-table-shrink'
+      }
+    ];
+
+    return headings;
   }
 }

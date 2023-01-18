@@ -54,13 +54,11 @@ export default class UINewGuestBuilder {
       event.preventDefault();
       // Data from Formular needed
       const data = JSON.stringify({
-        name: elements[1].value,
-        children: elements[2].value, // 0 = false , 1 = true
-        invitationStatus: elements[3].value,
+        name: elements.Name.value,
+        children: elements.Children.checked ? 1 : 0, // 0 = false , 1 = true
+        invitationStatus: elements['Invitation status'].value,
         veranstaltungId: this._veranstaltungId
       });
-      console.log(this._veranstaltungId);
-      console.log(data);
 
       // const response = new ServerCommunications('POST').request('/api/events', data);
       // const elements = Array.from(newGuestForm.elements);

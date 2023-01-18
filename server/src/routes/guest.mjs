@@ -15,7 +15,6 @@ guestRouter.get('/:id', (request, response) => {
       throw err;
     }
 
-    console.log('rows: ', rows);
     response.json(rows);
   });
 });
@@ -30,8 +29,8 @@ guestRouter.post('/', (request, response) => {
     if (err) {
       throw err;
     }
-    console.log('row', row);
-    const data = [body.name, body.children === 'on' ? 1 : 0, body.invitationStatus, row.guestListId];
+
+    const data = [body.name, body.children, body.invitationStatus, row.guestListId];
     console.log('data', data);
     db.run(sqlStmt, data, (err) => {
       if (err) {
