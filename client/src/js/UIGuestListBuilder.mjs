@@ -17,17 +17,17 @@ export default class UIGuestListBuilder {
     this._tableWrapper = this._generateTableWrapper();
     this._heading = this._getHeadings();
     this.eventId = eventId; // A GUESTLIST BELONGS TO ONE EVENT
-   
+
     this._paginatedGuestList = new Paginator(this._guests, 7).getPaginatedArray();
     this._maxPages = Math.ceil(this._paginatedGuestList.length / 2);
     console.log(this._maxPages);
     this._pagination = new UIPaginationBuilder(this, this._maxPages);
-
     this._initializeButtons();
   }
 
   static async initializeGuestList (eventId) {
     const guests = await new ServerCommunications('GET').request(`/api/guest/${eventId}`);
+    console.log(guests);
     new UIGuestListBuilder(eventId, guests).createGuestList();
   }
 
@@ -144,7 +144,20 @@ export default class UIGuestListBuilder {
     deleteBtn.setAttribute('id', 'deleteBtn');
     deleteBtn.textContent = 'Delete';
 
-    // TODO : Delete Guests from DATABANK AS CLICK EVENT
+    // STEP 1: Get the ids from all selected Guests
+    deleteBtn.addEventListener('click', (event) => {
+      const checkboxes = Array.from(document.getElementsByClassName('uk-checkbox'));
+      const data = [];
+      checkboxes.forEach(checkbox => {
+        if (checkbox.checked) {
+          data.push(checkbox.id);
+        }
+      });
+
+      // STEP 2: Send all guest ids to the server
+      new ServerCommunications('DELETE').request('/api/guest', JSON.stringify({ guestIds: data })).then(
+        () => UIGuestListBuilder.initializeGuestList(this.eventId));
+    });
 
     return deleteBtn;
   }
@@ -218,8 +231,7 @@ export default class UIGuestListBuilder {
     for (const guest of guests) {
       const row = document.createElement('tr');
       tableBody.appendChild(row);
-
-      row.appendChild(this._generateCheckboxCell());
+      row.appendChild(this._generateCheckboxCell(guest.guest_id));
       row.appendChild(this._generateGuestName(guest.name));
       row.appendChild(this._generateStatus(guest.status));
       row.appendChild(this._generateChildren(guest.children));
@@ -229,14 +241,14 @@ export default class UIGuestListBuilder {
     return tableBody;
   }
 
-  _generateCheckboxCell () {
+  _generateCheckboxCell (guestId) {
     const checkboxCell = document.createElement('td');
     const checkbox = document.createElement('input');
     checkbox.classList.add('uk-checkbox');
     checkbox.type = 'checkbox';
     checkbox.ariaLabel = 'Checkbox';
     checkboxCell.appendChild(checkbox);
-
+    checkbox.id = guestId;
     if (this._selectAllBtn.classList.contains('uk-button-secondary')) {
       checkbox.checked = true;
     }
@@ -249,7 +261,6 @@ export default class UIGuestListBuilder {
   _selectCheckboxes (checkbox) {
     checkbox.addEventListener('change', () => {
       const checkboxes = Array.from(document.getElementsByClassName('uk-checkbox'));
-
       if (checkboxes.map(x => x.checked).includes(true)) {
         this._delBtn.disabled = false;
       } else {
