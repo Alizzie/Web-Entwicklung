@@ -8,10 +8,9 @@ export default class UINewGuestBuilder {
     this._heading = 'Add new Guest';
     this._cName = 'creation-newGuest';
     this._btnText = 'Add Guest';
+    this._editMode = false;
     this._guestAttributes = this._guestParams();
-
     this._gParams = [[this._guestAttributes, 'creation-guest-attr', 'Guest Parameters']];
-
     this._cardGenerator = new UICardGenerator();
     this._veranstaltungId = veranstaltungId;
   }
@@ -24,10 +23,13 @@ export default class UINewGuestBuilder {
     this._addGuest();
   }
 
-  // EDIT EXISITNG GUEST
-  editGuest (guestData) {
+  // EDIT EXISITNG GUEST AND INITALISING IMPORTANT ATTRIBUTES
+  editGuest (guestData, guestId, veranstaltungId) {
     this._heading = 'Edit Guest';
     this._btnText = 'Save Guest';
+    this._guestId = guestId;
+    this._veranstaltungId = veranstaltungId;
+    this._editMode = true;
     this.createNewGuestDisplay();
     this._fillGuestData(guestData);
   }
@@ -61,16 +63,35 @@ export default class UINewGuestBuilder {
         veranstaltungId: this._veranstaltungId
       });
 
-      const response = new ServerCommunications('POST').request('/api/guest', data);
-      console.log(response);
-      response.then(data => {
-        if (data) {
-          UIkit.notification('Successful added new guest', 'success', { timeout: 3000 });
-        } else {
-          UIkit.notification('Failed to add new guest', 'danger', { timeout: 3000 });
-        }
-        UIGuestListBuilder.initializeGuestList(this._veranstaltungId);
-      });
+      if (this._editMode) { // TODO cleaner Code
+        this._editGuestData(data);
+      } else {
+        this._addGuestData(data);
+      }
+    });
+  }
+
+  _addGuestData (data) {
+    const response = new ServerCommunications('POST').request('/api/guest', data);
+    response.then(data => {
+      if (data) {
+        UIkit.notification('Successful added new guest', 'success', { timeout: 3000 });
+      } else {
+        UIkit.notification('Failed to add new guest', 'danger', { timeout: 3000 });
+      }
+      UIGuestListBuilder.initializeGuestList(this._veranstaltungId);
+    });
+  }
+
+  _editGuestData (data) {
+    const response = new ServerCommunications('PUT').request(`/api/guest/${this._guestId}`, data);
+    response.then(data => {
+      if (data) {
+        UIkit.notification('Successful edited guest', 'success', { timeout: 3000 });
+      } else {
+        UIkit.notification('Failed to edit guest', 'danger', { timeout: 3000 });
+      }
+      UIGuestListBuilder.initializeGuestList(this._veranstaltungId);
     });
   }
 

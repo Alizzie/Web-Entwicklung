@@ -254,7 +254,7 @@ export default class UIGuestListBuilder {
       row.appendChild(this._generateGuestName(guest.name));
       row.appendChild(this._generateStatus(guest.invitation_status));
       row.appendChild(this._generateChildren(guest.child));
-      row.appendChild(this._generateModifier());
+      row.appendChild(this._generateModifier(guest.guest_id));
     }
 
     return tableBody;
@@ -324,7 +324,7 @@ export default class UIGuestListBuilder {
     return childrenCell;
   }
 
-  _generateModifier () {
+  _generateModifier (guestId) {
     const modifierCell = document.createElement('td');
     const plusImage = document.createElement('img');
     plusImage.classList.add('uk-preserve-width');
@@ -336,7 +336,8 @@ export default class UIGuestListBuilder {
     modifierCell.addEventListener('click', () => {
       const guestData = Array.from(modifierCell.parentNode.cells).filter(x => x.classList.length !== 0)
         .map(x => x.textContent);
-      new UINewGuestBuilder().editGuest(guestData);
+
+      new UINewGuestBuilder().editGuest(guestData, guestId, this.eventId);
     });
 
     return modifierCell;

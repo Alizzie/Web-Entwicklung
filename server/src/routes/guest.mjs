@@ -56,3 +56,18 @@ guestRouter.delete('/', (request, response) => {
     }
   });
 });
+
+guestRouter.put('/:guestId', (request, response) => {
+  const guestData = request.body;
+  const guestId = request.params.guestId;
+  const data = [guestData.name, guestData.children, guestData.invitationStatus, guestId];
+  const sqlStmt = 'UPDATE guests SET name = ?, child = ?, invitation_status = ? WHERE guest_id = ?';
+  db.run(sqlStmt, data, (err) => {
+    if (err) {
+      console.log(err.message);
+      response.status(500).json({ error: err.message });
+    } else {
+      response.json({ message: 'Guest updated' });
+    }
+  });
+});
