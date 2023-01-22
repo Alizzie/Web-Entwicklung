@@ -83,6 +83,35 @@ db.run(`CREATE TABLE IF NOT EXISTS veranstaltungen (
   }
 });
 
+// Create desk (table) Table
+db.run(`CREATE TABLE IF NOT EXISTS desk (
+  id INTEGER, 
+  deskIndex INTEGER,
+  FOREIGN KEY(id) REFERENCES veranstaltungen(id) ON DELETE CASCADE,
+  PRIMARY KEY(id,deskIndex)
+  )`,
+(err) => {
+  if (err) {
+    console.error(err.message);
+  }
+}
+);
+
+db.run(`CREATE TABLE IF NOT EXISTS guestAtDesk (
+  guest_id INTEGER,
+  guestPosition INTEGER, 
+  id INTEGER,
+  deskIndex INTEGER,
+  FOREIGN KEY(id, deskIndex) REFERENCES desk(id, deskIndex),
+  FOREIGN KEY(guest_id) REFERENCES guests(guest_id),
+  PRIMARY KEY(guest_id,guestPosition,id)
+  )`,
+(err) => {
+  if (err) {
+    console.error(err.message);
+  }
+}
+);
 // Beispieldatensätze
 // GUEST TABLE: guest_id (begins with 0), name, child, invitation_status
 /*

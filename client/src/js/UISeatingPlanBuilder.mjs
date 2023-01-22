@@ -1,9 +1,11 @@
 import UIkit from 'uikit';
 import Resetter from './Resetter.mjs';
+import ServerCommunications from './ServerRequests.mjs';
 import UIGuestListBuilder from './UIGuestListBuilder.mjs';
 
 export default class UISeatingPlanBuilder {
   constructor (guests, veranstalungId) {
+    console.log('constrcutor SeatingPlan guests: ', guests);
     this._numOfTables = 8;
     this._numOfSeatsperTable = 4;
     this._guestList = guests;
@@ -47,9 +49,33 @@ export default class UISeatingPlanBuilder {
 
     button.addEventListener('click', () => {
       UIkit.notification('Seating Plan saved', 'success', { timeout: 3000 });
+      this._sendSeatingPlanData();
     });
 
     return button;
+  }
+
+  _sendSeatingPlanData () {
+    const arr = Array.from(document.getElementsByTagName('select'));
+    const selectedGuestIndeces = arr.map(x => x.options.selectedIndex - 1);
+    const guestIds = [];
+
+    selectedGuestIndeces.forEach(i => {
+      if (i === -1) {
+        guestIds.push(null);
+      } else {
+        guestIds.push(this._guestList[i].guest_id);
+      }
+    });
+
+    const data = JSON.stringify({
+      veranstaltungId: this._veranstalungId,
+      numOfTables: this._numOfTables,
+      numOfSeatsperTable: this._numOfSeatsperTable,
+      guestIdAtTable: guestIds
+    });
+    console.log('data:::', data);
+    new ServerCommunications('POST').request('/api/desk', data);
   }
 
   _backGuestlistBtn () {
@@ -137,6 +163,7 @@ export default class UISeatingPlanBuilder {
     const select = event.target;
     const selectedIndex = select.options.selectedIndex;
 
+    console.log('select', select, ' selectedIndex ', selectedIndex);
     const selectDropDowns = this._guestOptions.map(x => x.options);
     for (const dropdown of selectDropDowns) {
       if (selectedIndex !== 0) {
