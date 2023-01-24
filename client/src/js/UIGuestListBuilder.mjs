@@ -97,7 +97,7 @@ export default class UIGuestListBuilder {
     btn.textContent = 'Seating Plan';
 
     btn.addEventListener('click', () => {
-      new UISeatingPlanBuilder(this._guests, this.eventId).createSeatingPlan();
+      UISeatingPlanBuilder.initializeSeatingPlan(this._guests, this.eventId);
     });
 
     return btn;

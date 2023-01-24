@@ -104,7 +104,7 @@ db.run(`CREATE TABLE IF NOT EXISTS guestAtDesk (
   deskIndex INTEGER,
   FOREIGN KEY(id, deskIndex) REFERENCES desk(id, deskIndex),
   FOREIGN KEY(guest_id) REFERENCES guests(guest_id),
-  PRIMARY KEY(guest_id,guestPosition,id)
+  PRIMARY KEY(id,guestPosition,deskIndex)
   )`,
 (err) => {
   if (err) {

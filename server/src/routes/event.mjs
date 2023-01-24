@@ -40,7 +40,6 @@ eventRouter.post('/', (request, response) => {
 
   // Creating new Event by getting ids of seatingPlan and guestList first
   getIds().then(x => {
-    console.log('next IDs ', x);
     const eventData = [body.name, body.date, body.time, x.gId, x.sId, veranstalterId];
     const sqlStmtEvents = 'INSERT INTO veranstaltungen(name, date,time,guestList_id,seatingPlan_id,veranstalter_id) VALUES(?, ?, ?, ?, ?, ?)';
     db.run(sqlStmtEvents, eventData, (err) => {
