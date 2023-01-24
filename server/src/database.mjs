@@ -14,7 +14,7 @@ db.run(`CREATE TABLE IF NOT EXISTS veranstalter (
     name TEXT UNIQUE,
     password TEXT,
     email TEXT UNIQUE,
-    PRIMARY KEY(email,veranstalter_id)
+    PRIMARY KEY(veranstalter_id)
   )`,
 (err) => {
   if (err) {

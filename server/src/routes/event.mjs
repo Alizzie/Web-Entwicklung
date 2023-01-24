@@ -3,17 +3,16 @@ import { db } from '../database.mjs';
 
 export const eventRouter = express.Router();
 // TODO VERANSTALTER ID ODER NAME herholen
-export const veranstalterId = '31';
 
 eventRouter.get('/', (request, response) => {
+  const veranstalterId = request.session.userId;
+  console.log('veranstalterID:::!!!!:::::', veranstalterId);
   // ID besorgen von Account der eingelogt ist
   const sqlStmt = 'SELECT * FROM veranstaltungen v WHERE v.veranstalter_id = ?';
   db.all(sqlStmt, veranstalterId, (err, rows) => {
     if (err) {
       throw err;
     }
-
-    console.log(rows);
     response.json(rows);
   });
 });
@@ -40,6 +39,7 @@ eventRouter.post('/', (request, response) => {
 
   // Creating new Event by getting ids of seatingPlan and guestList first
   getIds().then(x => {
+    const veranstalterId = request.session.userId;
     const eventData = [body.name, body.date, body.time, x.gId, x.sId, veranstalterId];
     const sqlStmtEvents = 'INSERT INTO veranstaltungen(name, date,time,guestList_id,seatingPlan_id,veranstalter_id) VALUES(?, ?, ?, ?, ?, ?)';
     db.run(sqlStmtEvents, eventData, (err) => {

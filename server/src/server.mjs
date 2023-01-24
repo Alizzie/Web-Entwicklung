@@ -1,6 +1,6 @@
 import path from 'path';
 import express from 'express';
-
+import session from 'express-session';
 // REQUESTS
 import { loginRouter } from '../src/routes/login.mjs';
 import { eventRouter } from './routes/event.mjs';
@@ -8,6 +8,13 @@ import { guestRouter } from './routes/guest.mjs';
 import { deskRouter } from './routes/desk.mjs';
 
 const server = express();
+
+server.use(session({
+  secret: 'yoursecretkey',
+  resave: false,
+  saveUninitialized: false
+}));
+
 server.use(express.json());
 server.use(express.urlencoded({ extended: true }));
 

@@ -5,7 +5,7 @@ import { db } from '../database.mjs';
 export const loginRouter = express.Router();
 
 loginRouter.post('/', function (request, response) {
-  const sqlStmt = 'select name, password from veranstalter where name=? and password=?';
+  const sqlStmt = 'select veranstalter_id as veranstalterId,name, password from veranstalter where name=? and password=?';
   db.get(sqlStmt, request.body, (err, row) => {
     if (err) {
       throw err;
@@ -14,6 +14,7 @@ loginRouter.post('/', function (request, response) {
     let loginSucces = false;
     if (row) {
       loginSucces = true;
+      request.session.userId = row.veranstalterId;
     }
 
     const data = {
@@ -25,18 +26,20 @@ loginRouter.post('/', function (request, response) {
 });
 
 loginRouter.post('/signUp', function (request, response) {
+  const body = request.body;
   const addUser = 'INSERT INTO veranstalter(name,password,email) VALUES(?,?,?)';
-  db.run(addUser, request.body, (err) => {
-    let signedUp = true;
-    if (err) {
-      console.log('something went wrong');
-      signedUp = false;
-      // throw err;
-    }
-    const data = {
-      acces: signedUp
-    };
 
-    response.json(data);
+  db.run(addUser, [body.name, body.password, body.email], (err) => {
+    const signedUp = !err;
+
+    // AFTER INSERTING THE USER,
+    db.get('SELECT last_insert_rowid() as veranstalterId', (err, row) => {
+      if (err) {
+        console.log(err.message);
+      }
+      console.log(row.veranstalterId);
+    });
+
+    response.json({ acces: signedUp });
   });
 });
