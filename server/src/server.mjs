@@ -1,6 +1,7 @@
 import path from 'path';
 import express from 'express';
 import session from 'express-session';
+
 // REQUESTS
 import { loginRouter } from '../src/routes/login.mjs';
 import { eventRouter } from './routes/event.mjs';
@@ -30,6 +31,7 @@ if (!process.argv[2]) {
   port = process.argv[2];
 }
 
+// APIs
 server.use('/api/login', loginRouter);
 server.use('/api/events', eventRouter);
 server.use('/api/guest', guestRouter);

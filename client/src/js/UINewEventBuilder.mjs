@@ -25,13 +25,15 @@ const seatsPlanAttributes = [
     name: 'Rectangular tables',
     type: 'number',
     placeholder: '0',
-    min: '0'
+    min: '0',
+    max: '100'
   },
   {
     name: 'Seats per table',
     type: 'number',
     placeholder: '0',
-    min: '0'
+    min: '0',
+    max: '10'
 
   },
   {

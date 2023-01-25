@@ -141,6 +141,7 @@ export default class UICardGenerator {
         this._input.classList.add('uk-checkbox');
       } else {
         this._input.classList.add('uk-input', 'uk-form-small');
+        this._input.required = true;
       }
     }
   }
@@ -161,6 +162,10 @@ export default class UICardGenerator {
 
     if (attr.min) {
       this._input.min = attr.min;
+    }
+
+    if (attr.max) {
+      this._input.max = attr.max;
     }
   }
 }

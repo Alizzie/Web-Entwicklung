@@ -4,7 +4,7 @@ import { db } from '../database.mjs';
 
 export const loginRouter = express.Router();
 
-loginRouter.post('/', function (request, response) {
+loginRouter.post('/', (request, response) => {
   const sqlStmt = 'select veranstalter_id as veranstalterId,name, password from veranstalter where name=? and password=?';
   db.get(sqlStmt, request.body, (err, row) => {
     if (err) {
@@ -25,19 +25,19 @@ loginRouter.post('/', function (request, response) {
   });
 });
 
-loginRouter.post('/signUp', function (request, response) {
+loginRouter.post('/signUp', (request, response) => {
   const body = request.body;
+  console.log('body', body);
   const addUser = 'INSERT INTO veranstalter(name,password,email) VALUES(?,?,?)';
 
   db.run(addUser, [body.name, body.password, body.email], (err) => {
     const signedUp = !err;
 
     // AFTER INSERTING THE USER,
-    db.get('SELECT last_insert_rowid() as veranstalterId', (err, row) => {
+    db.get('SELECT last_insert_rowid() as veranstalterId', (err) => {
       if (err) {
         console.log(err.message);
       }
-      console.log(row.veranstalterId);
     });
 
     response.json({ acces: signedUp });

@@ -1,3 +1,4 @@
+import UIkit from 'uikit';
 import ServerCommunications from './ServerRequests.mjs';
 import UICardGenerator from './UIGenerator.mjs';
 
@@ -14,19 +15,55 @@ export default class SignUpBuilder {
   createSignUpDisplay () {
     this._cardGenerator.formularCardConstructor(this._heading, this._cName, this._btnText, this._sParams);
     this._cardGenerator.createCardFormularDisplay();
+
+    this._addBackToLoggingBtn();
     this._initializeSignUp();
+  }
+
+  _addBackToLoggingBtn () {
+    const button = document.createElement('button');
+    button.classList.add('uk-button', 'uk-button-default');
+    button.textContent = 'Back To Logging';
+
+    button.addEventListener('click', (event) => {
+      event.preventDefault();
+      document.location.href = '/';
+    });
+
+    const signUpBtn = document.getElementsByTagName('button')[0];
+    signUpBtn.parentElement.insertBefore(button, signUpBtn.lastElementChild);
   }
 
   _initializeSignUp () {
     const formular = this._cardGenerator.getFormular();
     const elements = formular.elements;
     formular.addEventListener('submit', (event) => {
-      const data = JSON.stringify({
-        name: elements[1].value,
-        password: elements[2].value,
-        email: elements[4].value
-      });
-      new ServerCommunications('POST').request('/api/login/signUp', data);
+      event.preventDefault();
+
+      if (elements.Password.value === elements['Confirm Password'].value) {
+        const data = JSON.stringify({
+          name: elements.Name.value,
+          password: elements.Password.value,
+          email: elements.Email.value
+        });
+
+        this._sendSignUpData(data);
+      } else {
+        UIkit.notification('Confirmed Password wrong!', 'danger', { timeout: 3000 });
+      }
+    });
+  }
+
+  _sendSignUpData (data) {
+    const response = new ServerCommunications('POST').request('/api/login/signUp', data);
+    response.then(data => {
+      if (data) {
+        UIkit.notification('Successful created account', 'success', { timeout: 3000 });
+      } else {
+        UIkit.notification('Error by creating new account', 'danger', { timeout: 3000 });
+      }
+
+      document.location.href = '/';
     });
   }
 
