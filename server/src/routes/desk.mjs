@@ -14,9 +14,9 @@ deskRouter.post('/', (request, response) => {
     const deskData = [body.veranstaltungId, deskIndex];
     db.run(sqlStmtDesk, deskData, error);
 
-    const offset = deskIndex * body.numOfSeatsperTable;
-    for (let deskPosition = offset; deskPosition < offset + body.numOfSeatsperTable; deskPosition++) { // Adding all Guests to their Table
-      const guestAtDeskData = [body.guestIdAtTable[deskPosition], deskPosition % 4, body.veranstaltungId, deskIndex];
+    for (let posInsideTable = 0; posInsideTable < body.numOfSeatsperTable; posInsideTable++) { // Adding all Guests to their Table
+      const pos = posInsideTable + deskIndex * body.numOfSeatsperTable;
+      const guestAtDeskData = [body.guestIdAtTable[pos], posInsideTable, body.veranstaltungId, deskIndex];
       db.run(sqlStmtGuestAtTable, guestAtDeskData, error);
     }
   }

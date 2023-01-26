@@ -33,7 +33,7 @@ const seatsPlanAttributes = [
     type: 'number',
     placeholder: '0',
     min: '0',
-    max: '10'
+    max: '8'
 
   },
   {

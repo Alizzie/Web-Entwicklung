@@ -4,24 +4,22 @@ import ServerCommunications from './ServerRequests.mjs';
 import UIGuestListBuilder from './UIGuestListBuilder.mjs';
 
 export default class UISeatingPlanBuilder {
-  constructor (guests, veranstalungId, seatingPlanData, numOfTables, numOfSeatsperTable, useBothSides) {
+  constructor (guests, veranstalungId, seatingPlanInfo, seatingPlanData) {
     this._guestList = guests;
     this._veranstalungId = veranstalungId;
     this._seatingPlanData = seatingPlanData;
-    this._numOfTables = numOfTables;
-    this._numOfSeatsperTable = numOfSeatsperTable;
-    this._useBothSides = useBothSides;
+    this._numOfTables = seatingPlanInfo.countTables;
+    this._numOfSeatsperTable = seatingPlanInfo.seatsPerTable;
+
     this._tables = this._generateTables();
     this._prevIndex = 0;
   }
 
   static async initializeSeatingPlan (guests, veranstaltungId) {
-    const response = await new ServerCommunications('GET').get(`api/desk/tableNumbers/${veranstaltungId}`);
-    const [numOfTables, numOfSeatsperTable, useBothSides] = Object.values(response);
+    const seatingPlanInfo = await new ServerCommunications('GET').get(`api/desk/tableNumbers/${veranstaltungId}`);
+    const seatingPlanData = await new ServerCommunications().request(`/api/desk/${veranstaltungId}`);
 
-    new ServerCommunications().request(`/api/desk/${veranstaltungId}`).then(data => {
-      new UISeatingPlanBuilder(guests, veranstaltungId, data, numOfTables, numOfSeatsperTable, useBothSides).createSeatingPlan();
-    });
+    new UISeatingPlanBuilder(guests, veranstaltungId, seatingPlanInfo, seatingPlanData).createSeatingPlan();
   }
 
   createSeatingPlan () {
@@ -30,6 +28,7 @@ export default class UISeatingPlanBuilder {
     main.appendChild(this._seatingPlanWrapper);
 
     this._fillSeatingPlanWrapper();
+    this._fillExisitingSeatingPlan();
   }
 
   _generateWrapper () {
@@ -69,14 +68,17 @@ export default class UISeatingPlanBuilder {
     const arr = Array.from(document.getElementsByTagName('select'));
     const selectedGuestIndeces = arr.map(x => x.options.selectedIndex - 1);
     const guestIds = [];
+    console.log(this._guestList);
 
-    selectedGuestIndeces.forEach(i => { // Mapping every selected Guest to his Guest_id
+    selectedGuestIndeces.forEach(i => {
       if (i === -1) {
         guestIds.push(null);
       } else {
         guestIds.push(this._guestList[i].guest_id);
       }
     });
+
+    console.log(guestIds);
 
     const data = JSON.stringify({
       veranstaltungId: this._veranstalungId,
@@ -85,6 +87,22 @@ export default class UISeatingPlanBuilder {
       guestIdAtTable: guestIds
     });
     new ServerCommunications('POST').request('/api/desk', data);
+  }
+
+  _fillExisitingSeatingPlan () {
+    this._seatingPlanData.forEach(i => {
+      if (i.name) {
+        const tablePos = i.guestPosition + i.deskIndex * this._numOfSeatsperTable;
+        this._guestSelects[tablePos].value = i.name;
+
+        const selectedIndex = this._guestSelects[tablePos].options.selectedIndex;
+
+        const selectDropDowns = this._guestSelects.map(x => x.options);
+        for (const dropdown of selectDropDowns) {
+          dropdown[selectedIndex].hidden = true;
+        }
+      }
+    });
   }
 
   _backGuestlistBtn () {
@@ -112,7 +130,7 @@ export default class UISeatingPlanBuilder {
 
   _generateTables () {
     const tables = [];
-    this._guestOptions = [];
+    this._guestSelects = [];
     for (let tableIndex = 0; tableIndex < this._numOfTables; tableIndex++) {
       const table = document.createElement('div');
       table.classList.add('uk-card', 'uk-card-default', 'uk-padding-small');
@@ -136,10 +154,7 @@ export default class UISeatingPlanBuilder {
       seat.classList.add('guest-table');
       seat.setAttribute('uk-form-custom', 'target: > * > span:first-child');
 
-      const seatPosition = j + tableIndex * this._numOfSeatsperTable;
-      // name = null  if _seatingPlanData is Empty,so no Data in DB for guests at a table
-      const name = this._seatingPlanData.length !== 0 ? this._seatingPlanData[seatPosition].name : null;
-      seat.appendChild(this._fillSelectOptions(name === null ? `Select Guest ${j + 1}` : name));
+      seat.appendChild(this._fillSelectOptions(`Select Guest ${j + 1}`));
 
       seat.appendChild(this._addButtonVisuality());
       table.appendChild(seat);
@@ -157,7 +172,7 @@ export default class UISeatingPlanBuilder {
 
     this._addEventsToSelect(select);
 
-    this._guestOptions.push(select);
+    this._guestSelects.push(select);
     return select;
   }
 
@@ -175,7 +190,7 @@ export default class UISeatingPlanBuilder {
     const select = event.target;
     const selectedIndex = select.options.selectedIndex;
 
-    const selectDropDowns = this._guestOptions.map(x => x.options);
+    const selectDropDowns = this._guestSelects.map(x => x.options);
     for (const dropdown of selectDropDowns) {
       if (selectedIndex !== 0) {
         dropdown[selectedIndex].hidden = true;
@@ -191,7 +206,7 @@ export default class UISeatingPlanBuilder {
   _showGuests (select) {
     for (let i = 0; i < this._guestList.length; i++) {
       const option = document.createElement('option');
-      option.textContent = this._guestList[i].name + ` ${i + 1}`;
+      option.textContent = this._guestList[i].name;
       select.appendChild(option);
     }
   }
