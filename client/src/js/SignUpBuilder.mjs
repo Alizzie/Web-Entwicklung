@@ -8,7 +8,7 @@ export default class SignUpBuilder {
     this._cName = 'creation-signUp';
     this._btnText = 'Sign Up';
     this._signUpAttributes = this._getParams();
-    this._sParams = [[this._signUpAttributes, 'creation-signUp-attr', 'Sign Up Parameters']];
+    this._sParams = [[this._signUpAttributes, 'creation-signUp-attr', '']];
     this._cardGenerator = new UICardGenerator();
   }
 
@@ -23,7 +23,7 @@ export default class SignUpBuilder {
   _addBackToLoggingBtn () {
     const button = document.createElement('button');
     button.classList.add('uk-button', 'uk-button-default');
-    button.textContent = 'Back To Logging';
+    button.textContent = 'Back To Login';
 
     button.addEventListener('click', (event) => {
       event.preventDefault();
@@ -58,9 +58,9 @@ export default class SignUpBuilder {
     const response = new ServerCommunications('POST').request('/api/login/signUp', data);
     response.then(data => {
       if (data) {
-        UIkit.notification('Successful created account', 'success', { timeout: 3000 });
+        UIkit.notification('Account successful created', 'success', { timeout: 3000 });
       } else {
-        UIkit.notification('Error by creating new account', 'danger', { timeout: 3000 });
+        UIkit.notification('Failed to create new account', 'danger', { timeout: 3000 });
       }
 
       document.location.href = '/';

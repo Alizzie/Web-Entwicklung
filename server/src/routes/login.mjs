@@ -5,7 +5,7 @@ import { db } from '../database.mjs';
 export const loginRouter = express.Router();
 
 loginRouter.post('/', (request, response) => {
-  const sqlStmt = 'select veranstalter_id as veranstalterId,name, password from veranstalter where name=? and password=?';
+  const sqlStmt = 'SELECT veranstalter_id AS veranstalterId, name, password FROM veranstalter WHERE name=? AND password=?';
   db.get(sqlStmt, request.body, (err, row) => {
     if (err) {
       throw err;
@@ -34,7 +34,7 @@ loginRouter.post('/signUp', (request, response) => {
     const signedUp = !err;
 
     // AFTER INSERTING THE USER,
-    db.get('SELECT last_insert_rowid() as veranstalterId', (err) => {
+    db.get('SELECT last_insert_rowid() AS veranstalterId', (err) => {
       if (err) {
         console.log(err.message);
       }

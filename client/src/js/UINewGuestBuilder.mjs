@@ -10,7 +10,7 @@ export default class UINewGuestBuilder {
     this._btnText = 'Add Guest';
     this._editMode = false;
     this._guestAttributes = this._guestParams();
-    this._gParams = [[this._guestAttributes, 'creation-guest-attr', 'Guest Parameters']];
+    this._gParams = [[this._guestAttributes, 'creation-guest-attr', 'Guest Information']];
     this._cardGenerator = new UICardGenerator();
     this._veranstaltungId = veranstaltungId;
   }
@@ -75,7 +75,7 @@ export default class UINewGuestBuilder {
     const response = new ServerCommunications('POST').request('/api/guest', data);
     response.then(data => {
       if (data) {
-        UIkit.notification('Successful added new guest', 'success', { timeout: 3000 });
+        UIkit.notification('Guest successful added', 'success', { timeout: 3000 });
       } else {
         UIkit.notification('Failed to add new guest', 'danger', { timeout: 3000 });
       }
@@ -109,7 +109,7 @@ export default class UINewGuestBuilder {
       {
         name: 'Invitation status',
         type: 'select',
-        options: ['unknown', 'invited', 'accepted', 'declined']
+        options: ['Unknown', 'Invited', 'Accepted', 'Declined']
       }
     ];
   }

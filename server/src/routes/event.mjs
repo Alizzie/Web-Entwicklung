@@ -41,13 +41,13 @@ eventRouter.post('/', (request, response) => {
   getIds().then(x => {
     const veranstalterId = request.session.userId;
     const eventData = [body.name, body.date, body.time, x.gId, x.sId, veranstalterId];
-    const sqlStmtEvents = 'INSERT INTO veranstaltungen(name, date,time,guestList_id,seatingPlan_id,veranstalter_id) VALUES(?, ?, ?, ?, ?, ?)';
+    const sqlStmtEvents = 'INSERT INTO veranstaltungen(name, date, time, guestList_id, seatingPlan_id, veranstalter_id) VALUES(?, ?, ?, ?, ?, ?)';
     db.run(sqlStmtEvents, eventData, (err) => {
       if (err) {
         throw err.message;
       }
 
-      db.get('SELECT last_insert_rowid() as veranstaltung_id', (err, row) => {
+      db.get('SELECT last_insert_rowid() AS veranstaltung_id', (err, row) => {
         if (err) {
           throw err;
         }

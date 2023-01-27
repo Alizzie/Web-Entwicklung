@@ -45,15 +45,15 @@ const seatsPlanAttributes = [
 export default class UINewEventBuilder {
   constructor () {
     // Heading and Class Name
-    this._heading = 'Creating new Event';
+    this._heading = 'Create new Event';
     this._cName = 'creation-new-event';
 
     // Button properties
     this._btnText = 'Continue to Guest List';
 
     // Params
-    this._eParams = [eventAttributes, 'creation-event-attr', 'Event Parameters'];
-    this._sParams = [seatsPlanAttributes, 'creation-seating-attr', 'Seating Parameters'];
+    this._eParams = [eventAttributes, 'creation-event-attr', 'Event Information'];
+    this._sParams = [seatsPlanAttributes, 'creation-seating-attr', 'Seating Plan Information'];
 
     this._cardGenerator = new UICardGenerator();
   }
@@ -82,9 +82,9 @@ export default class UINewEventBuilder {
       const response = new ServerCommunications('POST').request('/api/events', data);
       response.then(data => {
         if (data) {
-          UIkit.notification('Successful created new Event', 'success', { timeout: 3000 });
+          UIkit.notification('Event successful created', 'success', { timeout: 3000 });
         } else {
-          UIkit.notification('Failed to create Event', 'danger', { timeout: 3000 });
+          UIkit.notification('Failed to create event', 'danger', { timeout: 3000 });
         }
         UIGuestListBuilder.initializeGuestList(data.veranstaltung_id);
       });

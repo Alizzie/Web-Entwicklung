@@ -24,7 +24,7 @@ deskRouter.post('/', (request, response) => {
 
 // countTables,seatsPerTable,seatsPerSide
 deskRouter.get('/tableNumbers/:id', (request, response) => {
-  const sqlStmt = 'SELECT countTables,seatsPerTable,seatsPerSide FROM seatingPlan WHERE seatingPlan_id = (SELECT veranstaltungen.seatingPlan_id FROM veranstaltungen WHERE veranstaltungen.id = ?)';
+  const sqlStmt = 'SELECT countTables, seatsPerTable, seatsPerSide FROM seatingPlan WHERE seatingPlan_id = (SELECT veranstaltungen.seatingPlan_id FROM veranstaltungen WHERE veranstaltungen.id = ?)';
   db.get(sqlStmt, request.params.id, (err, row) => {
     if (err) {
       console.log(err.message);
@@ -34,7 +34,7 @@ deskRouter.get('/tableNumbers/:id', (request, response) => {
 });
 
 deskRouter.get('/:id', (request, response) => {
-  const sqlStmt = 'select guests.guest_id,guestPosition,guestAtDesk.id,deskIndex,name from guestAtDesk LEFT JOIN guests ON guestAtDesk.guest_id = guests.guest_id WHERE guestATDesk.id = ? ORDER BY deskIndex ASC, guestPosition ASC';
+  const sqlStmt = 'SELECT guests.guest_id, guestPosition, guestAtDesk.id, deskIndex, name FROM guestAtDesk LEFT JOIN guests ON guestAtDesk.guest_id = guests.guest_id WHERE guestATDesk.id = ? ORDER BY deskIndex ASC, guestPosition ASC';
   db.all(sqlStmt, request.params.id, (err, rows) => {
     if (err) {
       console.log(err.message);

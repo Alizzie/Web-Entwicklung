@@ -91,11 +91,11 @@ export default class UIDisplayBuilder {
   // DISPLAY WHEN NO EVENT EXISTS
   _noEventsDisplay () {
     const text = document.createElement('h1');
-    text.textContent = 'No Events created';
+    text.textContent = 'No events';
 
     const addEventButton = document.createElement('button');
     addEventButton.classList.add('uk-button', 'uk-button-secondary');
-    addEventButton.textContent = 'Add new one';
+    addEventButton.textContent = 'Create new event';
 
     this._displayWrapper.appendChild(text);
     this._displayWrapper.appendChild(addEventButton);
@@ -209,7 +209,7 @@ export default class UIDisplayBuilder {
 
     const response = await new ServerCommunications('DELETE').request('/api/events', data);
     if (response) {
-      UIkit.notification('Successful deleted', 'success', { timeout: 3000 });
+      UIkit.notification('Event successful deleted', 'success', { timeout: 3000 });
     }
 
     this._events.splice(eventsIndex, 1);

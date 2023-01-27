@@ -136,7 +136,7 @@ export default class UIGuestListBuilder {
     deleteBtn.textContent = 'Delete';
 
     deleteBtn.addEventListener('click', () => {
-      UIkit.modal.confirm('Delete guests?').then(
+      UIkit.modal.confirm('Delete guest(s)?').then(
         () => this._deleteEventListener(),
         () => { UIkit.notification('Canceled', { timeout: 3000 }); }
       );
@@ -151,7 +151,7 @@ export default class UIGuestListBuilder {
 
     const response = await new ServerCommunications('DELETE').request('/api/guest', JSON.stringify({ guestIds: checkedCheckboxes }));
     if (response) {
-      UIkit.notification('Successful deleted', 'success', { timeout: 3000 });
+      UIkit.notification('Guest(s) successful deleted', 'success', { timeout: 3000 });
     }
 
     UIGuestListBuilder.initializeGuestList(this.eventId);
@@ -200,11 +200,11 @@ export default class UIGuestListBuilder {
 
   _noGuestsDisplay () {
     const text = document.createElement('h1');
-    text.textContent = 'No Guests';
+    text.textContent = 'No guests';
 
     const addEventButton = document.createElement('button');
     addEventButton.classList.add('uk-button', 'uk-button-secondary');
-    addEventButton.textContent = 'Add first Guest';
+    addEventButton.textContent = 'Add first guest';
 
     this._tableWrapper.appendChild(text);
     this._tableWrapper.appendChild(addEventButton);

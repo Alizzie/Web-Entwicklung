@@ -10,30 +10,7 @@ const signUp = document.getElementById('sign-up');
 signUp.addEventListener('click', () => {
   new SignUpBuilder().createSignUpDisplay();
 });
-/*
 
-signUp.addEventListener('submit', (event) => {
-  event.preventDefault();
-  const uname = signUp.elements.uname.value;
-  const pword = signUp.elements.pword.value;
-  const email = signUp.elements.pword.value;
-  const data = JSON.stringify([uname, pword, email]);
-
-  checkSignUp(data).then(succes => {
-    if(succes){
-      UIkit.notification('Account created', 'success', { timeout: 5000 });
-    }
-    else {
-      UIkit.notification('Sign-up failed!', 'danger', { timeout: 5000 });
-  }
-  }
-});
-
-async function checkSignUp (data) {
-  const response = await new ServerCommunications('POST').request('/api/login/signUp', data);
-  return response.accepted;
-}
-*/
 // LOGGING EVENT LISTENER
 const logging = document.getElementById('sign-in');
 
@@ -46,11 +23,11 @@ logging.addEventListener('submit', (event) => {
   // Fetch Data and send them to the server
   checkLogging(data).then(success => {
     if (success) {
-      UIkit.notification('Successful Logging', 'success', { timeout: 5000 });
+      UIkit.notification('Login successful', 'success', { timeout: 5000 });
       new UINavbarBuilder().createNavbar();
       UIDisplayBuilder.initalizeEventsDisplay();
     } else {
-      UIkit.notification('Logging failed', 'danger', { timeout: 5000 });
+      UIkit.notification('Login failed', 'danger', { timeout: 5000 });
     }
   }).catch(err => err.message);
 });

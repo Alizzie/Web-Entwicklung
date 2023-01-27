@@ -50,7 +50,7 @@ db.run(`CREATE TABLE IF NOT EXISTS guests (
     guest_id INTEGER PRIMARY KEY,
     name TEXT NOT NULL,
     child INTEGER NOT NULL CHECK (child IN (0, 1)), 
-    invitation_status TEXT NOT NULL CHECK(invitation_status IN ('unknown', 'invited', 'accepted', 'declined')),
+    invitation_status TEXT NOT NULL CHECK(invitation_status IN ('Unknown', 'Invited', 'Accepted', 'Declined')),
     guestList_id INTEGER,
     FOREIGN KEY(guestList_id) REFERENCES guestList(guestList_id)
     )`,

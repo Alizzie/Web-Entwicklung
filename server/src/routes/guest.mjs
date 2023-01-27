@@ -8,7 +8,7 @@ guestRouter.get('/:id', (request, response) => {
   const veranstaltungId = request.params.id;
   console.log('veranstaltungId: ', veranstaltungId);
   // SQL Statement to get the guestID
-  const sqlStmt = 'SELECT * FROM guests g WHERE g.guestList_id = (SELECT guestList_id from veranstaltungen v where v.id = ?)';
+  const sqlStmt = 'SELECT * FROM guests g WHERE g.guestList_id = (SELECT guestList_id FROM veranstaltungen v WHERE v.id = ?)';
 
   db.all(sqlStmt, veranstaltungId, (err, rows) => {
     if (err) {
@@ -22,8 +22,8 @@ guestRouter.get('/:id', (request, response) => {
 guestRouter.post('/', (request, response) => {
   const body = request.body;
   console.log('body', body);
-  const sqlStmt = 'INSERT INTO guests(name,child,invitation_status,guestList_id) VALUES(?, ?, ?, ?)';
-  const getGuestListId = 'Select guestList_id as guestListId from veranstaltungen where id = ?';
+  const sqlStmt = 'INSERT INTO guests(name, child, invitation_status, guestList_id) VALUES(?, ?, ?, ?)';
+  const getGuestListId = 'SELECT guestList_id AS guestListId FROM veranstaltungen WHERE id = ?';
 
   db.get(getGuestListId, body.veranstaltungId, (err, row) => {
     if (err) {
