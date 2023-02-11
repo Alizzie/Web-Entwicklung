@@ -66,10 +66,16 @@ export default class UINewEventBuilder {
 
   _addEvent () {
     const newEventForm = this._cardGenerator.getFormular();
+    const elements = newEventForm.elements;
+
     newEventForm.addEventListener('submit', (event) => {
       event.preventDefault();
 
-      const elements = newEventForm.elements;
+      if (new Date() > new Date(elements.Date.value)) {
+        UIkit.notification('the date is out of date', 'danger', { timeout: 3000 });
+        return;
+      }
+
       const data = JSON.stringify({
         name: elements['Event Name'].value,
         date: elements.Date.value,
