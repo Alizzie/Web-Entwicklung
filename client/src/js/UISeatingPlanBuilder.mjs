@@ -68,7 +68,6 @@ export default class UISeatingPlanBuilder {
     const arr = Array.from(document.getElementsByTagName('select'));
     const selectedGuestIndeces = arr.map(x => x.options.selectedIndex - 1);
     const guestIds = [];
- 
 
     selectedGuestIndeces.forEach(i => {
       if (i === -1) {

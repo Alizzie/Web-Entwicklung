@@ -31,7 +31,6 @@ guestRouter.post('/', (request, response) => {
     }
 
     const data = [body.name, body.children, body.invitationStatus, row.guestListId];
-    
 
     db.run(sqlStmt, data, (err) => {
       if (err) {
@@ -45,7 +44,6 @@ guestRouter.post('/', (request, response) => {
 
 guestRouter.delete('/', (request, response) => {
   const guestIds = request.body.guestIds; // this is a array of ids
-
 
   const sqlStmt = 'DELETE FROM guests WHERE guest_id IN (' + guestIds.join(',') + ')';
   db.run(sqlStmt, (err) => {

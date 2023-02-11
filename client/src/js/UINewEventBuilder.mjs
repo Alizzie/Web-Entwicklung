@@ -71,7 +71,7 @@ export default class UINewEventBuilder {
     newEventForm.addEventListener('submit', (event) => {
       event.preventDefault();
 
-      if (new Date() > new Date(elements.Date.value)) {
+      if (new Date() >= new Date(elements.Date.value)) {
         UIkit.notification('the date is out of date', 'danger', { timeout: 3000 });
         return;
       }
