@@ -27,7 +27,6 @@ loginRouter.post('/', (request, response) => {
 
 loginRouter.post('/signUp', (request, response) => {
   const body = request.body;
-  console.log('body', body);
   const addUser = 'INSERT INTO veranstalter(name,password,email) VALUES(?,?,?)';
 
   db.run(addUser, [body.name, body.password, body.email], (err) => {

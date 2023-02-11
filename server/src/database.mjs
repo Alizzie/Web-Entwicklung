@@ -158,14 +158,6 @@ db.run(stmt6, [5, 'Hochzeit 35', 31122022, 2000, 11, 23, 31]);
 db.run(stmt6, [6, 'Hochzeit 36', 31122022, 2000, 11, 23, 31]);
 db.run(stmt6, [7, 'Hochzeit 37', 31122022, 2000, 11, 23, 31]);
 */
-db.all('select * from veranstalter ', [], (err, rows) => {
-  if (err) {
-    throw err;
-  }
-  rows.forEach((row) => {
-    console.log(row);
-  });
-});
 
 export { db };
 

@@ -68,7 +68,7 @@ export default class UISeatingPlanBuilder {
     const arr = Array.from(document.getElementsByTagName('select'));
     const selectedGuestIndeces = arr.map(x => x.options.selectedIndex - 1);
     const guestIds = [];
-    console.log(this._guestList);
+ 
 
     selectedGuestIndeces.forEach(i => {
       if (i === -1) {
@@ -77,8 +77,6 @@ export default class UISeatingPlanBuilder {
         guestIds.push(this._guestList[i].guest_id);
       }
     });
-
-    console.log(guestIds);
 
     const data = JSON.stringify({
       veranstaltungId: this._veranstalungId,

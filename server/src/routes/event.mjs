@@ -6,7 +6,6 @@ export const eventRouter = express.Router();
 
 eventRouter.get('/', (request, response) => {
   const veranstalterId = request.session.userId;
-  console.log('veranstalterID:::!!!!:::::', veranstalterId);
   // ID besorgen von Account der eingelogt ist
   const sqlStmt = 'SELECT * FROM veranstaltungen v WHERE v.veranstalter_id = ?';
   db.all(sqlStmt, veranstalterId, (err, rows) => {

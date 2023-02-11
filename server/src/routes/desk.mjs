@@ -39,7 +39,7 @@ deskRouter.get('/:id', (request, response) => {
     if (err) {
       console.log(err.message);
     }
-    console.log(rows);
+
     response.json(rows);
   });
 });

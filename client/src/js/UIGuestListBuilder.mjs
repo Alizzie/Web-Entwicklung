@@ -247,9 +247,6 @@ export default class UIGuestListBuilder {
     for (const guest of guests) {
       const row = document.createElement('tr');
       tableBody.appendChild(row);
-
-      console.log(guest);
-
       row.appendChild(this._generateCheckboxCell(guest.guest_id));
       row.appendChild(this._generateGuestName(guest.name));
       row.appendChild(this._generateStatus(guest.invitation_status));

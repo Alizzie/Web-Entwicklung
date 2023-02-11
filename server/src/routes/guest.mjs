@@ -6,7 +6,7 @@ export const guestRouter = express.Router();
 
 guestRouter.get('/:id', (request, response) => {
   const veranstaltungId = request.params.id;
-  console.log('veranstaltungId: ', veranstaltungId);
+
   // SQL Statement to get the guestID
   const sqlStmt = 'SELECT * FROM guests g WHERE g.guestList_id = (SELECT guestList_id FROM veranstaltungen v WHERE v.id = ?)';
 
@@ -21,7 +21,7 @@ guestRouter.get('/:id', (request, response) => {
 
 guestRouter.post('/', (request, response) => {
   const body = request.body;
-  console.log('body', body);
+
   const sqlStmt = 'INSERT INTO guests(name, child, invitation_status, guestList_id) VALUES(?, ?, ?, ?)';
   const getGuestListId = 'SELECT guestList_id AS guestListId FROM veranstaltungen WHERE id = ?';
 
@@ -31,7 +31,7 @@ guestRouter.post('/', (request, response) => {
     }
 
     const data = [body.name, body.children, body.invitationStatus, row.guestListId];
-    console.log('data', data);
+    
 
     db.run(sqlStmt, data, (err) => {
       if (err) {
@@ -45,7 +45,7 @@ guestRouter.post('/', (request, response) => {
 
 guestRouter.delete('/', (request, response) => {
   const guestIds = request.body.guestIds; // this is a array of ids
-  console.log('guestIds:::', guestIds);
+
 
   const sqlStmt = 'DELETE FROM guests WHERE guest_id IN (' + guestIds.join(',') + ')';
   db.run(sqlStmt, (err) => {
