@@ -5,6 +5,10 @@ import ServerCommunications from './ServerRequests.mjs';
 import SignUpBuilder from './SignUpBuilder.mjs';
 UIkit.icon.call();
 
+window.onload = function () {
+  window.alert('Login with exisiting account: \nname: root \npassword: root \n\n Optional: create new account');
+};
+
 // SIGN UP EVENT LISTENER
 const signUp = document.getElementById('sign-up');
 signUp.addEventListener('click', () => {

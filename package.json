@@ -16,8 +16,7 @@
     "build": "npm run debug && npm run minify",
     "minify": "npm run minify:css && npm run minify:js",
     "minify:css": "lessc --rewrite-urls=all --clean-css client/src/styles/style.less client/build/style.css",
-    "minify:js": "terser client/build/bundle.js --compress --mangle --comments=false -o client/build/bundle.js",
-    "testStart": "nodemon server/src/server.mjs"
+    "minify:js": "terser client/build/bundle.js --compress --mangle --comments=false -o client/build/bundle.js"
   },
   "author": "Elisa Du, Henrik Flöter",
   "license": "UNLINCENSED",
@@ -26,7 +25,6 @@
     "less": "^4.1.3",
     "less-plugin-clean-css": "^1.5.1",
     "mkdirp": "^1.0.4",
-    "nodemon": "^2.0.20",
     "semistandard": "^16.0.1",
     "terser": "^5.16.1",
     "uikit": "^3.15.19",

@@ -1,6 +1,5 @@
 import express from 'express';
 import { db } from '../database.mjs';
-// import { db } from '../database.mjs';
 
 export const deskRouter = express.Router();
 

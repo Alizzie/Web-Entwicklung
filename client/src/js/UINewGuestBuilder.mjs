@@ -63,7 +63,7 @@ export default class UINewGuestBuilder {
         veranstaltungId: this._veranstaltungId
       });
 
-      if (this._editMode) { // TODO cleaner Code
+      if (this._editMode) {
         this._editGuestData(data);
       } else {
         this._addGuestData(data);

@@ -199,7 +199,6 @@ export default class UISeatingPlanBuilder {
     }
   }
 
-  // ONLY FOR EXAMPLE DATASET
   _showGuests (select) {
     for (let i = 0; i < this._guestList.length; i++) {
       const option = document.createElement('option');

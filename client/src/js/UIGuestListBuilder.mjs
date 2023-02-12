@@ -13,7 +13,6 @@ export default class UIGuestListBuilder {
     this._tableWrapper = this._generateTableWrapper('guestlist-table');
     this._heading = this._getHeadings();
     this.eventId = eventId;
-
     this._startPagination();
     this._initializeButtons();
   }

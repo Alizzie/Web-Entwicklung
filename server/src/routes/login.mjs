@@ -1,6 +1,5 @@
 import express from 'express';
 import { db } from '../database.mjs';
-// import { veranstalterId } from './event.mjs';
 
 export const loginRouter = express.Router();
 

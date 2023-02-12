@@ -2,10 +2,10 @@ import express from 'express';
 import { db } from '../database.mjs';
 
 export const eventRouter = express.Router();
-// TODO VERANSTALTER ID ODER NAME herholen
 
 eventRouter.get('/', (request, response) => {
   const veranstalterId = request.session.userId;
+
   // ID besorgen von Account der eingelogt ist
   const sqlStmt = 'SELECT * FROM veranstaltungen v WHERE v.veranstalter_id = ?';
   db.all(sqlStmt, veranstalterId, (err, rows) => {
