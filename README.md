@@ -4,9 +4,9 @@ This project was created for a bachelor course at the Fachhochschule Trier.
 
 <h2>Key features</h2>
 
-User account creation: Allows users to register and manage their profiles.
-Guest list management: Allows users to easily add, edit or remove guests from their events.
-Seating Arrangement: Provides seating chart design tools for better event planning.
+- User account creation: Allows users to register and manage their profiles.
+- Guest list management: Allows users to easily add, edit or remove guests from their events.
+- Seating Arrangement: Provides seating chart design tools for better event planning.
 
 <h2>Technologies used</h2>
 
